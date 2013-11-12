@@ -1,0 +1,74 @@
+package net.simpleframework.module.bbs.web.page;
+
+import static net.simpleframework.common.I18n.$m;
+
+import java.io.IOException;
+import java.util.Map;
+
+import net.simpleframework.module.bbs.BbsCategory;
+import net.simpleframework.module.bbs.IBbsContextAware;
+import net.simpleframework.mvc.PageParameter;
+import net.simpleframework.mvc.common.element.LinkElement;
+import net.simpleframework.mvc.common.element.SpanElement;
+import net.simpleframework.mvc.common.element.TabButtons;
+import net.simpleframework.mvc.template.struct.CategoryItem;
+import net.simpleframework.mvc.template.struct.NavigationButtons;
+import net.simpleframework.mvc.template.struct.Pagelet;
+import net.simpleframework.mvc.template.struct.Pagelets;
+
+/**
+ * Licensed under the Apache License, Version 2.0
+ * 
+ * @author 陈侃(cknet@126.com, 13910090885)
+ *         http://code.google.com/p/simpleframework/
+ *         http://www.simpleframework.net
+ */
+public class BbsTopicFormTPage extends AbstractBbsTPage implements IBbsContextAware {
+
+	@Override
+	protected void onForward(final PageParameter pp) {
+		super.onForward(pp);
+
+		// 类目选择
+		addCategoryDict(pp);
+	}
+
+	@Override
+	protected String toHtml(final PageParameter pp, final Map<String, Object> variables,
+			final String currentVariable) throws IOException {
+		final StringBuilder sb = new StringBuilder();
+		sb.append("<div class='BbsTopicFormTPage'>");
+		sb.append(includeForm(pp));
+		sb.append("</div>");
+		return sb.toString();
+	}
+
+	protected String includeForm(final PageParameter pp) {
+		return pp.includeUrl(BbsTopicForm.class);
+	}
+
+	@Override
+	public NavigationButtons getNavigationBar(final PageParameter pp) {
+		final NavigationButtons btns = NavigationButtons.of(new LinkElement(context.getModule())
+				.setHref(getUrlsFactory().getCategoryUrl()));
+		final BbsCategory category = BbsPostViewTPage.getCategory(pp);
+		if (category != null) {
+			btns.append(new SpanElement().addElements(
+					new LinkElement(category.getText()).setHref(getUrlsFactory().getTopicListUrl(
+							category)), createCategoryDictMenu(pp)));
+		}
+		return btns.append(new SpanElement($m("BbsTopicFormTPage.7")));
+	}
+
+	@Override
+	protected TabButtons getCategoryTabs(final PageParameter pp) {
+		return null;
+	}
+
+	@Override
+	protected Pagelets getPagelets(final PageParameter pp) {
+		final Pagelets lets = Pagelets.of(new Pagelet(new CategoryItem("公告"), ""), new Pagelet(
+				new CategoryItem("热帖"), ""));
+		return lets;
+	}
+}

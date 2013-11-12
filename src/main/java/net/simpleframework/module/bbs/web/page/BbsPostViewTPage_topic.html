@@ -1,0 +1,18 @@
+<div class="BbsTopic">
+  <table class="fixed_table">
+    <tr>
+      <td class="BbsUser"></td>
+      <td class="topic"><span>${topic.topic}</span></td>
+    </tr>
+    <tr>
+      <td class="BbsUser">${page.toUserHTML(parameter, topic)}</td>
+      <td valign="top">
+        <div class="BbsContent BbsTopicContent">
+          ${page.getTopicContent(parameter, topic)}
+        </div>
+        <div class="BbsContent_Bar">${page.toTopicBarHTML(parameter, topic)}</div>
+        <div class="BbsTopic_stat">${page.toTopicStatHTML(parameter, topic)}</div>
+      </td>
+    </tr>
+  </table>
+</div>
