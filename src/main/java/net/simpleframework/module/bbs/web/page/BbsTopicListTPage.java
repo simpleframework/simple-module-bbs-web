@@ -323,29 +323,22 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 			return service.queryByParams(params);
 		}
 
-		private final String ROWID_PARAM = "'topicId=' + $pager_action(item).rowId()";
-
 		private final MenuItems CONTEXT_MENUS = MenuItems
 				.of()
 				.append(
 						MenuItem.itemEdit().setOnclick(
-								"$Actions.loc('" + getUrlsFactory().getTopicFormUrl(null) + "?' + "
-										+ ROWID_PARAM + ");"))
+								"$Actions.loc('" + getUrlsFactory().getTopicFormUrl(null)
+										+ "?topicId=' + $pager_action(item).rowId());"))
 				.append(MenuItem.sep())
 				.append(
-						MenuItem.of($m("AbstractContentBean.2")).setOnclick(
-								"$Actions['BbsTopicListTPage_recommendation'](" + ROWID_PARAM + ");"))
+						MenuItem.of($m("AbstractContentBean.2")).setOnclick_act(
+								"BbsTopicListTPage_recommendation", "topicId"))
 				.append(
-						MenuItem.of($m("BbsTopic.0")).setOnclick(
-								"$Actions['BbsTopicListTPage_best'](" + ROWID_PARAM + ");"))
+						MenuItem.of($m("BbsTopic.0")).setOnclick_act("BbsTopicListTPage_best", "topicId"))
 				.append(MenuItem.sep())
-				.append(
-						MenuItem.itemDelete().setOnclick(
-								"$Actions['BbsTopicListTPage_delete'](" + ROWID_PARAM + ");"))
+				.append(MenuItem.itemDelete().setOnclick_act("BbsTopicListTPage_delete", "topicId"))
 				.append(MenuItem.sep())
-				.append(
-						MenuItem.itemLog().setOnclick(
-								"$Actions['BbsTopicListTPage_logWin'](" + ROWID_PARAM + ");"));
+				.append(MenuItem.itemLog().setOnclick_act("BbsTopicListTPage_logWin", "topicId"));
 
 		@Override
 		public MenuItems getContextMenu(final ComponentParameter cp, final MenuBean menuBean,
