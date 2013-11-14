@@ -23,6 +23,8 @@ import net.simpleframework.common.web.html.HtmlUtils;
 import net.simpleframework.common.web.html.HtmlUtils.IElementVisitor;
 import net.simpleframework.ctx.IModuleRef;
 import net.simpleframework.ctx.common.bean.AttachmentFile;
+import net.simpleframework.ctx.common.bean.ETimePeriod;
+import net.simpleframework.ctx.common.bean.TimePeriod;
 import net.simpleframework.ctx.permission.IPermissionConst;
 import net.simpleframework.ctx.permission.PermissionUser;
 import net.simpleframework.ctx.script.MVEL2Template;
@@ -34,6 +36,7 @@ import net.simpleframework.module.bbs.BbsPost;
 import net.simpleframework.module.bbs.BbsTopic;
 import net.simpleframework.module.bbs.BbsUserStat;
 import net.simpleframework.module.bbs.EBbsType;
+import net.simpleframework.module.bbs.IBbsCategoryService;
 import net.simpleframework.module.bbs.IBbsContext;
 import net.simpleframework.module.bbs.IBbsPostService;
 import net.simpleframework.module.bbs.IBbsTopicService;
@@ -122,6 +125,10 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 
 		// 下载
 		addAjaxRequest(pp, "BbsPostViewTPage_download").setHandleMethod("doDownload");
+
+		// PageletTab
+		addPageletTabAjaxRequest(pp);
+
 		// submit
 		addAjaxRequest(pp, "BbsPostViewTPage_submit").setConfirmMessage($m("Confirm.Post"))
 				.setHandleMethod("doSubmit").setRole(IPermissionConst.ROLE_ALL_ACCOUNT)
@@ -561,13 +568,28 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 				createCategoryDictMenu(pp)));
 	}
 
+	public IForward doPageletTab(final ComponentParameter cp) {
+		final IBbsTopicService service = context.getTopicService();
+		final BbsPageletCreator creator = ((IBbsWebContext) context).getPageletCreator();
+
+		final ETimePeriod tp = Convert.toEnum(ETimePeriod.class, cp.getParameter("time"));
+		final IBbsCategoryService cService = context.getCategoryService();
+		final IDataQuery<?> dq = service.queryRecommendationBeans(
+				cService.getBean(cp.getParameter("categoryId")), new TimePeriod(tp));
+
+		return new TextForward(cp.wrapHTMLContextPath(creator.create(dq).toString()));
+	}
+
 	@Override
 	protected Pagelets getPagelets(final PageParameter pp) {
-		final Pagelets lets = Pagelets.of();
 		final IBbsTopicService service = context.getTopicService();
-		final ILuceneManager lService = service.getLuceneService();
 		final BbsTopic topic = getTopic(pp);
 		final BbsPageletCreator creator = ((IBbsWebContext) context).getPageletCreator();
+
+		final Pagelets lets = Pagelets.of();
+
+		// 按相关度
+		final ILuceneManager lService = service.getLuceneService();
 		lets.add(new Pagelet(new CategoryItem($m("BbsPostViewTPage.7")), creator.create(
 				lService.query(StringUtils.join(lService.getQueryTokens(topic.getTopic()), " "),
 						BbsTopic.class), new BbsListRowHandler() {
@@ -577,6 +599,15 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 						return topic2 != null && !topic2.getId().equals(topic.getId()) ? topic2 : null;
 					}
 				})));
+
+		// 按推荐
+		final IBbsCategoryService cService = context.getCategoryService();
+		final ID categoryId = topic.getCategoryId();
+		final IDataQuery<?> dq = service.queryRecommendationBeans(cService.getBean(categoryId),
+				TimePeriod.week);
+		lets.add(new Pagelet(new CategoryItem($m("BbsPostViewTPage.18")), creator.create(dq))
+				.setTabs(creator.createTimePeriodTabs("categoryId=" + categoryId)));
+
 		return lets;
 	}
 

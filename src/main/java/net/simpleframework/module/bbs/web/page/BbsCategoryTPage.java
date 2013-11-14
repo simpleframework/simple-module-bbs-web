@@ -158,19 +158,17 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 		final Pagelets lets = Pagelets.of();
 
 		// 推荐
-		IDataQuery<?> dq = service.queryRecommendationBeans(null, new TimePeriod(ETimePeriod.week));
+		IDataQuery<?> dq = service.queryRecommendationBeans(null, TimePeriod.week);
 		lets.add(new Pagelet(new CategoryItem($m("BbsCategoryTPage.10")), creator.create(dq))
 				.setTabs(creator.createTimePeriodTabs("let=recommendation")));
 
 		// 按跟贴
-		dq = service.queryBeans(null, new TimePeriod(ETimePeriod.week), new ColumnData("posts",
-				EOrder.desc));
+		dq = service.queryBeans(null, TimePeriod.week, new ColumnData("posts", EOrder.desc));
 		lets.add(new Pagelet(new CategoryItem($m("BbsCategoryTPage.8")), creator.create(dq))
 				.setTabs(creator.createTimePeriodTabs("let=posts")));
 
 		// 按浏览次数
-		dq = service.queryBeans(null, new TimePeriod(ETimePeriod.week), new ColumnData("views",
-				EOrder.desc));
+		dq = service.queryBeans(null, TimePeriod.week, new ColumnData("views", EOrder.desc));
 		lets.add(new Pagelet(new CategoryItem($m("BbsCategoryTPage.9")), creator.create(dq))
 				.setTabs(creator.createTimePeriodTabs("let=views")));
 		return lets;
