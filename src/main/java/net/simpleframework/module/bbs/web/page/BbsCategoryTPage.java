@@ -143,9 +143,9 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 		final IDataQuery<?> dq;
 		final String let = cp.getParameter("let");
 		if ("recommendation".equals(let)) {
-			dq = service.queryRecommendationTopics(null, new TimePeriod(tp));
+			dq = service.queryRecommendationBeans(null, new TimePeriod(tp));
 		} else {
-			dq = service.queryTopics(null, new TimePeriod(tp), new ColumnData(let, EOrder.desc));
+			dq = service.queryBeans(null, new TimePeriod(tp), new ColumnData(let, EOrder.desc));
 		}
 
 		return new TextForward(cp.wrapHTMLContextPath(creator.create(dq).toString()));
@@ -158,18 +158,18 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 		final Pagelets lets = Pagelets.of();
 
 		// 推荐
-		IDataQuery<?> dq = service.queryRecommendationTopics(null, new TimePeriod(ETimePeriod.week));
+		IDataQuery<?> dq = service.queryRecommendationBeans(null, new TimePeriod(ETimePeriod.week));
 		lets.add(new Pagelet(new CategoryItem($m("BbsCategoryTPage.10")), creator.create(dq))
 				.setTabs(creator.createTimePeriodTabs("let=recommendation")));
 
 		// 按跟贴
-		dq = service.queryTopics(null, new TimePeriod(ETimePeriod.week), new ColumnData("posts",
+		dq = service.queryBeans(null, new TimePeriod(ETimePeriod.week), new ColumnData("posts",
 				EOrder.desc));
 		lets.add(new Pagelet(new CategoryItem($m("BbsCategoryTPage.8")), creator.create(dq))
 				.setTabs(creator.createTimePeriodTabs("let=posts")));
 
 		// 按浏览次数
-		dq = service.queryTopics(null, new TimePeriod(ETimePeriod.week), new ColumnData("views",
+		dq = service.queryBeans(null, new TimePeriod(ETimePeriod.week), new ColumnData("views",
 				EOrder.desc));
 		lets.add(new Pagelet(new CategoryItem($m("BbsCategoryTPage.9")), creator.create(dq))
 				.setTabs(creator.createTimePeriodTabs("let=views")));
@@ -184,7 +184,7 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 		final StringBuilder sb = new StringBuilder();
 		sb.append("<div class='icon_b ").append(category.getIconClass()).append("'></div>");
 		final int topics = context.getTopicService()
-				.queryTopics(category, new TimePeriod(ETimePeriod.day)).getCount();
+				.queryBeans(category, new TimePeriod(ETimePeriod.day)).getCount();
 		sb.append("<div class='l1'>");
 		sb.append(new LinkElement(category.getText()).setHref(getUrlsFactory().getTopicListUrl(
 				category)));
