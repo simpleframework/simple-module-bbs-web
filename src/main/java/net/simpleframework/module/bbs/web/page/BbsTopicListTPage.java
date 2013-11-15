@@ -318,7 +318,8 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 				}
 			}
 
-			params.append(new FilterItem("topic", EFilterRelation.like, cp.getParameter("as_topic")))
+			params.append(
+					new FilterItem("topic", EFilterRelation.like, cp.getLocaleParameter("as_topic")))
 					.append(new FilterItem("createDate", new TimePeriod(cp.getParameter("as_time"))));
 			return service.queryByParams(params);
 		}

@@ -7,13 +7,13 @@ import java.util.Map;
 
 import net.simpleframework.module.bbs.BbsCategory;
 import net.simpleframework.module.bbs.IBbsContextAware;
+import net.simpleframework.mvc.IForward;
 import net.simpleframework.mvc.PageParameter;
 import net.simpleframework.mvc.common.element.LinkElement;
 import net.simpleframework.mvc.common.element.SpanElement;
 import net.simpleframework.mvc.common.element.TabButtons;
-import net.simpleframework.mvc.template.struct.CategoryItem;
+import net.simpleframework.mvc.component.ComponentParameter;
 import net.simpleframework.mvc.template.struct.NavigationButtons;
-import net.simpleframework.mvc.template.struct.Pagelet;
 import net.simpleframework.mvc.template.struct.Pagelets;
 
 /**
@@ -31,6 +31,9 @@ public class BbsTopicFormTPage extends AbstractBbsTPage implements IBbsContextAw
 
 		// 类目选择
 		addCategoryDict(pp);
+
+		// PageletTab
+		addPageletTabAjaxRequest(pp);
 	}
 
 	@Override
@@ -65,10 +68,12 @@ public class BbsTopicFormTPage extends AbstractBbsTPage implements IBbsContextAw
 		return null;
 	}
 
+	public IForward doPageletTab(final ComponentParameter cp) {
+		return singleton(BbsCategoryTPage.class).doPageletTab(cp);
+	}
+
 	@Override
 	protected Pagelets getPagelets(final PageParameter pp) {
-		final Pagelets lets = Pagelets.of(new Pagelet(new CategoryItem("公告"), ""), new Pagelet(
-				new CategoryItem("热帖"), ""));
-		return lets;
+		return singleton(BbsCategoryTPage.class).getPagelets(pp);
 	}
 }

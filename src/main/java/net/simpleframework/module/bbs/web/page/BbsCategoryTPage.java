@@ -171,6 +171,9 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 		dq = service.queryBeans(null, TimePeriod.week, new ColumnData("views", EOrder.desc));
 		lets.add(new Pagelet(new CategoryItem($m("BbsCategoryTPage.9")), creator.create(dq))
 				.setTabs(creator.createTimePeriodTabs("let=views")));
+
+		// 历史记录
+		lets.add(creator.getHistoryPagelet(pp));
 		return lets;
 	}
 

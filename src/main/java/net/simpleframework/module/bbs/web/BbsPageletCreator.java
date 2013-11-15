@@ -6,6 +6,8 @@ import net.simpleframework.module.bbs.BbsTopic;
 import net.simpleframework.module.bbs.IBbsContextAware;
 import net.simpleframework.module.common.web.content.ListRowHandler;
 import net.simpleframework.module.common.web.content.PageletCreator;
+import net.simpleframework.mvc.PageParameter;
+import net.simpleframework.mvc.template.struct.Pagelet;
 
 /**
  * Licensed under the Apache License, Version 2.0
@@ -15,6 +17,10 @@ import net.simpleframework.module.common.web.content.PageletCreator;
  *         http://www.simpleframework.net
  */
 public class BbsPageletCreator extends PageletCreator<BbsTopic> implements IBbsContextAware {
+
+	public Pagelet getHistoryPagelet(final PageParameter pp) {
+		return getHistoryPagelet(pp, "bbs_views");
+	}
 
 	@Override
 	protected ListRowHandler<BbsTopic> getDefaultListRowHandler() {

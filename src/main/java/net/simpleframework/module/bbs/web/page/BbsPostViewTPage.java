@@ -97,7 +97,11 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 	protected void onForward(final PageParameter pp) {
 		super.onForward(pp);
 
-		ContentUtils.updateViews(pp, getTopic(pp), context.getTopicService());
+		final BbsTopic topic = getTopic(pp);
+		ContentUtils.updateViews(pp, topic, context.getTopicService());
+
+		// 记录到cookies
+		ContentUtils.addViewsCookie(pp, "bbs_views", topic.getId());
 	}
 
 	@Override
@@ -608,6 +612,8 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		lets.add(new Pagelet(new CategoryItem($m("BbsPostViewTPage.18")), creator.create(dq))
 				.setTabs(creator.createTimePeriodTabs("categoryId=" + categoryId)));
 
+		// 历史记录
+		lets.add(creator.getHistoryPagelet(pp));
 		return lets;
 	}
 
