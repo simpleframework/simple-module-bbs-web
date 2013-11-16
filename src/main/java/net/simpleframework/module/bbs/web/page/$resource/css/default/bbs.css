@@ -182,11 +182,6 @@
 /*                     post                        */
 /***************************************************/
 
-.BbsPostViewTPage {
-  margin-top: -4px;
-}
-
-.BbsPostViewTPage .BbsTopic .topic,
 .BbsPostViewTPage .BbsTopic_stat .s1,
 .BbsPostViewTPage .BbsContent_Bar .span_btn_left,
 .BbsPostViewTPage .BbsContent_Bar .span_btn_right,
@@ -199,28 +194,26 @@
 }
 
 .BbsPostViewTPage .BbsTopic .topic {
-  vertical-align: middle;
-  color: #069;
   font-size: 16pt;
+  color: #069;
   font-weight: bold;
-  padding-bottom: 5px;
+  padding: 6px 10px;
+  background-color: #eee;
+  border: 1px solid #bbb;
+  margin: 0 1px -2px 99px;
 }
 
 .BbsPostViewTPage .BbsTopic_stat {
-  background-color: #789;
-  color: #fff;
+  background-color: #eee;
+  border: 1px solid #c1c1c1;
   margin: 8px 0 15px 0;
   -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
   border-radius: 6px;
 }
 
-.BbsPostViewTPage .BbsTopic_stat .photo_icon {
-  border-color: #fff;
-}
-
 .BbsPostViewTPage .BbsTopic_stat .s1 {
-  border-right: 1px solid #fff;
+  border-right: 1px solid #ccc;
   padding: 4px 12px;
 }
 
@@ -231,10 +224,6 @@
 
 .BbsPostViewTPage .BbsTopic_stat .val {
   height: 24px;
-}
-
-.BbsPostViewTPage .BbsTopic_stat .num {
-  color: #fdd;
 }
 
 .BbsPostViewTPage .BbsTopic_stat .photo_icon {
@@ -281,7 +270,7 @@
 }
 
 .BbsPostViewTPage .BbsContent {
-  background-color: #fafafa;
+  background-color: #fcfcfc;
   border: 1px solid #ccc;
   border-bottom: 0;
   padding: 15px 10px 20px;
@@ -305,7 +294,7 @@
 
 .BbsPostViewTPage .BbsTopicContent:after,
 .BbsPostViewTPage .BbsPostContent:after {
-  border-right-color: #fafafa;
+  border-right-color: #fcfcfc;
   border-width: 9px 14px 9px 0;
   left: -14px;
   top: 25px;
@@ -594,7 +583,7 @@
   height: 35px;
   line-height: 32px;
   overflow: hidden;
-  background-color: #eee;
+  background-color: #f9f9f9;
   border: 1px solid #ccc;
   border-bottom: 0;
   padding: 0 8px;
@@ -614,7 +603,7 @@
   padding: 0 6px;
   height: 20px;
   line-height: 19px;
-  background-color: #f9f9f9;
+  background-color: #f1f1f1;
   -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
   border-radius: 6px;
@@ -647,6 +636,20 @@
   -webkit-box-shadow: 0 0 0;
 	-moz-box-shadow: 0 0 0;
 	box-shadow: 0 0 0;
+}
+
+#idBbsTopic_editor .cke_bottom {
+  background-image: none;
+  background-color: #f9f9f9;
+  height: 9px;
+  padding-top: 0;
+}
+
+#idBbsTopic_editor .cke_bottom .cke_resizer {
+  margin-top: 1px;
+  margin-right: -6px;
+  border-width: 8px 8px 0 0;
+  border-right-color: #999;
 }
 
 .bbs_down_chev {
