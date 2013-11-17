@@ -42,7 +42,7 @@ public class BbsWebContext extends BbsContext implements IBbsWebContext {
 	@Override
 	protected Module createModule() {
 		return super.createModule().setDefaultFunction(
-				new WebModuleFunction().setUrl(getUrlsFactory().getCategoryUrl())
+				new WebModuleFunction().setUrl(getUrlsFactory().getCategoryUrl(null))
 						.setName(MODULE_NAME + "-BbsCategoryTPage").setText($m("BbsContext.0")));
 	}
 }

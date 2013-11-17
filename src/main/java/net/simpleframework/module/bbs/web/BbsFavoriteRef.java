@@ -82,12 +82,12 @@ public class BbsFavoriteRef extends FavoriteRef implements IBbsContextAware {
 		}
 
 		@Override
-		public IFavoriteContent getContent(final Object contentId) {
+		public IFavoriteContent getContent(final PageParameter pp, final Object contentId) {
 			final BbsTopic topic = context.getTopicService().getBean(contentId);
 			return new AbstractFavoriteContent(topic) {
 				@Override
 				public String getUrl() {
-					return ((IBbsWebContext) context).getUrlsFactory().getPostViewUrl(topic);
+					return ((IBbsWebContext) context).getUrlsFactory().getPostViewUrl(pp, topic);
 				}
 
 				@Override

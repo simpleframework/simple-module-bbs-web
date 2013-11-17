@@ -186,7 +186,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 			BbsCategory tmp;
 			int i = 0;
 			while ((tmp = dq.next()) != null) {
-				tabs.add(new TabButton(tmp, getUrlsFactory().getTopicListUrl(tmp))
+				tabs.add(new TabButton(tmp, getUrlsFactory().getTopicListUrl(pp, tmp))
 						.setTabMatch(ETabMatch.params));
 				if (++i == 8) {
 					break;
@@ -209,7 +209,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 
 	@Override
 	public FilterButtons getFilterButtons(final PageParameter pp) {
-		final String url = getUrlsFactory().getTopicListUrl(pp, getCategory(pp));
+		final String url = getUrlsFactory().getTopicMyListUrl(pp, getCategory(pp));
 		final FilterButtons btns = FilterButtons.of();
 		final BbsAdvSearchPage sPage = singleton(BbsAdvSearchPage.class);
 		FilterButton btn = sPage.createFilterButton(pp, url, "as_topic");
@@ -239,11 +239,11 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 		return ElementList.of(new SearchInput("AbstractBbsTPage_search")
 				.setOnSearchClick(
 						"$Actions.loc('"
-								+ HttpUtils.addParameters(getUrlsFactory().getTopicListUrl(null), "s=")
+								+ HttpUtils.addParameters(getUrlsFactory().getTopicListUrl(pp, null), "s=")
 								+ "' + encodeURIComponent($F('AbstractBbsTPage_search')))")
 				.setOnAdvClick(
 						"$Actions['AbstractBbsTPage_SearchWindow']('"
-								+ AdvSearchPage.encodeRefererUrl(getUrlsFactory().getTopicListUrl(pp,
+								+ AdvSearchPage.encodeRefererUrl(getUrlsFactory().getTopicMyListUrl(pp,
 										category)) + "');")
 				.setText(StringUtils.blank(pp.getLocaleParameter("s"))));
 	}
@@ -251,7 +251,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 	@Override
 	public NavigationButtons getNavigationBar(final PageParameter pp) {
 		final LinkElement home = new LinkElement(context.getModule()).setHref(getUrlsFactory()
-				.getCategoryUrl());
+				.getCategoryUrl(pp));
 		final BbsCategory category = getCategory(pp);
 		final NavigationButtons btns = NavigationButtons.of();
 		String cText = null;
@@ -327,7 +327,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 				.of()
 				.append(
 						MenuItem.itemEdit().setOnclick(
-								"$Actions.loc('" + getUrlsFactory().getTopicFormUrl(null)
+								"$Actions.loc('" + getUrlsFactory().getTopicFormUrl(null, null)
 										+ "?topicId=' + $pager_action(item).rowId());"))
 				.append(MenuItem.sep())
 				.append(
@@ -369,12 +369,12 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 						if (category != null) {
 							sb.append("<span class='categoryTxt'>[");
 							sb.append(new LinkElement(category.getText()).setHref(getUrlsFactory()
-									.getTopicListUrl(category)));
+									.getTopicListUrl(cp, category)));
 							sb.append("]</span>");
 						}
 					}
 					final LinkElement le = new LinkElement(topic.getTopic()).setHref(
-							getUrlsFactory().getPostViewUrl(topic)).setClassName("bbsTopic");
+							getUrlsFactory().getPostViewUrl(cp, topic)).setClassName("bbsTopic");
 					if (topic.getRecommendation() > 0) {
 						le.addClassName("recommendation");
 					}
@@ -396,7 +396,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 					if (getTablePagerColumns(cp).get(TablePagerColumn.OPE) != null) {
 						sb.setLength(0);
 						sb.append(ButtonElement.editBtn().setOnclick(
-								"$Actions.loc('" + getUrlsFactory().getTopicFormUrl(topic) + "');"));
+								"$Actions.loc('" + getUrlsFactory().getTopicFormUrl(cp, topic) + "');"));
 						sb.append(SpanElement.SPACE).append(AbstractTablePagerSchema.IMG_DOWNMENU);
 						kv.put(TablePagerColumn.OPE, sb.toString());
 					}
@@ -407,7 +407,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 					final StringBuilder sb = new StringBuilder();
 					sb.append(PhotoImage.icon16(pp.getPhotoUrl(userId)));
 					sb.append("<span class='userStat'>");
-					sb.append(" <span class='us_1'>").append(createTopicsLink(pp.getUser(userId)))
+					sb.append(" <span class='us_1'>").append(createTopicsLink(pp, pp.getUser(userId)))
 							.append("</span>");
 					sb.append(" <span class='us_2'>")
 							.append(DateUtils.getRelativeDate(date, _NUMBERCONVERT)).append("</span>");

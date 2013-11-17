@@ -118,9 +118,9 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 	@Override
 	protected TabButtons getCategoryTabs(final PageParameter pp) {
 		final BbsUrlsFactory uFactory = getUrlsFactory();
-		final String url = uFactory.getTopicListUrl(null);
+		final String url = uFactory.getTopicListUrl(pp, null);
 		final TabButtons tabs = TabButtons.of(
-				new TabButton($m("BbsCategoryTPage.5"), uFactory.getCategoryUrl()), new TabButton(
+				new TabButton($m("BbsCategoryTPage.5"), uFactory.getCategoryUrl(pp)), new TabButton(
 						$m("BbsCategoryTPage.6"), url),
 				new TabButton($m("BbsTopic.0"), HttpUtils.addParameters(url, "list=best"))
 						.setTabMatch(ETabMatch.params),
@@ -128,7 +128,7 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 						.setTabMatch(ETabMatch.params));
 		final PermissionUser user = pp.getUser(pp.getParameter("userId"));
 		if (user.getId() != null) {
-			tabs.append(new TabButton(user, uFactory.getTopicUserListUrl(user))
+			tabs.append(new TabButton(user, uFactory.getTopicUserListUrl(pp, user))
 					.setTabMatch(ETabMatch.params));
 		}
 		return tabs;
@@ -148,7 +148,7 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 			dq = service.queryBeans(null, new TimePeriod(tp), new ColumnData(let, EOrder.desc));
 		}
 
-		return new TextForward(cp.wrapHTMLContextPath(creator.create(dq).toString()));
+		return new TextForward(cp.wrapHTMLContextPath(creator.create(cp, dq).toString()));
 	}
 
 	@Override
@@ -159,17 +159,17 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 
 		// 推荐
 		IDataQuery<?> dq = service.queryRecommendationBeans(null, TimePeriod.week);
-		lets.add(new Pagelet(new CategoryItem($m("BbsCategoryTPage.10")), creator.create(dq))
+		lets.add(new Pagelet(new CategoryItem($m("BbsCategoryTPage.10")), creator.create(pp, dq))
 				.setTabs(creator.createTimePeriodTabs("let=recommendation")));
 
 		// 按跟贴
 		dq = service.queryBeans(null, TimePeriod.week, new ColumnData("posts", EOrder.desc));
-		lets.add(new Pagelet(new CategoryItem($m("BbsCategoryTPage.8")), creator.create(dq))
+		lets.add(new Pagelet(new CategoryItem($m("BbsCategoryTPage.8")), creator.create(pp, dq))
 				.setTabs(creator.createTimePeriodTabs("let=posts")));
 
 		// 按浏览次数
 		dq = service.queryBeans(null, TimePeriod.week, new ColumnData("views", EOrder.desc));
-		lets.add(new Pagelet(new CategoryItem($m("BbsCategoryTPage.9")), creator.create(dq))
+		lets.add(new Pagelet(new CategoryItem($m("BbsCategoryTPage.9")), creator.create(pp, dq))
 				.setTabs(creator.createTimePeriodTabs("let=views")));
 
 		// 历史记录
@@ -187,7 +187,7 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 		final int topics = context.getTopicService()
 				.queryBeans(category, new TimePeriod(ETimePeriod.day)).getCount();
 		sb.append("<div class='l1'>");
-		sb.append(new LinkElement(category.getText()).setHref(getUrlsFactory().getTopicListUrl(
+		sb.append(new LinkElement(category.getText()).setHref(getUrlsFactory().getTopicListUrl(pp,
 				category)));
 		if (topics > 0) {
 			sb.append(new SupElement(topics).setHighlight(true));
@@ -225,7 +225,7 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 			}
 			final PermissionUser user = pp.getUser(team.getUserId());
 			tstr.append(user);
-			ustr.append(createTopicsLink(user));
+			ustr.append(createTopicsLink(pp, user));
 		}
 		sb.append("<div class='l4' title='").append(tstr).append("'>");
 		sb.append($m("BbsCategoryTPage.4")).append(ustr.length() > 0 ? ustr : "?");

@@ -52,11 +52,11 @@ public class BbsTopicFormTPage extends AbstractBbsTPage implements IBbsContextAw
 	@Override
 	public NavigationButtons getNavigationBar(final PageParameter pp) {
 		final NavigationButtons btns = NavigationButtons.of(new LinkElement(context.getModule())
-				.setHref(getUrlsFactory().getCategoryUrl()));
+				.setHref(getUrlsFactory().getCategoryUrl(pp)));
 		final BbsCategory category = BbsPostViewTPage.getCategory(pp);
 		if (category != null) {
 			btns.append(new SpanElement().addElements(
-					new LinkElement(category.getText()).setHref(getUrlsFactory().getTopicListUrl(
+					new LinkElement(category.getText()).setHref(getUrlsFactory().getTopicListUrl(pp,
 							category)), createCategoryDictMenu(pp)));
 		}
 		return btns.append(new SpanElement($m("BbsTopicFormTPage.7")));

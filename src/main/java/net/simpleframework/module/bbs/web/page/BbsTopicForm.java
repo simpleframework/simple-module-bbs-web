@@ -150,7 +150,7 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 		});
 		final JavascriptForward js = new JavascriptForward();
 		js.append("$Actions.loc('")
-				.append(((IBbsWebContext) context).getUrlsFactory().getPostViewUrl(topic))
+				.append(((IBbsWebContext) context).getUrlsFactory().getPostViewUrl(cp, topic))
 				.append("');");
 		return js;
 	}

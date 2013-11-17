@@ -21,11 +21,11 @@ import net.simpleframework.mvc.common.UrlsCache;
  */
 public class BbsUrlsFactory extends UrlsCache {
 
-	public String getCategoryUrl() {
+	public String getCategoryUrl(final PageParameter pp) {
 		return AbstractMVCPage.url(getCategoryPage());
 	}
 
-	public String getTopicListUrl(final BbsCategory category) {
+	public String getTopicListUrl(final PageParameter pp, final BbsCategory category) {
 		String url = AbstractMVCPage.url(getTopicListPage());
 		if (category != null) {
 			url += "?categoryId=" + category.getId();
@@ -33,12 +33,12 @@ public class BbsUrlsFactory extends UrlsCache {
 		return url;
 	}
 
-	public String getTopicUserListUrl(final PermissionUser user) {
-		return HttpUtils.addParameters(getTopicListUrl(null), "userId=" + user.getId());
+	public String getTopicUserListUrl(final PageParameter pp, final PermissionUser user) {
+		return HttpUtils.addParameters(getTopicListUrl(pp, null), "userId=" + user.getId());
 	}
 
-	public String getTopicListUrl(final PageParameter pp, final BbsCategory category) {
-		String url = getTopicListUrl(category);
+	public String getTopicMyListUrl(final PageParameter pp, final BbsCategory category) {
+		String url = getTopicListUrl(pp, category);
 		final String list = pp.getParameter("list");
 		if ("my".equals(list)) {
 			url = HttpUtils.addParameters(url, "list=my");
@@ -46,7 +46,7 @@ public class BbsUrlsFactory extends UrlsCache {
 		return url;
 	}
 
-	public String getTopicFormUrl(final AbstractIdBean bean) {
+	public String getTopicFormUrl(final PageParameter pp, final AbstractIdBean bean) {
 		String url = AbstractMVCPage.url(getTopicFormPage());
 		if (bean instanceof BbsCategory) {
 			url += "?categoryId=" + bean.getId();
@@ -56,7 +56,7 @@ public class BbsUrlsFactory extends UrlsCache {
 		return url;
 	}
 
-	public String getPostViewUrl(final BbsTopic topic) {
+	public String getPostViewUrl(final PageParameter pp, final BbsTopic topic) {
 		String url = AbstractMVCPage.url(getPostViewPage());
 		if (topic != null) {
 			url += "?topicId=" + topic.getId();

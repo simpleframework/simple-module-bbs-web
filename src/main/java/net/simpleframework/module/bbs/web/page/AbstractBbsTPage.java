@@ -63,7 +63,7 @@ public abstract class AbstractBbsTPage extends TopBar_PageletsPage implements IB
 				.setClearAction("false")
 				.addTreeRef(pp, "AbstractBbsTPage_category_tree")
 				.setJsSelectCallback(
-						"$Actions.loc('" + getUrlsFactory().getTopicListUrl(null)
+						"$Actions.loc('" + getUrlsFactory().getTopicListUrl(pp, null)
 								+ "?categoryId=' + selects[0].id);").setHeight(400).setWidth(320)
 				.setTitle($m("BbsTopicListTPage.7"));
 	}
@@ -79,7 +79,7 @@ public abstract class AbstractBbsTPage extends TopBar_PageletsPage implements IB
 					.of(bbsType.toString())
 					.setIconClass("menu_type_" + name)
 					.setUrl(
-							HttpUtils.addParameters(getUrlsFactory().getTopicFormUrl(category), "t="
+							HttpUtils.addParameters(getUrlsFactory().getTopicFormUrl(pp, category), "t="
 									+ name)));
 		}
 		return mb;
@@ -102,8 +102,8 @@ public abstract class AbstractBbsTPage extends TopBar_PageletsPage implements IB
 				.setClassName("bbs_down_chev");
 	}
 
-	protected static LinkElement createTopicsLink(final PermissionUser user) {
-		return new LinkElement(user).setHref(getUrlsFactory().getTopicUserListUrl(user));
+	protected static LinkElement createTopicsLink(final PageParameter pp, final PermissionUser user) {
+		return new LinkElement(user).setHref(getUrlsFactory().getTopicUserListUrl(pp, user));
 	}
 
 	public static class CategoryDict extends DictionaryTreeHandler {
