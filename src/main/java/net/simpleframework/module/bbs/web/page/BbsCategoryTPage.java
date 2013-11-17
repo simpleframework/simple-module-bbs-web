@@ -14,6 +14,7 @@ import net.simpleframework.common.ETimePeriod;
 import net.simpleframework.common.StringUtils;
 import net.simpleframework.common.TimePeriod;
 import net.simpleframework.common.web.HttpUtils;
+import net.simpleframework.common.web.html.HtmlConst;
 import net.simpleframework.ctx.permission.PermissionUser;
 import net.simpleframework.module.bbs.BbsCategory;
 import net.simpleframework.module.bbs.BbsPost;
@@ -266,11 +267,11 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 			}
 		}
 		sb.append("</div>");
-		sb.append(TAG_SCRIPT_START);
+		sb.append(HtmlConst.TAG_SCRIPT_START);
 		sb.append("(function() {");
 		sb.append(" $$('.BbsCategoryTPage .c_title img').each(function(img) { $UI.doImageToggle(img); });");
 		sb.append("})();");
-		sb.append(TAG_SCRIPT_END);
+		sb.append(HtmlConst.TAG_SCRIPT_END);
 		return sb.toString();
 	}
 }
