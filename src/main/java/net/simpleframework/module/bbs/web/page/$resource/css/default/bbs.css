@@ -317,7 +317,8 @@
 }
 
 .BbsPostViewTPage .BbsContent .topb,
-.BbsPostViewTPage .ReplyFrom {
+.BbsPostViewTPage .ReplyFrom,
+.BbsPostViewTPage .BestAnswer {
   position: absolute;
   top: -2px;
   font-size: 9pt;
@@ -345,19 +346,35 @@
   border-radius: 0 0 0 6px;
 }
 
-.BbsPostViewTPage .ReplyFrom {
-  background-color: #987;
-  height: 28px;
-  line-height: 27px;
-  padding: 0 8px;
-  left: 20px;
+.BbsPostViewTPage .ReplyFrom,
+.BbsPostViewTPage .BestAnswer,
+.BbsPostViewTPage .BbsContent_Bar,
+.BbsPostViewTPage .BbsPostContent .ask_post {
   -moz-border-radius: 0 0 6px 6px;
   -webkit-border-radius: 0 0 6px 6px;
   border-radius: 0 0 6px 6px;
 }
 
+.BbsPostViewTPage .ReplyFrom,
+.BbsPostViewTPage .BestAnswer {
+  height: 28px;
+  line-height: 27px;
+  left: 20px; 
+}
+
+.BbsPostViewTPage .ReplyFrom {
+  background-color: #765;
+  padding: 0 8px;
+}
+
 .BbsPostViewTPage .ReplyFrom:hover {
   background-color: #ba9;
+}
+
+.BbsPostViewTPage .BestAnswer {
+  background-color: #b00;
+  padding: 0 15px;
+  cursor: default;
 }
 
 .BbsPostViewTPage .BbsContent .topb:hover {
@@ -441,9 +458,6 @@
   background-image: -moz-linear-gradient(top, #f9f9f9, #fefefe, #f9f9f9);
   background-image: -ms-linear-gradient(top, #f9f9f9, #fefefe, #f9f9f9);
   background-image: linear-gradient(to bottom, #f9f9f9, #fefefe, #f9f9f9);
-	-moz-border-radius: 0 0 6px 6px;
-  -webkit-border-radius: 0 0 6px 6px;
-  border-radius: 0 0 6px 6px;
   color: #999;
   font-weight: bold;
 }
@@ -519,9 +533,6 @@
   position: absolute;
   top: -2px;
   right: 20px;
-  -moz-border-radius: 0 0 6px 6px;
-  -webkit-border-radius: 0 0 6px 6px;
-  border-radius: 0 0 6px 6px;
 }
 
 .BbsPostViewTPage .BbsPostContent .ask_post:hover {
@@ -662,6 +673,7 @@
 
 .BbsPostViewTPage .BbsContent_Bar,
 .BbsPostViewTPage .ReplyFrom,
+.BbsPostViewTPage .BestAnswer,
 .BbsPostViewTPage .BbsTopic_stat,
 .BbsPostViewTPage .ask_post {
   -moz-user-select: none;

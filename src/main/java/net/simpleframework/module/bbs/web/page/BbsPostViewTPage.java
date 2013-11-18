@@ -137,6 +137,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 				.setHandleMethod("doSubmit").setRole(IPermissionConst.ROLE_ALL_ACCOUNT)
 				.setSelector("#idBbsTopic_editor");
 
+		final boolean manager = (Boolean) getVariables(pp).get("manager");
 		final BbsTopic topic = getTopic(pp);
 		if (isAsk(topic)) {
 			// vote
@@ -152,6 +153,11 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 			addWindowBean(pp, "BbsPostViewTPage_unvoteWin")
 					.setContentRef("BbsPostViewTPage_unvotePage").setTitle($m("BbsPostViewTPage.16"))
 					.setPopup(true).setWidth(380).setHeight(115).setXdelta(-200).setResizable(false);
+
+			if (manager) {
+				addAjaxRequest(pp, "BbsPostViewTPage_bestAnswer").setHandleMethod("doBestAnswer")
+						.setConfirmMessage($m("BbsPostViewTPage.20"));
+			}
 		} else {
 			// replyFrom
 			addAjaxRequest(pp, "BbsPostViewTPage_replyFrom").setHandleMethod("doReplyFrom");
@@ -159,7 +165,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 
 		// edit
 		addAjaxRequest(pp, "BbsPostViewTPage_edit").setHandleMethod("doEdit");
-		if ((Boolean) getVariables(pp).get("manager")) {
+		if (manager) {
 			// delete
 			addDeleteAjaxRequest(pp, "BbsPostViewTPage_delete");
 		}
@@ -288,6 +294,13 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		return tf;
 	}
 
+	public IForward doBestAnswer(final ComponentParameter cp) {
+		final BbsPost post = getPost(cp, "postId");
+		context.getPostService().doBestAnswer(post);
+		return new JavascriptForward("$Actions.loc('").append(
+				getUrlsFactory().getPostViewUrl(cp, getTopic(cp))).append("');");
+	}
+
 	@Transaction(context = IBbsContext.class)
 	public IForward doSubmit(final ComponentParameter cp) {
 		final BbsTopic topic = getTopic(cp);
@@ -381,6 +394,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		final StringBuilder sb = new StringBuilder();
 
 		final boolean ask = isAsk(topic);
+		boolean gap = false;
 		BbsPost reply;
 		if (!ask && (reply = context.getPostService().getBean(post.getReplyId())) != null) {
 			sb.append("<div class='ReplyFrom' onclick=\"_BBS.replyFrom(this, 'replyId=")
@@ -389,15 +403,23 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 			final PermissionUser user = pp.getUser(reply.getUserId());
 			sb.append(PhotoImage.icon16(pp.getPhotoUrl(user.getId()))).append(user);
 			sb.append("</div>");
-			sb.append("<div class='ReplyFrom_gap'></div>");
+			gap = true;
 		}
-		sb.append(post.getContent());
 		if (ask) {
+			if (post.isBestAnswer()) {
+				sb.append("<div class='BestAnswer'>").append($m("BbsPostViewTPage.19"))
+						.append("</div>");
+				gap = true;
+			}
 			sb.append(
 					"<span class='ask_post' onclick=\"$Actions['BbsPostViewTPage_ajaxVote']('postId=")
 					.append(post.getId()).append("');\">").append("<span class='votes'>")
 					.append(post.getVotes()).append("</span>#(BbsPostViewTPage.16)").append("</span>");
 		}
+		if (gap) {
+			sb.append("<div class='ReplyFrom_gap'></div>");
+		}
+		sb.append(post.getContent());
 		return sb.toString();
 	}
 
@@ -510,13 +532,18 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 			}
 		}
 
+		final boolean manager = (Boolean) getVariables(pp).get("manager");
 		final Object id = post.getId();
-		if (!isAsk(topic)) {
+		if (isAsk(topic)) {
+			if (manager) {
+				sb.append(new SpanElement($m("BbsPostViewTPage.19")).setClassName("span_btn_right")
+						.setOnclick("$Actions['BbsPostViewTPage_bestAnswer']('postId=" + id + "');"));
+			}
+		} else {
 			sb.append(new SpanElement("#(BbsPostViewTPage.0)").setClassName(
 					"span_btn_right btn_reply_from").setOnclick(
 					"_BBS.reply('" + id + "', '" + pp.getUser(post.getUserId()) + "');"));
 		}
-		final boolean manager = (Boolean) getVariables(pp).get("manager");
 		if (manager) {
 			sb.append(new SpanElement().setClassName("span_btn_right btn_delete").setOnclick(
 					"$Actions['BbsPostViewTPage_delete']('postId=" + id + "');"));
