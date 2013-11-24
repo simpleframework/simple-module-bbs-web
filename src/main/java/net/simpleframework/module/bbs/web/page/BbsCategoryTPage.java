@@ -54,6 +54,7 @@ import net.simpleframework.mvc.component.ui.tooltip.TooltipBean;
 import net.simpleframework.mvc.component.ui.window.WindowBean;
 import net.simpleframework.mvc.impl.DefaultPageResourceProvider;
 import net.simpleframework.mvc.template.struct.CategoryItem;
+import net.simpleframework.mvc.template.struct.EImageDot;
 import net.simpleframework.mvc.template.struct.Pagelet;
 import net.simpleframework.mvc.template.struct.Pagelets;
 
@@ -148,7 +149,8 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 			dq = service.queryBeans(null, new TimePeriod(tp), new ColumnData(let, EOrder.desc));
 		}
 
-		return new TextForward(cp.wrapHTMLContextPath(creator.create(cp, dq).toString()));
+		return new TextForward(cp.wrapHTMLContextPath(creator.create(cp, dq)
+				.setDotIcon(EImageDot.numDot).toString()));
 	}
 
 	@Override
@@ -159,18 +161,19 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 
 		// 推荐
 		IDataQuery<?> dq = service.queryRecommendationBeans(null, TimePeriod.week);
-		lets.add(new Pagelet(new CategoryItem($m("BbsCategoryTPage.10")), creator.create(pp, dq))
-				.setTabs(creator.createTimePeriodTabs("let=recommendation")));
+		lets.add(new Pagelet(new CategoryItem($m("BbsCategoryTPage.10")), creator.create(pp, dq)
+				.setDotIcon(EImageDot.numDot)).setTabs(creator
+				.createTimePeriodTabs("let=recommendation")));
 
 		// 按跟贴
 		dq = service.queryBeans(null, TimePeriod.week, new ColumnData("posts", EOrder.desc));
-		lets.add(new Pagelet(new CategoryItem($m("BbsCategoryTPage.8")), creator.create(pp, dq))
-				.setTabs(creator.createTimePeriodTabs("let=posts")));
+		lets.add(new Pagelet(new CategoryItem($m("BbsCategoryTPage.8")), creator.create(pp, dq)
+				.setDotIcon(EImageDot.numDot)).setTabs(creator.createTimePeriodTabs("let=posts")));
 
 		// 按浏览次数
 		dq = service.queryBeans(null, TimePeriod.week, new ColumnData("views", EOrder.desc));
-		lets.add(new Pagelet(new CategoryItem($m("BbsCategoryTPage.9")), creator.create(pp, dq))
-				.setTabs(creator.createTimePeriodTabs("let=views")));
+		lets.add(new Pagelet(new CategoryItem($m("BbsCategoryTPage.9")), creator.create(pp, dq)
+				.setDotIcon(EImageDot.numDot)).setTabs(creator.createTimePeriodTabs("let=views")));
 
 		// 历史记录
 		lets.add(creator.getHistoryPagelet(pp));

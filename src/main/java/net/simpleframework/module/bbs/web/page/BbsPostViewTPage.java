@@ -80,6 +80,7 @@ import net.simpleframework.mvc.component.ui.tooltip.TipBean.Hook;
 import net.simpleframework.mvc.component.ui.tooltip.TooltipBean;
 import net.simpleframework.mvc.template.AbstractTemplatePage;
 import net.simpleframework.mvc.template.struct.CategoryItem;
+import net.simpleframework.mvc.template.struct.EImageDot;
 import net.simpleframework.mvc.template.struct.NavigationButtons;
 import net.simpleframework.mvc.template.struct.Pagelet;
 import net.simpleframework.mvc.template.struct.Pagelets;
@@ -608,7 +609,8 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		final IDataQuery<?> dq = service.queryRecommendationBeans(
 				cService.getBean(cp.getParameter("categoryId")), new TimePeriod(tp));
 
-		return new TextForward(cp.wrapHTMLContextPath(creator.create(cp, dq).toString()));
+		return new TextForward(cp.wrapHTMLContextPath(creator.create(cp, dq)
+				.setDotIcon(EImageDot.numDot).toString()));
 	}
 
 	@Override
@@ -621,7 +623,8 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 
 		// 按相关度
 		final ILuceneManager lService = service.getLuceneService();
-		lets.add(new Pagelet(new CategoryItem($m("BbsPostViewTPage.7")), creator.create(pp,
+		lets.add(new Pagelet(new CategoryItem($m("BbsPostViewTPage.7")), creator.create(
+				pp,
 				lService.query(StringUtils.join(lService.getQueryTokens(topic.getTopic()), " "),
 						BbsTopic.class), new BbsListRowHandler() {
 					@Override
@@ -629,15 +632,16 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 						final BbsTopic topic2 = super.toBean(o);
 						return topic2 != null && !topic2.getId().equals(topic.getId()) ? topic2 : null;
 					}
-				})));
+				}).setDotIcon(EImageDot.imgDot3)));
 
 		// 按推荐
 		final IBbsCategoryService cService = context.getCategoryService();
 		final ID categoryId = topic.getCategoryId();
 		final IDataQuery<?> dq = service.queryRecommendationBeans(cService.getBean(categoryId),
 				TimePeriod.week);
-		lets.add(new Pagelet(new CategoryItem($m("BbsPostViewTPage.18")), creator.create(pp, dq))
-				.setTabs(creator.createTimePeriodTabs("categoryId=" + categoryId)));
+		lets.add(new Pagelet(new CategoryItem($m("BbsPostViewTPage.18")), creator.create(pp, dq)
+				.setDotIcon(EImageDot.numDot)).setTabs(creator.createTimePeriodTabs("categoryId="
+				+ categoryId)));
 
 		// 历史记录
 		lets.add(creator.getHistoryPagelet(pp));
