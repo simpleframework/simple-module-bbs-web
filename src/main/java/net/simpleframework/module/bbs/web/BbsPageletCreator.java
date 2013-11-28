@@ -1,12 +1,17 @@
 package net.simpleframework.module.bbs.web;
 
 import static net.simpleframework.common.I18n.$m;
+
+import java.util.Calendar;
+import java.util.Date;
+
 import net.simpleframework.ctx.service.ado.IADOBeanService;
 import net.simpleframework.module.bbs.BbsTopic;
 import net.simpleframework.module.bbs.IBbsContextAware;
 import net.simpleframework.module.common.web.content.ListRowHandler;
 import net.simpleframework.module.common.web.content.PageletCreator;
 import net.simpleframework.mvc.PageParameter;
+import net.simpleframework.mvc.common.element.SpanElement;
 import net.simpleframework.mvc.template.struct.Pagelet;
 
 /**
@@ -38,7 +43,21 @@ public class BbsPageletCreator extends PageletCreator<BbsTopic> implements IBbsC
 		protected String[] getShortDesc(final BbsTopic topic) {
 			final int c = topic.getPosts();
 			final long v = topic.getViews();
-			return new String[] { c + "/" + v, $m("BbsPageletCreator.0", c, v) };
+			final StringBuilder sb = new StringBuilder();
+			final Date lastPostDate = topic.getLastPostDate();
+			if (lastPostDate != null) {
+				final Calendar cal = Calendar.getInstance();
+				cal.setTime(new Date());
+				cal.add(Calendar.HOUR_OF_DAY, -12);
+				if (lastPostDate.after(cal.getTime())) {
+					sb.append(new SpanElement(c).setStyle("color: red;"));
+				}
+			}
+			if (sb.length() == 0) {
+				sb.append(c);
+			}
+			sb.append("/").append(v);
+			return new String[] { sb.toString(), $m("BbsPageletCreator.0", c, v) };
 		}
 
 		@Override
