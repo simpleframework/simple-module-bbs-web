@@ -339,8 +339,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 	}
 
 	protected void setPostContentVisitor(final List<IElementVisitor> al) {
-		al.add(HtmlUtils.REMOVE_ATTRI_VISITOR("class"));
-		al.add(HtmlUtils.TARGET_BLANK_VISITOR);
+		singleton(BbsTopicForm.class).setTopicContentVisitor(al);
 	}
 
 	public boolean isTopicEditable(final PageParameter pp, final BbsTopic topic) {

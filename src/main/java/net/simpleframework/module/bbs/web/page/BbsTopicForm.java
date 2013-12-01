@@ -165,6 +165,8 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 
 	protected void setTopicContentVisitor(final List<IElementVisitor> al) {
 		al.add(HtmlUtils.REMOVE_ATTRI_VISITOR("class"));
+		al.add(HtmlUtils.REMOVE_ATTRI_VISITOR("div", new String[] { "style" }));
+		al.add(HtmlUtils.REMOVE_ATTRI_VISITOR("p", new String[] { "style" }));
 		al.add(HtmlUtils.TARGET_BLANK_VISITOR);
 	}
 
