@@ -4,23 +4,12 @@ var _BBS = {
     var c = reply.up(".BbsContent");
     var r = c.previous();
     if (r.innerHTML != "") {
-      r.$toggle({
-        afterFinish: function() {
-          if (r.visible())
-            c.removeClassName("top_corner");
-          else 
-            c.addClassName("top_corner");
-        }
-      });
+      r.$toggle();
     } else {
       var act = $Actions["BbsPostViewTPage_replyFrom"];
       act.jsCompleteCallback = function(req, responseText, json) {
         r.update(responseText);
-        r.$show({
-          afterFinish: function() {
-            c.removeClassName("top_corner");
-          }
-        });
+        r.$show();
       };
       act(params);
     }

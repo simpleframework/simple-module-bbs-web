@@ -178,7 +178,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 
 	protected HtmlEditorBean addHtmlEditorBean(final PageParameter pp) {
 		return (HtmlEditorBean) addHtmlEditorBean(pp, "BbsPostViewTPage_editor")
-				.setStartupFocus(false).setElementsPath(false).setHeight("240");
+				.setStartupFocus(false).setElementsPath(false).setHeight("250");
 	}
 
 	protected void addTooltipComponent(final PageParameter pp) {
@@ -395,7 +395,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		final StringBuilder sb = new StringBuilder();
 
 		final boolean ask = isAsk(topic);
-		boolean gap = false;
+		boolean gap = ask;
 		BbsPost reply;
 		if (!ask && (reply = context.getPostService().getBean(post.getReplyId())) != null) {
 			sb.append("<div class='ReplyFrom' onclick=\"_BBS.replyFrom(this, 'replyId=")
@@ -410,7 +410,6 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 			if (post.isBestAnswer()) {
 				sb.append("<div class='BestAnswer'>").append($m("BbsPostViewTPage.19"))
 						.append("</div>");
-				gap = true;
 			}
 			sb.append(
 					"<span class='ask_post' onclick=\"$Actions['BbsPostViewTPage_ajaxVote']('postId=")
@@ -452,12 +451,13 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		sb.append("<div class='BbsPostItems'>");
 		for (final Object item : data) {
 			final BbsPost post = (BbsPost) item;
-			sb.append("<table id='post_").append(post.getId()).append("' class='fixed_table'><tr>");
+			sb.append("<table id='post_").append(post.getId())
+					.append("' class='fixed_table' cellpadding='0'><tr>");
 			sb.append(" <td class='BbsUser'>").append(toUserHTML(pp, post)).append("</td>");
 			sb.append(" <td valign='top'>");
 			sb.append("  <div class='ReplyFrom_c' style='display: none;'></div>");
-			sb.append("  <div class='BbsContent top_corner BbsPostContent'>")
-					.append(getPostContent(pp, post)).append("</div>");
+			sb.append("  <div class='BbsContent BbsPostContent'>").append(getPostContent(pp, post))
+					.append("</div>");
 			sb.append("  <div class='BbsContent_Bar'>").append(toPostBarHTML(pp, post))
 					.append("</div>");
 			sb.append(" </td>");

@@ -193,23 +193,25 @@
 	*zoom: 1;
 }
 
+.BbsPostViewTPage {
+  border: 1px solid #bbb;
+  background-color: #eee;
+}
+
 .BbsPostViewTPage .BbsTopic .topic {
   font-size: 16pt;
   color: #069;
   font-weight: bold;
   padding: 6px 10px;
-  background-color: #eee;
+  background-color: #f9f9f9;
   border: 1px solid #bbb;
-  margin: 0 1px -2px 99px;
+  margin: -1px -1px 0;
 }
 
 .BbsPostViewTPage .BbsTopic_stat {
-  background-color: #eee;
-  border: 1px solid #c1c1c1;
-  margin: 8px 0 15px 0;
-  -moz-border-radius: 6px;
-  -webkit-border-radius: 6px;
-  border-radius: 6px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  margin: 0 -1px -1px 0;
 }
 
 .BbsPostViewTPage .BbsTopic_stat .s1 {
@@ -269,8 +271,14 @@
   text-align: center;
 }
 
+.BbsPostViewTPage .BbsContent,
+.BbsPostViewTPage .ReplyFrom_c,
+#idBbsTopic_editor {
+  margin: -1px -1px 0 0;
+}
+
 .BbsPostViewTPage .BbsContent {
-  background-color: #fcfcfc;
+  background-color: #fff;
   border: 1px solid #ccc;
   border-bottom: 0;
   padding: 15px 10px 20px;
@@ -294,7 +302,7 @@
 
 .BbsPostViewTPage .BbsTopicContent:after,
 .BbsPostViewTPage .BbsPostContent:after {
-  border-right-color: #fcfcfc;
+  border-right-color: #fff;
   border-width: 9px 14px 9px 0;
   left: -14px;
   top: 25px;
@@ -306,6 +314,10 @@
   border-width: 10px 15px 10px 0;
   left: -15px;
   top: 24px;
+}
+
+.BbsPostViewTPage .BbsTopicContent {
+  min-height: 200px;
 }
 
 .BbsPostViewTPage .BbsTopicContent .ask_icon {
@@ -348,7 +360,6 @@
 
 .BbsPostViewTPage .ReplyFrom,
 .BbsPostViewTPage .BestAnswer,
-.BbsPostViewTPage .BbsContent_Bar,
 .BbsPostViewTPage .BbsPostContent .ask_post {
   -moz-border-radius: 0 0 6px 6px;
   -webkit-border-radius: 0 0 6px 6px;
@@ -411,26 +422,16 @@
   background-image: url("images/favorite2.png");
 }
 
-.BbsPostViewTPage .BbsContent.top_corner {
-  -moz-border-radius: 6px 6px 0 0;
-  -webkit-border-radius: 6px 6px 0 0;
-  border-radius: 6px 6px 0 0;
-}
-
 .BbsPostViewTPage .ReplyFrom_gap {
   height: 12px;
 }
 
 .BbsPostViewTPage .ReplyFrom_c {
-  background-color: #fff;
+  background-color: #fafafa;
   color: #888;
   border: 1px solid #ccc;
   border-bottom: 0;
-  margin: 0;
   padding: 10px;
-  -moz-border-radius: 6px 6px 0 0;
-  -webkit-border-radius: 6px 6px 0 0;
-  border-radius: 6px 6px 0 0;
 }
 
 .BbsPostViewTPage .ReplyFrom_c .cc {
@@ -452,7 +453,6 @@
   height: 32px;
   line-height: 32px;
   border: 1px solid #ccc;
-  border-top-color: #ddd;
   background-color: #fafafa;
   background-image: -webkit-linear-gradient(top, #f9f9f9, #fefefe, #f9f9f9);
   background-image: -moz-linear-gradient(top, #f9f9f9, #fefefe, #f9f9f9);
@@ -460,6 +460,7 @@
   background-image: linear-gradient(to bottom, #f9f9f9, #fefefe, #f9f9f9);
   color: #999;
   font-weight: bold;
+  margin-right: -1px;
 }
 
 .BbsPostViewTPage .BbsContent_Bar .span_btn_left,
@@ -520,10 +521,6 @@
   background-image: url("images/edit.png");
 }
 
-.BbsPostViewTPage .BbsPostItems .fixed_table {
-  margin-bottom: 6px;
-}
-
 .BbsPostViewTPage .BbsPostContent .ask_post  {
   padding: 0px 12px;
   font-size: 9.5pt;
@@ -540,10 +537,9 @@
 }
 
 .BbsPostViewTPage .BbsPostContent .ask_post .votes {
-  margin-right: 4px;
-  font-size: 16pt;
-  color: #eef;
   font-style: italic;
+  font-size: 14pt;
+  margin-right: 4px;
 }
 
 .VoteSubmitPage {
@@ -592,9 +588,9 @@
 
 #idBbsTopic_editor .edit_bar {
   height: 35px;
-  line-height: 32px;
+  line-height: 30px;
   overflow: hidden;
-  background-color: #f9f9f9;
+  background-color: #fcfcfc;
   border: 1px solid #ccc;
   border-bottom: 0;
   padding: 0 8px;
@@ -647,6 +643,7 @@
   -webkit-box-shadow: 0 0 0;
 	-moz-box-shadow: 0 0 0;
 	box-shadow: 0 0 0;
+	margin-bottom: -1px;
 }
 
 #idBbsTopic_editor .cke_bottom {
