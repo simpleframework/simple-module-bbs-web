@@ -155,7 +155,7 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 		return js;
 	}
 
-	protected String doTopicContent(final PageParameter pp, final Object bean, final Document doc) {
+	public String doTopicContent(final PageParameter pp, final Object bean, final Document doc) {
 		final ArrayList<IElementVisitor> al = new ArrayList<IElementVisitor>();
 		al.add(HtmlUtils.REMOVE_TAG_VISITOR("script"));
 		al.add(HtmlUtils.STRIP_CONTEXTPATH_VISITOR(pp.request));
