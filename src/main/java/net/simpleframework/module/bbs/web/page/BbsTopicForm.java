@@ -128,7 +128,7 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 		topic.setDescription(cp.getParameter("te_description"));
 
 		final Document doc = HtmlUtils.createHtmlDocument(cp.getParameter("te_content"));
-		topic.setContent(doTopicContent(cp, doc));
+		topic.setContent(doTopicContent(cp, topic, doc));
 
 		final BbsTopic topic2 = topic;
 		final ComponentParameter nCP = ComponentParameter.get(cp,
@@ -155,19 +155,27 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 		return js;
 	}
 
-	protected String doTopicContent(final PageParameter pp, final Document doc) {
+	protected String doTopicContent(final PageParameter pp, final Object bean, final Document doc) {
 		final ArrayList<IElementVisitor> al = new ArrayList<IElementVisitor>();
 		al.add(HtmlUtils.REMOVE_TAG_VISITOR("script"));
 		al.add(HtmlUtils.STRIP_CONTEXTPATH_VISITOR(pp.request));
-		setTopicContentVisitor(al);
+		setVisitor_targetBlank(bean, al);
+		setVisitor_removeClass(bean, al);
+		setVisitor_removeStyle(bean, al);
 		return HtmlUtils.doDocument(doc, al.toArray(new IElementVisitor[al.size()])).html();
 	}
 
-	protected void setTopicContentVisitor(final List<IElementVisitor> al) {
-		al.add(HtmlUtils.REMOVE_ATTRI_VISITOR("class"));
+	protected void setVisitor_removeStyle(final Object bean, final List<IElementVisitor> al) {
 		al.add(HtmlUtils.REMOVE_ATTRI_VISITOR("div", new String[] { "style" }));
 		al.add(HtmlUtils.REMOVE_ATTRI_VISITOR("p", new String[] { "style" }));
+	}
+
+	protected void setVisitor_targetBlank(final Object bean, final List<IElementVisitor> al) {
 		al.add(HtmlUtils.TARGET_BLANK_VISITOR);
+	}
+
+	protected void setVisitor_removeClass(final Object bean, final List<IElementVisitor> al) {
+		al.add(HtmlUtils.REMOVE_ATTRI_VISITOR("class"));
 	}
 
 	@Override

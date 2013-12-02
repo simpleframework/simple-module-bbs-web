@@ -3,7 +3,6 @@ package net.simpleframework.module.bbs.web.page;
 import static net.simpleframework.common.I18n.$m;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -22,7 +21,6 @@ import net.simpleframework.common.coll.KVMap;
 import net.simpleframework.common.web.HttpUtils;
 import net.simpleframework.common.web.JavascriptUtils;
 import net.simpleframework.common.web.html.HtmlUtils;
-import net.simpleframework.common.web.html.HtmlUtils.IElementVisitor;
 import net.simpleframework.ctx.IModuleRef;
 import net.simpleframework.ctx.common.bean.AttachmentFile;
 import net.simpleframework.ctx.permission.IPermissionConst;
@@ -320,7 +318,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		}
 		final Document doc = HtmlUtils.createHtmlDocument(cp
 				.getParameter("idBbsPostViewTPage_editor"));
-		post.setContent(doPostContent(cp, doc));
+		post.setContent(doPostContent(cp, post, doc));
 		if (insert) {
 			service.insert(post);
 		} else {
@@ -330,16 +328,8 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 				getUrlsFactory().getPostViewUrl(cp, topic)).append("');");
 	}
 
-	protected String doPostContent(final PageParameter pp, final Document doc) {
-		final ArrayList<IElementVisitor> al = new ArrayList<IElementVisitor>();
-		al.add(HtmlUtils.REMOVE_TAG_VISITOR("script"));
-		al.add(HtmlUtils.STRIP_CONTEXTPATH_VISITOR(pp.request));
-		setPostContentVisitor(al);
-		return HtmlUtils.doDocument(doc, al.toArray(new IElementVisitor[al.size()])).html();
-	}
-
-	protected void setPostContentVisitor(final List<IElementVisitor> al) {
-		singleton(BbsTopicForm.class).setTopicContentVisitor(al);
+	protected String doPostContent(final PageParameter pp, final Object bean, final Document doc) {
+		return singleton(BbsTopicForm.class).doTopicContent(pp, bean, doc);
 	}
 
 	public boolean isTopicEditable(final PageParameter pp, final BbsTopic topic) {
