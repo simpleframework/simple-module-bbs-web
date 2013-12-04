@@ -62,6 +62,7 @@ import net.simpleframework.mvc.common.element.LinkElement;
 import net.simpleframework.mvc.common.element.PhotoImage;
 import net.simpleframework.mvc.common.element.SpanElement;
 import net.simpleframework.mvc.component.ComponentParameter;
+import net.simpleframework.mvc.component.base.ajaxrequest.AjaxRequestBean;
 import net.simpleframework.mvc.component.base.validation.EValidatorMethod;
 import net.simpleframework.mvc.component.base.validation.EWarnType;
 import net.simpleframework.mvc.component.base.validation.ValidationBean;
@@ -126,7 +127,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		addCategoryDict(pp);
 
 		// 下载
-		addAjaxRequest(pp, "BbsPostViewTPage_download").setHandleMethod("doDownload");
+		addAjaxRequest_Download(pp);
 
 		// PageletTab
 		addPageletTabAjaxRequest(pp);
@@ -177,6 +178,10 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 	protected HtmlEditorBean addHtmlEditorBean(final PageParameter pp) {
 		return (HtmlEditorBean) addHtmlEditorBean(pp, "BbsPostViewTPage_editor")
 				.setStartupFocus(false).setElementsPath(false).setHeight("250");
+	}
+
+	protected AjaxRequestBean addAjaxRequest_Download(final PageParameter pp) {
+		return addAjaxRequest(pp, "BbsPostViewTPage_download").setHandleMethod("doDownload");
 	}
 
 	protected void addTooltipComponent(final PageParameter pp) {
