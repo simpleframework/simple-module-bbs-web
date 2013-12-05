@@ -97,6 +97,14 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 					MenuBean.class).setMenuEvent(EMenuEvent.click).setSelector("#menu_" + hashId);
 			menu.addItem(MenuItem.of($m("BbsCategoryTPage.1")).setOnclick(
 					"$Actions['BbsCategoryTPage_CategoryWin']();"));
+			menu.addItem(MenuItem.sep());
+			menu.addItem(MenuItem.of($m("BbsCategoryTPage.11")).setOnclick(
+					"$Actions['BbsCategoryTPage_advWindow']();"));
+
+			// 高级设置
+			addAjaxRequest(pp, "BbsCategoryTPage_advPage", BbsAdvPage.class);
+			addWindowBean(pp, "BbsCategoryTPage_advWindow").setContentRef("BbsCategoryTPage_advPage")
+					.setTitle($m("BbsCategoryTPage.11")).setHeight(280).setWidth(420);
 
 			// 管理窗口
 			addAjaxRequest(pp, "BbsCategoryTPage_CategoryPage", CategoryMgrPage.class);
