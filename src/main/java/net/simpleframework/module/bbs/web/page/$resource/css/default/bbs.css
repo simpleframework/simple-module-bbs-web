@@ -194,7 +194,7 @@
 }
 
 .BbsPostViewTPage {
-  border: 1px solid #bbb;
+  border: 1px solid #ccc;
   background-color: #eee;
 }
 
@@ -211,7 +211,7 @@
 .BbsPostViewTPage .BbsTopic_stat {
   background-color: #f9f9f9;
   border: 1px solid #ccc;
-  margin: 0 -1px -1px 0;
+  margin: -1px -1px 0 0;
 }
 
 .BbsPostViewTPage .BbsTopic_stat .s1 {
@@ -318,6 +318,10 @@
 
 .BbsPostViewTPage .BbsTopicContent {
   min-height: 200px;
+}
+
+.BbsPostViewTPage .BbsPostContent {
+  margin-top: 4px;
 }
 
 .BbsPostViewTPage .BbsTopicContent .ask_icon {
@@ -476,17 +480,11 @@
 .BbsPostViewTPage .BbsContent_Bar .span_btn_right {
   float: right;
   border-left: 1px solid #ddd;
-  -moz-border-radius: 0 0 6px 0;
-  -webkit-border-radius: 0 0 6px 0;
-  border-radius: 0 0 6px 0;
 }
 
 .BbsPostViewTPage .BbsContent_Bar .span_btn_left {
   float: left;
   border-right: 1px solid #ddd;
-  -moz-border-radius: 0 0 0 6px;
-  -webkit-border-radius: 0 0 0 6px;
-  border-radius: 0 0 0 6px;
 }
 
 .BbsPostViewTPage .BbsContent_Bar .span_btn_right:hover,
@@ -519,6 +517,28 @@
 
 .BbsPostViewTPage .BbsContent_Bar .btn_edit {
   background-image: url("images/edit.png");
+}
+
+.BbsPostViewTPage .BbsContent_Remark_Edit {
+  border: 1px solid #ccc;
+  margin: -1px -1px 0 0;
+}
+
+.BbsPostViewTPage .BbsContent_Remark_Edit .ta {
+  padding: 4px;
+  background-color: #fff;
+}
+
+.BbsPostViewTPage .BbsContent_Remark_Edit textarea {
+  width: 100%;
+  border: 0;
+  background-image: none;
+}
+
+.BbsPostViewTPage .BbsContent_Remark_Edit .rbtns {
+  background-color: #fafafa;
+  text-align: right;
+  padding: 6px;
 }
 
 .BbsPostViewTPage .BbsPostContent .ask_post  {

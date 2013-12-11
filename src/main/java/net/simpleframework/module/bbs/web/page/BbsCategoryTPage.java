@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.Map;
 
 import net.simpleframework.ado.ColumnData;
-import net.simpleframework.ado.EOrder;
 import net.simpleframework.ado.query.IDataQuery;
 import net.simpleframework.common.Convert;
 import net.simpleframework.common.DateUtils;
@@ -154,7 +153,7 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 		if ("recommendation".equals(let)) {
 			dq = service.queryRecommendationBeans(null, new TimePeriod(tp));
 		} else {
-			dq = service.queryBeans(null, new TimePeriod(tp), new ColumnData(let, EOrder.desc));
+			dq = service.queryBeans(null, new TimePeriod(tp), ColumnData.DESC(let));
 		}
 
 		return new TextForward(cp.wrapHTMLContextPath(creator.create(cp, dq)
@@ -174,12 +173,12 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 				.createTimePeriodTabs("let=recommendation")));
 
 		// 按跟贴
-		dq = service.queryBeans(null, TimePeriod.week, new ColumnData("posts", EOrder.desc));
+		dq = service.queryBeans(null, TimePeriod.week, ColumnData.DESC("posts"));
 		lets.add(new Pagelet(new CategoryItem($m("BbsCategoryTPage.8")), creator.create(pp, dq)
 				.setDotIcon(EImageDot.numDot)).setTabs(creator.createTimePeriodTabs("let=posts")));
 
 		// 按浏览次数
-		dq = service.queryBeans(null, TimePeriod.week, new ColumnData("views", EOrder.desc));
+		dq = service.queryBeans(null, TimePeriod.week, ColumnData.DESC("views"));
 		lets.add(new Pagelet(new CategoryItem($m("BbsCategoryTPage.9")), creator.create(pp, dq)
 				.setDotIcon(EImageDot.numDot)).setTabs(creator.createTimePeriodTabs("let=views")));
 

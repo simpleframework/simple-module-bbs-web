@@ -20,12 +20,14 @@ import net.simpleframework.common.TimePeriod;
 import net.simpleframework.common.coll.KVMap;
 import net.simpleframework.common.web.HttpUtils;
 import net.simpleframework.common.web.JavascriptUtils;
+import net.simpleframework.common.web.html.HtmlEncoder;
 import net.simpleframework.common.web.html.HtmlUtils;
 import net.simpleframework.ctx.IModuleRef;
 import net.simpleframework.ctx.common.bean.AttachmentFile;
 import net.simpleframework.ctx.permission.IPermissionConst;
 import net.simpleframework.ctx.permission.PermissionUser;
 import net.simpleframework.ctx.script.MVEL2Template;
+import net.simpleframework.ctx.service.ado.IADOTreeBeanServiceAware;
 import net.simpleframework.ctx.trans.Transaction;
 import net.simpleframework.lib.org.jsoup.nodes.Document;
 import net.simpleframework.module.bbs.BbsAskVote;
@@ -67,6 +69,7 @@ import net.simpleframework.mvc.component.base.validation.EValidatorMethod;
 import net.simpleframework.mvc.component.base.validation.EWarnType;
 import net.simpleframework.mvc.component.base.validation.ValidationBean;
 import net.simpleframework.mvc.component.base.validation.Validator;
+import net.simpleframework.mvc.component.ui.dictionary.SmileyUtils;
 import net.simpleframework.mvc.component.ui.htmleditor.HtmlEditorBean;
 import net.simpleframework.mvc.component.ui.pager.AbstractPagerHandler;
 import net.simpleframework.mvc.component.ui.pager.EPagerBarLayout;
@@ -149,10 +152,16 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 					.setTitle($m("BbsPostViewTPage.17")).setPopup(true).setWidth(380).setHeight(159)
 					.setXdelta(-200).setResizable(false);
 
+			// unvote
 			addAjaxRequest(pp, "BbsPostViewTPage_unvotePage", UnVoteSubmitPage.class);
 			addWindowBean(pp, "BbsPostViewTPage_unvoteWin")
 					.setContentRef("BbsPostViewTPage_unvotePage").setTitle($m("BbsPostViewTPage.16"))
 					.setPopup(true).setWidth(380).setHeight(115).setXdelta(-200).setResizable(false);
+
+			// remark
+			addAjaxRequest(pp, "BbsPostViewTPage_remark").setConfirmMessage($m("Confirm.Post"))
+					.setHandleMethod("doAjaxRemark").setRole(IPermissionConst.ROLE_ALL_ACCOUNT);
+			addAjaxRequest(pp, "BbsPostViewTPage_remark_list").setHandleMethod("doRemarkList");
 
 			if (manager) {
 				addAjaxRequest(pp, "BbsPostViewTPage_bestAnswer").setHandleMethod("doBestAnswer")
@@ -298,11 +307,31 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		return tf;
 	}
 
+	@Transaction(context = IBbsContext.class)
 	public IForward doBestAnswer(final ComponentParameter cp) {
 		final BbsPost post = getPost(cp, "postId");
 		context.getPostService().doBestAnswer(post);
 		return new JavascriptForward("$Actions.loc('").append(
 				getUrlsFactory().getPostViewUrl(cp, getTopic(cp))).append("');");
+	}
+
+	@Transaction(context = IBbsContext.class)
+	public IForward doAjaxRemark(final ComponentParameter cp) {
+		final BbsPost post = getPost(cp, "postId");
+		final IBbsPostService pService = context.getPostService();
+		final BbsPost _post = pService.createBean();
+		_post.setParentId(post.getId());
+		_post.setContentId(post.getContentId());
+		_post.setContent(cp.getParameter("ta"));
+		_post.setCreateDate(new Date());
+		_post.setUserId(cp.getLoginId());
+		pService.insert(_post);
+		return null;
+	}
+
+	public IForward doRemarkList(final ComponentParameter cp) {
+		final BbsPost post = getPost(cp, "postId");
+		return new TextForward(getRemarkList(cp, post));
 	}
 
 	@Transaction(context = IBbsContext.class)
@@ -388,10 +417,11 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		final BbsTopic topic = getTopic(pp);
 		final StringBuilder sb = new StringBuilder();
 
+		final IBbsPostService pService = context.getPostService();
 		final boolean ask = isAsk(topic);
 		boolean gap = ask;
 		BbsPost reply;
-		if (!ask && (reply = context.getPostService().getBean(post.getReplyId())) != null) {
+		if (!ask && (reply = pService.getBean(post.getReplyId())) != null) {
 			sb.append("<div class='ReplyFrom' onclick=\"_BBS.replyFrom(this, 'replyId=")
 					.append(reply.getId()).append("');\">");
 			sb.append("#(BbsPostViewTPage.2)");
@@ -402,8 +432,8 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		}
 		if (ask) {
 			if (post.isBestAnswer()) {
-				sb.append("<div class='BestAnswer'>").append($m("BbsPostViewTPage.19"))
-						.append("</div>");
+				sb.append("<div class='BestAnswer'>");
+				sb.append($m("BbsPostViewTPage.19")).append("</div>");
 			}
 			sb.append(
 					"<span class='ask_post' onclick=\"$Actions['BbsPostViewTPage_ajaxVote']('postId=")
@@ -414,7 +444,43 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 			sb.append("<div class='ReplyFrom_gap'></div>");
 		}
 		sb.append(post.getContent());
+		if (ask) {
+			sb.append("<div class='BbsContent_Remark_List'>");
+			sb.append(getRemarkList(pp, post));
+			sb.append("</div>");
+		}
 		return sb.toString();
+	}
+
+	protected String getRemarkList(final PageParameter pp, final BbsPost post) {
+		final StringBuilder sb = new StringBuilder();
+		final IDataQuery<BbsPost> children = ((IADOTreeBeanServiceAware<BbsPost>) context
+				.getPostService()).queryChildren(post);
+		// 最多显示10个
+		BbsPost _post;
+		if (children.getCount() > 0) {
+			sb.append("<div class='rlist'>");
+			while ((_post = children.next()) != null) {
+				sb.append("<div class='ritem'>");
+				final PermissionUser user = pp.getUser(_post.getUserId());
+				sb.append(PhotoImage.icon16(pp.getPhotoUrl(user)).setTitle(user.toString()));
+				sb.append(replaceRemark(_post.getContent()));
+				sb.append(" <div class='rbar'>");
+				sb.append(Convert.toDateString(_post.getCreateDate()));
+				sb.append(" </div>");
+				sb.append("</div>");
+			}
+			sb.append("</div>");
+		}
+		return sb.toString();
+	}
+
+	protected String replaceRemark(String content) {
+		content = HtmlEncoder.text(content);
+		content = SmileyUtils.replaceSmiley(content);
+		content = HtmlUtils.convertHtmlLines(content);
+		content = HtmlUtils.autoLink(content);
+		return content;
 	}
 
 	@Override
@@ -454,6 +520,13 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 					.append("</div>");
 			sb.append("  <div class='BbsContent_Bar'>").append(toPostBarHTML(pp, post))
 					.append("</div>");
+			sb.append("  <div class='BbsContent_Remark_Edit' style='display: none;'>");
+			sb.append("    <div class='ta'><textarea rows='4'></textarea></div>");
+			sb.append("    <div class='rbtns'>");
+			sb.append(
+					LinkButton.corner($m("Button.Save")).setOnclick(
+							"_BBS.doRemark(this, '" + post.getId() + "');")).append("</div>");
+			sb.append("  </div>");
 			sb.append(" </td>");
 			sb.append("</tr></table>");
 		}
@@ -534,6 +607,8 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 				sb.append(new SpanElement($m("BbsPostViewTPage.19")).setClassName("span_btn_right")
 						.setOnclick("$Actions['BbsPostViewTPage_bestAnswer']('postId=" + id + "');"));
 			}
+			sb.append(new SpanElement($m("BbsPostViewTPage.21")).setOnclick("_BBS.remark(this);")
+					.setClassName("span_btn_left"));
 		} else {
 			sb.append(new SpanElement("#(BbsPostViewTPage.0)").setClassName(
 					"span_btn_right btn_reply_from").setOnclick(

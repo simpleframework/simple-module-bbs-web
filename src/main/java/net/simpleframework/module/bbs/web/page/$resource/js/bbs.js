@@ -1,7 +1,7 @@
 var _BBS = {
     
-  replyFrom : function(reply, params) {
-    var c = reply.up(".BbsContent");
+  replyFrom : function(btn, params) {
+    var c = btn.up(".BbsContent");
     var r = c.previous();
     if (r.innerHTML != "") {
       r.$toggle();
@@ -63,5 +63,31 @@ var _BBS = {
     bar.scrollTo();
     ta.htmlEditor.focus();
     $Actions.setValue(ta, _content);
+  },
+  
+  remark : function(btn) {
+    var c = btn.up(".BbsContent_Bar");
+    var r = c.next();
+    var ta = r.down("textarea");
+    ta.clear();
+    r.$toggle({
+      afterFinish: function() {
+        ta.focus();
+      }
+    });
+  },
+  
+  doRemark : function(btn, postId) {
+    var c = btn.up(".BbsContent_Remark_Edit");
+    var ta = c.down("textarea");
+    var act = $Actions['BbsPostViewTPage_remark'];
+    act.jsCompleteCallback = function(req, responseText, json) {
+      c.hide();
+      var cc = c.previous(".BbsPostContent");
+      var act2 = $Actions["BbsPostViewTPage_remark_list"];
+      act2.container = cc.down(".BbsContent_Remark_List");
+      act2("postId=" + postId);
+    };
+    act("postId=" + postId + "&ta=" + $F(ta));
   }
 };

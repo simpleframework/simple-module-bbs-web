@@ -5,9 +5,38 @@
       <td class="BbsUser">${page.toUserHTML(parameter, topic)}</td>
       <td valign="top">
         <div class="BbsContent BbsTopicContent">${page.getTopicContent(parameter, topic)}</div>
-        <div class="BbsTopic_stat">${page.toTopicStatHTML(parameter, topic)}</div>
         <div class="BbsContent_Bar">${page.toTopicBarHTML(parameter, topic)}</div>
+        <div class="BbsTopic_stat">${page.toTopicStatHTML(parameter, topic)}</div>
       </td>
     </tr>
   </table>
 </div>
+
+<style>
+.BbsPostViewTPage .BbsContent_Remark_List .rlist {
+  margin: 30px 0 0 60px;
+  border-top: 1px dashed #bbb;
+  font-size: 9pt;
+}
+
+.BbsPostViewTPage .BbsContent_Remark_List .ritem {
+  border-bottom: 1px dashed #bbb;
+  padding: 4px 0 0 32px;
+  position: relative;
+}
+
+.BbsPostViewTPage .BbsContent_Remark_List .ritem:hover {
+  background-color: #f9f9f9;
+}
+
+.BbsPostViewTPage .BbsContent_Remark_List .ritem .photo_icon {
+  left: 5px;
+  top: 8px;
+  position: absolute;
+}
+
+.BbsPostViewTPage .BbsContent_Remark_List .ritem .rbar {
+  text-align: right;
+  color: #888;
+}
+</style>
