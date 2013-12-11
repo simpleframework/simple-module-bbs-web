@@ -53,6 +53,7 @@ import net.simpleframework.module.common.content.IAttachmentService;
 import net.simpleframework.module.common.web.content.ContentUtils;
 import net.simpleframework.mvc.IForward;
 import net.simpleframework.mvc.JavascriptForward;
+import net.simpleframework.mvc.JsonForward;
 import net.simpleframework.mvc.PageParameter;
 import net.simpleframework.mvc.TextForward;
 import net.simpleframework.mvc.common.DownloadUtils;
@@ -166,6 +167,9 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 			if (manager) {
 				addAjaxRequest(pp, "BbsPostViewTPage_bestAnswer").setHandleMethod("doBestAnswer")
 						.setConfirmMessage($m("BbsPostViewTPage.20"));
+
+				addAjaxRequest(pp, "BbsPostViewTPage_remark_delete").setConfirmMessage(
+						$m("Confirm.Delete")).setHandleMethod("doRemarkDelete");
 			}
 		} else {
 			// replyFrom
@@ -318,20 +322,30 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 	@Transaction(context = IBbsContext.class)
 	public IForward doAjaxRemark(final ComponentParameter cp) {
 		final BbsPost post = getPost(cp, "postId");
+		final String ta = cp.getParameter("ta");
 		final IBbsPostService pService = context.getPostService();
 		final BbsPost _post = pService.createBean();
 		_post.setParentId(post.getId());
 		_post.setContentId(post.getContentId());
-		_post.setContent(cp.getParameter("ta"));
+		_post.setContent(ta);
 		_post.setCreateDate(new Date());
 		_post.setUserId(cp.getLoginId());
 		pService.insert(_post);
-		return null;
+		return new JsonForward().put("params",
+				"postId" + post.getId() + "&topicId=" + post.getContentId());
 	}
 
 	public IForward doRemarkList(final ComponentParameter cp) {
 		final BbsPost post = getPost(cp, "postId");
 		return new TextForward(getRemarkList(cp, post));
+	}
+
+	@Transaction(context = IBbsContext.class)
+	public IForward doRemarkDelete(final ComponentParameter cp) {
+		final BbsPost post = getPost(cp, "remarkId");
+		context.getPostService().delete(post.getId());
+		return new JsonForward().put("params",
+				"postId" + post.getParentId() + "&topicId=" + post.getContentId());
 	}
 
 	@Transaction(context = IBbsContext.class)
@@ -454,6 +468,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 
 	protected String getRemarkList(final PageParameter pp, final BbsPost post) {
 		final StringBuilder sb = new StringBuilder();
+		final boolean manager = (Boolean) getVariables(pp).get("manager");
 		final IDataQuery<BbsPost> children = ((IADOTreeBeanServiceAware<BbsPost>) context
 				.getPostService()).queryChildren(post);
 		// 最多显示10个
@@ -467,6 +482,11 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 				sb.append(replaceRemark(_post.getContent()));
 				sb.append(" <div class='rbar'>");
 				sb.append(Convert.toDateString(_post.getCreateDate()));
+				if (manager) {
+					sb.append(SpanElement.SEP).append(
+							new LinkElement($m("Delete")).setOnclick("_BBS.doRemark_delete(this, '"
+									+ _post.getId() + "');"));
+				}
 				sb.append(" </div>");
 				sb.append("</div>");
 			}
@@ -524,7 +544,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 			sb.append("    <div class='ta'><textarea rows='4'></textarea></div>");
 			sb.append("    <div class='rbtns'>");
 			sb.append(
-					LinkButton.corner($m("Button.Save")).setOnclick(
+					LinkButton.corner("#(Button.Save)").setOnclick(
 							"_BBS.doRemark(this, '" + post.getId() + "');")).append("</div>");
 			sb.append("  </div>");
 			sb.append(" </td>");
@@ -604,10 +624,10 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		final Object id = post.getId();
 		if (isAsk(topic)) {
 			if (manager) {
-				sb.append(new SpanElement($m("BbsPostViewTPage.19")).setClassName("span_btn_right")
+				sb.append(new SpanElement("#(BbsPostViewTPage.19)").setClassName("span_btn_right")
 						.setOnclick("$Actions['BbsPostViewTPage_bestAnswer']('postId=" + id + "');"));
 			}
-			sb.append(new SpanElement($m("BbsPostViewTPage.21")).setOnclick("_BBS.remark(this);")
+			sb.append(new SpanElement("#(BbsPostViewTPage.21)").setOnclick("_BBS.remark(this);")
 					.setClassName("span_btn_left"));
 		} else {
 			sb.append(new SpanElement("#(BbsPostViewTPage.0)").setClassName(

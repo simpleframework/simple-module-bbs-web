@@ -86,8 +86,18 @@ var _BBS = {
       var cc = c.previous(".BbsPostContent");
       var act2 = $Actions["BbsPostViewTPage_remark_list"];
       act2.container = cc.down(".BbsContent_Remark_List");
-      act2("postId=" + postId);
+      act2(json.params);
     };
     act("postId=" + postId + "&ta=" + $F(ta));
+  },
+  
+  doRemark_delete : function(btn, remarkId) {
+    var act = $Actions['BbsPostViewTPage_remark_delete'];
+    act.jsCompleteCallback = function(req, responseText, json) {
+      var act2 = $Actions["BbsPostViewTPage_remark_list"];
+      act2.container = btn.up(".BbsContent_Remark_List");
+      act2(json.params);
+    };
+    act("remarkId=" + remarkId);
   }
 };
