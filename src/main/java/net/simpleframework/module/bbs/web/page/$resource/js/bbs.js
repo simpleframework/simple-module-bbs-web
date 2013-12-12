@@ -1,103 +1,94 @@
-var _BBS = {
-    
-  replyFrom : function(btn, params) {
-    var c = btn.up(".BbsContent");
-    var r = c.previous();
-    if (r.innerHTML != "") {
-      r.$toggle();
-    } else {
-      var act = $Actions["BbsPostViewTPage_replyFrom"];
-      act.jsCompleteCallback = function(req, responseText, json) {
-        r.update(responseText);
-        r.$show();
-      };
-      act(params);
-    }
-  },
+$ready(function() {
+  var ta = $("idBbsPostViewTPage_editor");
+  var edit_bar = ta.previous(".edit_bar");
+  var cc_span = edit_bar.down("span");
+  var CC = cc_span.innerHTML;
+  var input = cc_span.previous("input");
 
-  reply : function(_replyId, _to) {
-    var ta = $("idBbsPostViewTPage_editor");
-    var bar = ta.previous(".edit_bar");
-    var cc = bar.down("span");
-    var replyId = cc.previous();
-    replyId.setAttribute("name", "replyId");
-    
-    var clear = function() {
-      replyId.value = "";
-      cc.innerHTML = "&nbsp;";
-    };
-    if (_replyId) {
-      replyId.value = _replyId;
-      cc.title = "reply: " + _to;
-      cc.innerHTML = "<span class='reply_btn'>" 
-                   +   _to 
-                   +   "<span class='delete_img'></span>"
-                   + "</span>";
-      cc.down(".delete_img").observe("click", clear);
-    } else {
-      clear();
+  var _clear = function() {
+    input.value = "";
+    cc_span.innerHTML = CC;
+  };
+
+  var _txt = function(txt, focus) {
+    if (focus) {
+      ta.htmlEditor.focus();
+      edit_bar.scrollTo();
     }
-    
-    bar.scrollTo();
-    ta.htmlEditor.focus();
-    $Actions.setValue(ta, "");
-  },
+    $Actions.setValue(ta, txt);
+  };
   
-  edit : function(_postId, _content, _cancelBtn) {
-    var ta = $("idBbsPostViewTPage_editor");
-    var bar = ta.previous(".edit_bar");
-    var cc = bar.down("span");
-    if (_postId) {
-      var postId = cc.previous();
-      postId.setAttribute("name", "postId");
-      postId.value = _postId;
-      
-      cc.innerHTML = _cancelBtn;
-      cc.down().observe("click", function(evn) {
-        postId.value = "";
-        cc.innerHTML = "&nbsp;";
-        $Actions.setValue(ta, "");
-      });
-    }
-    
-    bar.scrollTo();
-    ta.htmlEditor.focus();
-    $Actions.setValue(ta, _content);
-  },
-  
-  remark : function(btn) {
-    var c = btn.up(".BbsContent_Bar");
-    var r = c.next();
-    var ta = r.down("textarea");
-    ta.clear();
-    r.$toggle({
-      afterFinish: function() {
-        ta.focus();
+  var _info = function(_to, del) {
+    cc_span.innerHTML = "<span class='reply_btn'>" 
+                      + _to
+                      + "<span class='delete_img'></span>" 
+                      + "</span>";
+    cc_span.down(".delete_img").observe("click", del);
+  };
+
+  window._BBS = {
+    replyFrom : function(btn, params) {
+      var c = btn.up(".BbsContent");
+      var r = c.previous();
+      if (r.innerHTML != "") {
+        r.$toggle();
+      } else {
+        var act = $Actions["BbsPostViewTPage_replyFrom"];
+        act.jsCompleteCallback = function(req, responseText, json) {
+          r.update(responseText);
+          r.$show();
+        };
+        act(params);
       }
-    });
-  },
-  
-  doRemark : function(btn, postId) {
-    var c = btn.up(".BbsContent_Remark_Edit");
-    var ta = c.down("textarea");
-    var act = $Actions['BbsPostViewTPage_remark'];
-    act.jsCompleteCallback = function(req, responseText, json) {
-      c.hide();
-      var cc = c.previous(".BbsPostContent");
+    },
+
+    reply : function(replyId, to) {
+      if (replyId) {
+        var arr = replyId.split(":");
+        input.setAttribute("name", arr[0]);
+        input.value = arr[1];
+
+        _info(to, _clear);
+      } else {
+        _clear();
+      }
+
+      _txt("", true);
+    },
+
+    edit : function(postId, content, to) {
+      var arr = postId.split(":");
+      input.setAttribute("name", arr[0]);
+      input.value = arr[1];
+
+      _info(to, function(evn) {
+        _clear();
+        _txt("", true);
+      });
+      
+      _txt(content, true);
+    },
+
+    doRemark_callback : function(parentId, params) {
+      var r = $("remark_" + parentId);
+      r.scrollTo();
+
+      _clear();
+      _txt("");
+
       var act2 = $Actions["BbsPostViewTPage_remark_list"];
-      act2.container = cc.down(".BbsContent_Remark_List");
-      act2(json.params);
-    };
-    act("postId=" + postId + "&ta=" + $F(ta));
-  },
-  
-  doRemark_delete : function(btn, remarkId) {
-    var act = $Actions['BbsPostViewTPage_remark_delete'];
-    act.jsCompleteCallback = function(req, responseText, json) {
-      var act2 = $Actions["BbsPostViewTPage_remark_list"];
-      act2.container = btn.up(".BbsContent_Remark_List");
-      act2(json.params);
-    };
-    act("remarkId=" + remarkId);
-  }
-};
+      act2.container = r;
+      act2(("parentId=" + parentId).addParameter(params));
+    },
+
+    doRemark_delete : function(btn, remarkId) {
+      var act = $Actions['BbsPostViewTPage_remark_delete'];
+      act.jsCompleteCallback = function(req, responseText, json) {
+        var act2 = $Actions["BbsPostViewTPage_remark_list"];
+        act2.container = btn.up(".BbsContent_Remark_List");
+        act2(json.params);
+      };
+      act("remarkId=" + remarkId);
+    }
+  };
+});
