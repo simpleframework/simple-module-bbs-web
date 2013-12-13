@@ -52,7 +52,6 @@ import net.simpleframework.module.common.content.IAttachmentService;
 import net.simpleframework.module.common.web.content.ContentUtils;
 import net.simpleframework.mvc.IForward;
 import net.simpleframework.mvc.JavascriptForward;
-import net.simpleframework.mvc.JsonForward;
 import net.simpleframework.mvc.PageParameter;
 import net.simpleframework.mvc.TextForward;
 import net.simpleframework.mvc.common.DownloadUtils;
@@ -299,8 +298,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 	public IForward doRemarkDelete(final ComponentParameter cp) {
 		final BbsPost post = getPost(cp, "remarkId");
 		context.getPostService().delete(post.getId());
-		return new JsonForward().put("params",
-				"parentId=" + post.getParentId() + "&topicId=" + post.getContentId());
+		return null;
 	}
 
 	public IForward doEdit(final ComponentParameter cp) {
@@ -328,8 +326,6 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 
 	@Transaction(context = IBbsContext.class)
 	public IForward doSubmit(final ComponentParameter cp) {
-		final BbsTopic topic = getTopic(cp);
-
 		final Document doc = HtmlUtils.createHtmlDocument(cp
 				.getParameter("idBbsPostViewTPage_editor"));
 		if (doc.text().length() < 10) {
@@ -337,7 +333,6 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		}
 
 		final IBbsPostService service = context.getPostService();
-
 		BbsPost remark = getPost(cp, "remarkId");
 		BbsPost parent = null;
 		if (remark != null) {
@@ -363,10 +358,11 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 			} else {
 				service.update(remark);
 			}
-			return new JavascriptForward("_BBS.doRemark_callback('").append(parent.getId())
-					.append("', 'topicId=").append(topic.getId()).append("');");
+			return new JavascriptForward("_BBS.doRemark_callback('").append(parent.getId()).append(
+					"');");
 		}
 
+		final BbsTopic topic = getTopic(cp);
 		BbsPost post = getPost(cp, "postId");
 		final boolean insert = post == null;
 		if (insert) {
@@ -480,13 +476,13 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		return sb.toString();
 	}
 
-	protected String getRemarkList(final PageParameter pp, final BbsPost remark) {
+	protected String getRemarkList(final PageParameter pp, final BbsPost post) {
 		final StringBuilder sb = new StringBuilder();
 		final boolean manager = (Boolean) getVariables(pp).get("manager");
 		final IDataQuery<BbsPost> children = ((IADOTreeBeanServiceAware<BbsPost>) context
-				.getPostService()).queryChildren(remark);
-		// 最多显示10个
+				.getPostService()).queryChildren(post);
 		BbsPost _remark;
+		int i = 0;
 		if (children.getCount() > 0) {
 			sb.append("<div class='rlist'>");
 			while ((_remark = children.next()) != null) {
@@ -498,10 +494,9 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 				sb.append(Convert.toDateString(_remark.getCreateDate()));
 				if (manager || isPostEditable(pp, _remark)) {
 					sb.append(SpanElement.SEP).append(
-							new LinkElement("#(Edit)").setClassName("span_btn_right")
-									.setOnclick(
-											"$Actions['BbsPostViewTPage_edit']('remarkId=" + _remark.getId()
-													+ "');"));
+							new LinkElement("#(Edit)")
+									.setOnclick("$Actions['BbsPostViewTPage_edit']('remarkId="
+											+ _remark.getId() + "');"));
 				}
 				if (manager) {
 					sb.append(SpanElement.SEP).append(
@@ -510,6 +505,18 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 				}
 				sb.append(" </div>");
 				sb.append("</div>");
+				// 一页显示的个数
+				if (++i >= Convert.toInt(pp.getParameter("_count"), 8)) {
+					break;
+				}
+			}
+			sb.append(InputElement.hidden("_count").setText(i));
+			sb.append(InputElement.hidden("parentId").setText(post.getId()));
+			final BbsTopic topic = getTopic(pp);
+			sb.append(InputElement.hidden("topicId").setText(topic.getId()));
+			if (i < children.getCount()) {
+				sb.append("<div class='mbar'><a onclick=\"_BBS.doRemark_list(this);\">")
+						.append($m("BbsPostViewTPage.26")).append("</a></div>");
 			}
 			sb.append("</div>");
 		}

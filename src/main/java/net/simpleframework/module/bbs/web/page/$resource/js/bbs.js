@@ -69,7 +69,7 @@ $ready(function() {
       _txt(content, true);
     },
 
-    doRemark_callback : function(parentId, params) {
+    doRemark_callback : function(parentId) {
       var r = $("remark_" + parentId);
       r.scrollTo();
 
@@ -78,17 +78,30 @@ $ready(function() {
 
       var act2 = $Actions["BbsPostViewTPage_remark_list"];
       act2.container = r;
-      act2(("parentId=" + parentId).addParameter(params));
+      act2.selector = r;
+      act2();
     },
 
     doRemark_delete : function(btn, remarkId) {
       var act = $Actions['BbsPostViewTPage_remark_delete'];
       act.jsCompleteCallback = function(req, responseText, json) {
         var act2 = $Actions["BbsPostViewTPage_remark_list"];
-        act2.container = btn.up(".BbsContent_Remark_List");
-        act2(json.params);
+        var r = btn.up(".BbsContent_Remark_List");
+        act2.container = r;
+        act2.selector = r;
+        act2();
       };
       act("remarkId=" + remarkId);
+    },
+    
+    doRemark_list : function(btn) {
+      var act2 = $Actions["BbsPostViewTPage_remark_list"];
+      var r = btn.up(".BbsContent_Remark_List");
+      act2.container = r;
+      act2.selector = r;
+      var cInput = r.down("#_count")
+      cInput.value = parseInt($F(cInput)) + 8;
+      act2();
     }
   };
 });

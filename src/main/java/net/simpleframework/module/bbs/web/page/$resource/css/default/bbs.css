@@ -533,6 +533,11 @@
   color: #888;
 }
 
+.BbsPostViewTPage .BbsContent_Remark_List .mbar {
+  text-align: center;
+  margin-top: 4px;
+}
+
 .BbsPostViewTPage .BbsPostContent .ask_post  {
   padding: 0px 12px;
   font-size: 9.5pt;
