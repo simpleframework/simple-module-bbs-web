@@ -120,8 +120,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		addComponentBean(pp, "BbsPostViewTPage_validation", ValidationBean.class)
 				.setWarnType(EWarnType.insertAfter)
 				.setTriggerSelector("#idBbsTopic_editor .simple_btn")
-				.addValidators(new Validator(EValidatorMethod.required, "#idBbsPostViewTPage_editor"),
-						new Validator(EValidatorMethod.min_length, "#idBbsPostViewTPage_editor", 10));
+				.addValidators(new Validator(EValidatorMethod.required, "#idBbsPostViewTPage_editor"));
 
 		// tooltip
 		addTooltipComponent(pp);
@@ -333,6 +332,9 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 
 		final Document doc = HtmlUtils.createHtmlDocument(cp
 				.getParameter("idBbsPostViewTPage_editor"));
+		if (doc.text().length() < 10) {
+			throw ContentException.of($m("BbsPostViewTPage.25"));
+		}
 
 		final IBbsPostService service = context.getPostService();
 
