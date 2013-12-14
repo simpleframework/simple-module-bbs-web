@@ -71,12 +71,14 @@ $ready(function() {
 
     doRemark_callback : function(parentId) {
       var r = $("remark_" + parentId);
-      r.scrollTo();
-
-      _clear();
-      _txt("");
-
+      
       var act2 = $Actions["BbsPostViewTPage_remark_list"];
+      act2.jsCompleteCallback = function(req, responseText, json) {
+        _clear();
+        _txt("");
+        
+        r.up(".BbsPostContent").scrollTo();
+      };
       act2.container = r;
       act2.selector = r;
       act2();

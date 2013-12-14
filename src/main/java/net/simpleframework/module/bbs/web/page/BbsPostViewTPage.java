@@ -510,16 +510,15 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 					break;
 				}
 			}
-			sb.append(InputElement.hidden("_count").setText(i));
-			sb.append(InputElement.hidden("parentId").setText(post.getId()));
-			final BbsTopic topic = getTopic(pp);
-			sb.append(InputElement.hidden("topicId").setText(topic.getId()));
+			sb.append(InputElement.hidden("_count").setText(Math.max(i, 8)));
 			if (i < children.getCount()) {
 				sb.append("<div class='mbar'><a onclick=\"_BBS.doRemark_list(this);\">")
 						.append($m("BbsPostViewTPage.26")).append("</a></div>");
 			}
 			sb.append("</div>");
 		}
+		sb.append(InputElement.hidden("parentId").setText(post.getId()));
+		sb.append(InputElement.hidden("topicId").setText(getTopic(pp).getId()));
 		return sb.toString();
 	}
 
