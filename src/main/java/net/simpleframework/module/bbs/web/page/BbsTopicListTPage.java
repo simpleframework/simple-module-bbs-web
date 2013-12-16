@@ -387,9 +387,9 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 					kv.put("posts", SpanElement.num(topic.getPosts()));
 					kv.put("views", SpanElement.num(topic.getViews()));
 					kv.put("favorites", SpanElement.num(topic.getFavorites()));
-					final Date lastPostDate = topic.getLastPostDate();
-					if (lastPostDate != null) {
-						kv.put("lastPost", getUserStat(cp, topic.getLastUserId(), lastPostDate));
+					final ID lastUserId = topic.getLastUserId();
+					if (lastUserId != null) {
+						kv.put("lastPost", getUserStat(cp, lastUserId, topic.getLastPostDate()));
 					} else {
 						kv.put("lastPost", getUserStat(cp, topic.getUserId(), topic.getCreateDate()));
 					}
