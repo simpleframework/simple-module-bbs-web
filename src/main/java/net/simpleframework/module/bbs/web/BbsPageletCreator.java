@@ -44,8 +44,8 @@ public class BbsPageletCreator extends PageletCreator<BbsTopic> implements IBbsC
 			final int c = topic.getPosts();
 			final long v = topic.getViews();
 			final StringBuilder sb = new StringBuilder();
-			final Date lastPostDate = topic.getLastPostDate();
-			if (lastPostDate != null) {
+			Date lastPostDate;
+			if (c > 0 && (lastPostDate = topic.getLastPostDate()) != null) {
 				final Calendar cal = Calendar.getInstance();
 				cal.setTime(new Date());
 				cal.add(Calendar.HOUR_OF_DAY, -12);
