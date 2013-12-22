@@ -68,7 +68,7 @@ import net.simpleframework.mvc.component.base.validation.EValidatorMethod;
 import net.simpleframework.mvc.component.base.validation.EWarnType;
 import net.simpleframework.mvc.component.base.validation.ValidationBean;
 import net.simpleframework.mvc.component.base.validation.Validator;
-import net.simpleframework.mvc.component.ui.htmleditor.HtmlEditorBean;
+import net.simpleframework.mvc.component.ext.ckeditor.HtmlEditorBean;
 import net.simpleframework.mvc.component.ui.pager.AbstractPagerHandler;
 import net.simpleframework.mvc.component.ui.pager.EPagerBarLayout;
 import net.simpleframework.mvc.component.ui.pager.PagerBean;
