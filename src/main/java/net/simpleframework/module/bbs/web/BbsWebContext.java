@@ -3,6 +3,7 @@ package net.simpleframework.module.bbs.web;
 import static net.simpleframework.common.I18n.$m;
 import net.simpleframework.ctx.IModuleRef;
 import net.simpleframework.ctx.Module;
+import net.simpleframework.ctx.ModuleFunctions;
 import net.simpleframework.module.bbs.impl.BbsContext;
 import net.simpleframework.mvc.ctx.WebModuleFunction;
 
@@ -41,8 +42,15 @@ public class BbsWebContext extends BbsContext implements IBbsWebContext {
 
 	@Override
 	protected Module createModule() {
-		return super.createModule().setDefaultFunction(
-				new WebModuleFunction().setUrl(getUrlsFactory().getCategoryUrl(null))
-						.setName(MODULE_NAME + "-BbsCategoryTPage").setText($m("BbsContext.0")));
+		return super.createModule().setDefaultFunction(FUNC_CATEGORY);
 	}
+
+	@Override
+	protected ModuleFunctions getFunctions() {
+		return ModuleFunctions.of(FUNC_CATEGORY);
+	}
+
+	public WebModuleFunction FUNC_CATEGORY = (WebModuleFunction) new WebModuleFunction()
+			.setUrl(getUrlsFactory().getCategoryUrl(null)).setName(MODULE_NAME + "-BbsCategoryTPage")
+			.setText($m("BbsContext.0"));
 }
