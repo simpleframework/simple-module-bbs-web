@@ -66,8 +66,8 @@ import net.simpleframework.mvc.template.struct.Pagelets;
 public class BbsCategoryTPage extends AbstractBbsTPage {
 
 	@Override
-	protected void addComponents(final PageParameter pp) {
-		super.addComponents(pp);
+	protected void onForward(final PageParameter pp) {
+		super.onForward(pp);
 
 		// 菜单
 		addTopicMenuBean(pp);

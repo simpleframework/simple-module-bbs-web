@@ -71,8 +71,8 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 	}
 
 	@Override
-	protected void addComponents(final PageParameter pp) {
-		super.addComponents(pp);
+	protected void onForward(final PageParameter pp) {
+		super.onForward(pp);
 		// 验证
 		addFormValidationBean(pp).addValidators(
 				new Validator(EValidatorMethod.required, "#te_topic, #te_categoryText, #te_content"));

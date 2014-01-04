@@ -29,8 +29,8 @@ public class BbsAttachmentTooltipPage extends AbstractAttachmentTooltipPage impl
 		IBbsContextAware {
 
 	@Override
-	protected void addComponents(final PageParameter pp) {
-		super.addComponents(pp);
+	protected void onForward(final PageParameter pp) {
+		super.onForward(pp);
 
 		addComponentBean(pp, "AttachmentTooltipPage_logPage", AjaxRequestBean.class).setUrlForward(
 				url(BbsDownloadLogPage.class));

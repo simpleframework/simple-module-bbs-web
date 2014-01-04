@@ -42,8 +42,8 @@ import net.simpleframework.mvc.template.lets.TopBar_PageletsPage;
 public abstract class AbstractBbsTPage extends TopBar_PageletsPage implements IBbsContextAware {
 
 	@Override
-	protected void addImportCSS(final PageParameter pp) {
-		super.addImportCSS(pp);
+	protected void onForward(final PageParameter pp) {
+		super.onForward(pp);
 
 		pp.addImportCSS(AbstractBbsTPage.class, "/bbs.css");
 	}

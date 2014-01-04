@@ -97,16 +97,14 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 	protected void onForward(final PageParameter pp) {
 		super.onForward(pp);
 
+		pp.addImportJavascript(AbstractBbsTPage.class, "/js/bbs.js");
+
 		final BbsTopic topic = getTopic(pp);
 		ContentUtils.updateViews(pp, topic, context.getTopicService());
 
 		// 记录到cookies
 		ContentUtils.addViewsCookie(pp, "bbs_views", topic.getId());
-	}
 
-	@Override
-	protected void addComponents(final PageParameter pp) {
-		super.addComponents(pp);
 		// 分页
 		addComponentBean(pp, "BbsPostViewTPage_pager", PagerBean.class)
 				.setPagerBarLayout(EPagerBarLayout.bottom).setNoResultDesc(null)
@@ -206,13 +204,6 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 				.setHook(new Hook(ETipPosition.rightTop, ETipPosition.topLeft))
 				.setHideOn(new HideOn(ETipElement.closeButton, EElementEvent.click)).setWidth(380)
 				.setJsTipCreate(js.toString()));
-	}
-
-	@Override
-	protected void addImportJavascript(final PageParameter pp) {
-		super.addImportJavascript(pp);
-
-		pp.addImportJavascript(AbstractBbsTPage.class, "/js/bbs.js");
 	}
 
 	@Override
