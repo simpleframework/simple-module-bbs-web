@@ -2,13 +2,10 @@ package net.simpleframework.module.bbs.web;
 
 import java.io.File;
 
-import net.simpleframework.ado.bean.IIdBeanAware;
 import net.simpleframework.ctx.IModuleRef;
 import net.simpleframework.module.bbs.IBbsContext;
 import net.simpleframework.module.bbs.IBbsContextAware;
 import net.simpleframework.module.common.web.content.IContentRefAware;
-import net.simpleframework.module.log.web.page.DownloadLogPage;
-import net.simpleframework.mvc.PageParameter;
 import net.simpleframework.mvc.common.IDownloadHandler;
 
 /**
@@ -34,14 +31,6 @@ public interface IBbsWebContext extends IBbsContext, IContentRefAware {
 	 * @return
 	 */
 	BbsUrlsFactory getUrlsFactory();
-
-	public static class BbsDownloadLogPage extends DownloadLogPage implements IBbsContextAware {
-
-		@Override
-		protected IIdBeanAware getBean(final PageParameter pp) {
-			return context.getAttachmentService().getBean(pp.getParameter(getBeanIdParameter()));
-		}
-	}
 
 	public static class AttachmentDownloadHandler implements IDownloadHandler, IBbsContextAware {
 

@@ -14,7 +14,6 @@ import net.simpleframework.common.Convert;
 import net.simpleframework.common.web.html.HtmlUtils;
 import net.simpleframework.common.web.html.HtmlUtils.IElementVisitor;
 import net.simpleframework.ctx.common.bean.AttachmentFile;
-import net.simpleframework.ctx.service.ado.db.IDbBeanService;
 import net.simpleframework.ctx.trans.Transaction;
 import net.simpleframework.lib.org.jsoup.nodes.Document;
 import net.simpleframework.module.bbs.BbsCategory;
@@ -24,21 +23,18 @@ import net.simpleframework.module.bbs.IBbsCategoryService;
 import net.simpleframework.module.bbs.IBbsContext;
 import net.simpleframework.module.bbs.IBbsContextAware;
 import net.simpleframework.module.bbs.IBbsTopicService;
+import net.simpleframework.module.bbs.web.BbsLogRef.BbsTopicAttachmentAction;
 import net.simpleframework.module.bbs.web.IBbsWebContext;
 import net.simpleframework.module.common.content.Attachment;
 import net.simpleframework.module.common.content.ContentException;
 import net.simpleframework.module.common.content.IAttachmentService;
-import net.simpleframework.module.log.web.hdl.AbstractAttachmentLogHandler;
 import net.simpleframework.mvc.JavascriptForward;
 import net.simpleframework.mvc.PageParameter;
-import net.simpleframework.mvc.common.element.AbstractElement;
 import net.simpleframework.mvc.common.element.ButtonElement;
 import net.simpleframework.mvc.common.element.Checkbox;
 import net.simpleframework.mvc.common.element.ElementList;
-import net.simpleframework.mvc.common.element.ImageElement;
 import net.simpleframework.mvc.common.element.InputElement;
 import net.simpleframework.mvc.common.element.LinkButton;
-import net.simpleframework.mvc.common.element.LinkElement;
 import net.simpleframework.mvc.common.element.RowField;
 import net.simpleframework.mvc.common.element.SpanElement;
 import net.simpleframework.mvc.common.element.TableRow;
@@ -301,38 +297,6 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 			final Map<String, Object> attri = super.getTreenodeAttributes(cp, treeNode, children);
 			attri.put(TN_ATTRI_SELECT_DISABLE, children != null && children.size() > 0);
 			return attri;
-		}
-	}
-
-	public static class BbsTopicAttachmentAction extends
-			AbstractAttachmentLogHandler<Attachment, BbsTopic> {
-
-		@Override
-		protected IAttachmentService<Attachment> getAttachmentService() {
-			return context.getAttachmentService();
-		}
-
-		@Override
-		protected IDbBeanService<BbsTopic> getOwnerService() {
-			return context.getTopicService();
-		}
-
-		@Override
-		protected String getOwnerIdParameterKey() {
-			return "topicId";
-		}
-
-		@Override
-		public AbstractElement<?> getDownloadLink(final ComponentParameter cp,
-				final AttachmentFile attachmentFile, final String id) {
-			if (Convert.toBool(cp.getParameter("opt_viewer"))) {
-				final ImageElement iElement = createImageViewer(cp, attachmentFile, id);
-				if (iElement != null) {
-					return iElement;
-				}
-			}
-			return new LinkElement(attachmentFile.getTopic())
-					.setOnclick("$Actions['BbsPostViewTPage_download']('id=" + id + "');");
 		}
 	}
 }

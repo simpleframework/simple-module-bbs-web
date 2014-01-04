@@ -3,13 +3,23 @@ package net.simpleframework.module.bbs.web;
 import java.io.File;
 
 import net.simpleframework.ado.bean.IIdBeanAware;
+import net.simpleframework.common.Convert;
+import net.simpleframework.ctx.common.bean.AttachmentFile;
+import net.simpleframework.ctx.service.ado.db.IDbBeanService;
+import net.simpleframework.module.bbs.BbsTopic;
 import net.simpleframework.module.bbs.IBbsContextAware;
 import net.simpleframework.module.common.content.Attachment;
 import net.simpleframework.module.common.content.IAttachmentService;
 import net.simpleframework.module.log.LogRef;
+import net.simpleframework.module.log.web.hdl.AbstractAttachmentLogHandler;
+import net.simpleframework.module.log.web.page.DownloadLogPage;
 import net.simpleframework.module.log.web.page.EntityUpdateLogPage;
 import net.simpleframework.mvc.AbstractMVCPage;
 import net.simpleframework.mvc.PageParameter;
+import net.simpleframework.mvc.common.element.AbstractElement;
+import net.simpleframework.mvc.common.element.ImageElement;
+import net.simpleframework.mvc.common.element.LinkElement;
+import net.simpleframework.mvc.component.ComponentParameter;
 import net.simpleframework.mvc.component.base.ajaxrequest.AjaxRequestBean;
 import net.simpleframework.mvc.component.ui.window.WindowBean;
 
@@ -50,6 +60,46 @@ public class BbsLogRef extends LogRef implements IBbsContextAware {
 		@Override
 		public String getBeanIdParameter() {
 			return "topicId";
+		}
+	}
+
+	public static class BbsDownloadLogPage extends DownloadLogPage implements IBbsContextAware {
+
+		@Override
+		protected IIdBeanAware getBean(final PageParameter pp) {
+			return context.getAttachmentService().getBean(pp.getParameter(getBeanIdParameter()));
+		}
+	}
+
+	public static class BbsTopicAttachmentAction extends
+			AbstractAttachmentLogHandler<Attachment, BbsTopic> {
+
+		@Override
+		protected IAttachmentService<Attachment> getAttachmentService() {
+			return context.getAttachmentService();
+		}
+
+		@Override
+		protected IDbBeanService<BbsTopic> getOwnerService() {
+			return context.getTopicService();
+		}
+
+		@Override
+		protected String getOwnerIdParameterKey() {
+			return "topicId";
+		}
+
+		@Override
+		public AbstractElement<?> getDownloadLink(final ComponentParameter cp,
+				final AttachmentFile attachmentFile, final String id) {
+			if (Convert.toBool(cp.getParameter("opt_viewer"))) {
+				final ImageElement iElement = createImageViewer(cp, attachmentFile, id);
+				if (iElement != null) {
+					return iElement;
+				}
+			}
+			return new LinkElement(attachmentFile.getTopic())
+					.setOnclick("$Actions['BbsPostViewTPage_download']('id=" + id + "');");
 		}
 	}
 }
