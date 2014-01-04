@@ -2,6 +2,7 @@ package net.simpleframework.module.bbs.web.page;
 
 import static net.simpleframework.common.I18n.$m;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -102,7 +103,7 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 
 	@Transaction(context = IBbsContext.class)
 	@Override
-	public JavascriptForward onSave(final ComponentParameter cp) {
+	public JavascriptForward onSave(final ComponentParameter cp) throws IOException {
 		final BbsCategory category = context.getCategoryService().getBean(
 				cp.getParameter("te_categoryId"));
 		if (category == null) {

@@ -430,7 +430,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 		}
 
 		@Override
-		public JavascriptForward onSave(final ComponentParameter cp) {
+		public JavascriptForward onSave(final ComponentParameter cp) throws Exception {
 			final JavascriptForward js = super.onSave(cp);
 			js.append("$Actions['BbsTopicListTPage_tbl']();");
 			return js;
@@ -447,7 +447,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 		}
 
 		@Override
-		public JavascriptForward onSave(final ComponentParameter cp) {
+		public JavascriptForward onSave(final ComponentParameter cp) throws Exception {
 			final BbsTopic topic = getTopic(cp);
 			if (topic != null) {
 				topic.setBest(!topic.isBest());
