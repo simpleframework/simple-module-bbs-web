@@ -32,11 +32,13 @@ public class BbsAttachmentTooltipPage extends AbstractAttachmentTooltipPage impl
 	protected void onForward(final PageParameter pp) {
 		super.onForward(pp);
 
-		addComponentBean(pp, "AttachmentTooltipPage_logPage", AjaxRequestBean.class).setUrlForward(
-				url(BbsDownloadLogPage.class));
-		addComponentBean(pp, "AttachmentTooltipPage_logWin", WindowBean.class)
-				.setContentRef("AttachmentTooltipPage_logPage").setHeight(480).setWidth(800)
-				.setTitle($m("NewsFormAttachPage.5"));
+		if (((IBbsWebContext) context).getLogRef() != null) {
+			addComponentBean(pp, "AttachmentTooltipPage_logPage", AjaxRequestBean.class)
+					.setUrlForward(url(BbsDownloadLogPage.class));
+			addComponentBean(pp, "AttachmentTooltipPage_logWin", WindowBean.class)
+					.setContentRef("AttachmentTooltipPage_logPage").setHeight(480).setWidth(800)
+					.setTitle($m("NewsFormAttachPage.5"));
+		}
 	}
 
 	@Override
@@ -74,7 +76,11 @@ public class BbsAttachmentTooltipPage extends AbstractAttachmentTooltipPage impl
 		if (downloads <= 0) {
 			return 0;
 		}
-		return LinkButton.corner(downloads).setOnclick(
-				"$Actions['AttachmentTooltipPage_logWin']('beanId=" + attachment.getId() + "');");
+		if (((IBbsWebContext) context).getLogRef() != null) {
+			return LinkButton.corner(downloads).setOnclick(
+					"$Actions['AttachmentTooltipPage_logWin']('beanId=" + attachment.getId() + "');");
+		} else {
+			return downloads;
+		}
 	}
 }
