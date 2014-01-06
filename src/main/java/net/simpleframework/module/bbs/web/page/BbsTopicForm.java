@@ -132,7 +132,8 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 				cp.getComponentBeanByName("BbsTopicForm_upload_page"));
 		AttachmentUtils.doSave(nCP, new IAttachmentSaveCallback() {
 			@Override
-			public void save(final Map<String, AttachmentFile> addQueue, final Set<String> deleteQueue) {
+			public void save(final Map<String, AttachmentFile> addQueue, final Set<String> deleteQueue)
+					throws IOException {
 				final IAttachmentService<Attachment> aService = context.getAttachmentService();
 				if (insert) {
 					service.insert(topic2);
