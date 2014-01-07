@@ -2,7 +2,6 @@ package net.simpleframework.module.bbs.web;
 
 import java.io.File;
 
-import net.simpleframework.ado.bean.IIdBeanAware;
 import net.simpleframework.common.Convert;
 import net.simpleframework.ctx.common.bean.AttachmentFile;
 import net.simpleframework.ctx.service.ado.db.IDbBeanService;
@@ -53,12 +52,12 @@ public class BbsLogRef extends LogRef implements IBbsContextAware {
 
 	public static class BbsTopicLogPage extends EntityUpdateLogPage {
 		@Override
-		protected IIdBeanAware getBean(final PageParameter pp) {
-			return getCacheBean(pp, context.getTopicService(), "topicId");
+		protected IDbBeanService<?> getBeanService() {
+			return context.getTopicService();
 		}
 
 		@Override
-		public String getBeanIdParameter() {
+		public String getBeanIdParameter(final PageParameter pp) {
 			return "topicId";
 		}
 	}
@@ -66,8 +65,8 @@ public class BbsLogRef extends LogRef implements IBbsContextAware {
 	public static class BbsDownloadLogPage extends DownloadLogPage implements IBbsContextAware {
 
 		@Override
-		protected IIdBeanAware getBean(final PageParameter pp) {
-			return context.getAttachmentService().getBean(pp.getParameter(getBeanIdParameter()));
+		protected IDbBeanService<?> getBeanService() {
+			return context.getAttachmentService();
 		}
 	}
 
