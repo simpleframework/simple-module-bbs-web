@@ -1,6 +1,7 @@
 package net.simpleframework.module.bbs.web;
 
 import java.io.File;
+import java.io.IOException;
 
 import net.simpleframework.common.Convert;
 import net.simpleframework.ctx.common.bean.AttachmentFile;
@@ -90,7 +91,7 @@ public class BbsLogRef extends LogRef implements IBbsContextAware {
 
 		@Override
 		public AbstractElement<?> getDownloadLink(final ComponentParameter cp,
-				final AttachmentFile attachmentFile, final String id) {
+				final AttachmentFile attachmentFile, final String id) throws IOException {
 			if (Convert.toBool(cp.getParameter("opt_viewer"))) {
 				final ImageElement iElement = createImageViewer(cp, attachmentFile, id);
 				if (iElement != null) {
