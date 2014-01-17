@@ -31,12 +31,12 @@ $ready(function() {
       var c = btn.up(".BbsContent");
       var r = c.previous();
       if (r.innerHTML != "") {
-        r.$toggle();
+        $Effect.toggle(r);
       } else {
         var act = $Actions["BbsPostViewTPage_replyFrom"];
         act.jsCompleteCallback = function(req, responseText, json) {
           r.update(responseText);
-          r.$show();
+          $Effect.show(r);
         };
         act(params);
       }
