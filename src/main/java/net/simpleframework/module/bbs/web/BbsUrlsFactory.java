@@ -1,8 +1,6 @@
 package net.simpleframework.module.bbs.web;
 
-import net.simpleframework.ado.bean.AbstractIdBean;
-import net.simpleframework.common.web.HttpUtils;
-import net.simpleframework.ctx.permission.PermissionUser;
+import net.simpleframework.common.StringUtils;
 import net.simpleframework.module.bbs.BbsCategory;
 import net.simpleframework.module.bbs.BbsTopic;
 import net.simpleframework.module.bbs.web.page.t2.BbsCategoryPage;
@@ -21,62 +19,38 @@ import net.simpleframework.mvc.common.UrlsCache;
  */
 public class BbsUrlsFactory extends UrlsCache {
 
-	public String getCategoryUrl(final PageParameter pp) {
-		return AbstractMVCPage.url(getCategoryPage());
+	public BbsUrlsFactory() {
+		put(BbsCategoryPage.class);
+		put(BbsTopicListPage.class);
+		put(BbsTopicFormPage.class);
+		put(BbsPostViewPage.class);
 	}
 
-	public String getTopicListUrl(final PageParameter pp, final BbsCategory category) {
-		String url = AbstractMVCPage.url(getTopicListPage());
-		if (category != null) {
-			url += "?categoryId=" + category.getId();
-		}
-		return url;
+	public String getUrl(final PageParameter pp, final Class<? extends AbstractMVCPage> mClass,
+			final BbsCategory category) {
+		return getUrl(pp, mClass, category, null);
 	}
 
-	public String getTopicUserListUrl(final PageParameter pp, final PermissionUser user) {
-		return HttpUtils.addParameters(getTopicListUrl(pp, null), "userId=" + user.getId());
+	public String getUrl(final PageParameter pp, final Class<? extends AbstractMVCPage> mClass,
+			final BbsCategory category, final String params) {
+		return getUrl(
+				pp,
+				mClass,
+				StringUtils.join(new String[] {
+						category != null ? "categoryId=" + category.getId() : null, params }, "&"));
 	}
 
-	public String getTopicMyListUrl(final PageParameter pp, final BbsCategory category) {
-		String url = getTopicListUrl(pp, category);
-		final String list = pp.getParameter("list");
-		if ("my".equals(list)) {
-			url = HttpUtils.addParameters(url, "list=my");
-		}
-		return url;
+	public String getUrl(final PageParameter pp, final Class<? extends AbstractMVCPage> mClass,
+			final BbsTopic topic) {
+		return getUrl(pp, mClass, topic, null);
 	}
 
-	public String getTopicFormUrl(final PageParameter pp, final AbstractIdBean bean) {
-		String url = AbstractMVCPage.url(getTopicFormPage());
-		if (bean instanceof BbsCategory) {
-			url += "?categoryId=" + bean.getId();
-		} else if (bean instanceof BbsTopic) {
-			url += "?topicId=" + bean.getId();
-		}
-		return url;
-	}
-
-	public String getPostViewUrl(final PageParameter pp, final BbsTopic topic) {
-		String url = AbstractMVCPage.url(getPostViewPage());
-		if (topic != null) {
-			url += "?topicId=" + topic.getId();
-		}
-		return url;
-	}
-
-	protected Class<? extends AbstractMVCPage> getCategoryPage() {
-		return BbsCategoryPage.class;
-	}
-
-	protected Class<? extends AbstractMVCPage> getTopicListPage() {
-		return BbsTopicListPage.class;
-	}
-
-	protected Class<? extends AbstractMVCPage> getTopicFormPage() {
-		return BbsTopicFormPage.class;
-	}
-
-	protected Class<? extends AbstractMVCPage> getPostViewPage() {
-		return BbsPostViewPage.class;
+	public String getUrl(final PageParameter pp, final Class<? extends AbstractMVCPage> mClass,
+			final BbsTopic topic, final String params) {
+		return getUrl(
+				pp,
+				mClass,
+				StringUtils.join(new String[] { topic != null ? "topicId=" + topic.getId() : null,
+						params }, "&"));
 	}
 }

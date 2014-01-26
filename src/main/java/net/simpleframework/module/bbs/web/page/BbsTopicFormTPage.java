@@ -7,6 +7,8 @@ import java.util.Map;
 
 import net.simpleframework.module.bbs.BbsCategory;
 import net.simpleframework.module.bbs.IBbsContextAware;
+import net.simpleframework.module.bbs.web.page.t2.BbsCategoryPage;
+import net.simpleframework.module.bbs.web.page.t2.BbsTopicListPage;
 import net.simpleframework.mvc.IForward;
 import net.simpleframework.mvc.PageParameter;
 import net.simpleframework.mvc.common.element.LinkElement;
@@ -52,12 +54,12 @@ public class BbsTopicFormTPage extends AbstractBbsTPage implements IBbsContextAw
 	@Override
 	public NavigationButtons getNavigationBar(final PageParameter pp) {
 		final NavigationButtons btns = NavigationButtons.of(new LinkElement(context.getModule())
-				.setHref(getUrlsFactory().getCategoryUrl(pp)));
+				.setHref(getUrlsFactory().getUrl(pp, BbsCategoryPage.class)));
 		final BbsCategory category = BbsPostViewTPage.getCategory(pp);
 		if (category != null) {
 			btns.append(new SpanElement().addElements(
-					new LinkElement(category.getText()).setHref(getUrlsFactory().getTopicListUrl(pp,
-							category)), createCategoryDictMenu(pp)));
+					new LinkElement(category.getText()).setHref(getUrlsFactory().getUrl(pp,
+							BbsTopicListPage.class, category)), createCategoryDictMenu(pp)));
 		}
 		return btns.append(new SpanElement($m("BbsTopicFormTPage.7")));
 	}

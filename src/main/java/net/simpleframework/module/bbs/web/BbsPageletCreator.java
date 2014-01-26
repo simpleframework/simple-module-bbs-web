@@ -8,6 +8,7 @@ import java.util.Date;
 import net.simpleframework.ctx.service.ado.IADOBeanService;
 import net.simpleframework.module.bbs.BbsTopic;
 import net.simpleframework.module.bbs.IBbsContextAware;
+import net.simpleframework.module.bbs.web.page.t2.BbsPostViewPage;
 import net.simpleframework.module.common.web.content.ListRowHandler;
 import net.simpleframework.module.common.web.content.PageletCreator;
 import net.simpleframework.mvc.PageParameter;
@@ -36,7 +37,7 @@ public class BbsPageletCreator extends PageletCreator<BbsTopic> implements IBbsC
 	public static class BbsListRowHandler extends ListRowHandler<BbsTopic> {
 		@Override
 		protected String getHref(final PageParameter pp, final BbsTopic bean) {
-			return ((IBbsWebContext) context).getUrlsFactory().getPostViewUrl(pp, bean);
+			return ((IBbsWebContext) context).getUrlsFactory().getUrl(pp, BbsPostViewPage.class, bean);
 		}
 
 		@Override

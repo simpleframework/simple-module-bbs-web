@@ -5,6 +5,7 @@ import net.simpleframework.ctx.IModuleRef;
 import net.simpleframework.ctx.Module;
 import net.simpleframework.ctx.ModuleFunctions;
 import net.simpleframework.module.bbs.impl.BbsContext;
+import net.simpleframework.module.bbs.web.page.t2.BbsCategoryPage;
 import net.simpleframework.mvc.ctx.WebModuleFunction;
 
 /**
@@ -51,6 +52,6 @@ public class BbsWebContext extends BbsContext implements IBbsWebContext {
 	}
 
 	public WebModuleFunction FUNC_CATEGORY = (WebModuleFunction) new WebModuleFunction()
-			.setUrl(getUrlsFactory().getCategoryUrl(null)).setName(MODULE_NAME + "-BbsCategoryTPage")
-			.setText($m("BbsContext.0"));
+			.setUrl(getUrlsFactory().getUrl(null, BbsCategoryPage.class))
+			.setName(MODULE_NAME + "-BbsCategoryTPage").setText($m("BbsContext.0"));
 }

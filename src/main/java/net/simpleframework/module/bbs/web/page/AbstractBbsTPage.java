@@ -14,6 +14,8 @@ import net.simpleframework.module.bbs.EBbsType;
 import net.simpleframework.module.bbs.IBbsContextAware;
 import net.simpleframework.module.bbs.web.BbsUrlsFactory;
 import net.simpleframework.module.bbs.web.IBbsWebContext;
+import net.simpleframework.module.bbs.web.page.t2.BbsTopicFormPage;
+import net.simpleframework.module.bbs.web.page.t2.BbsTopicListPage;
 import net.simpleframework.mvc.PageParameter;
 import net.simpleframework.mvc.common.element.InputElement;
 import net.simpleframework.mvc.common.element.LinkElement;
@@ -63,7 +65,8 @@ public abstract class AbstractBbsTPage extends TopBar_PageletsPage implements IB
 				.setClearAction("false")
 				.addTreeRef(pp, "AbstractBbsTPage_category_tree")
 				.setJsSelectCallback(
-						"$Actions.loc('" + getUrlsFactory().getTopicListUrl(pp, null)
+						"$Actions.loc('"
+								+ getUrlsFactory().getUrl(pp, BbsTopicListPage.class, (BbsCategory) null)
 								+ "?categoryId=' + selects[0].id);").setHeight(400).setWidth(320)
 				.setTitle($m("BbsTopicListTPage.7"));
 	}
@@ -79,8 +82,9 @@ public abstract class AbstractBbsTPage extends TopBar_PageletsPage implements IB
 					.of(bbsType.toString())
 					.setIconClass("menu_type_" + name)
 					.setUrl(
-							HttpUtils.addParameters(getUrlsFactory().getTopicFormUrl(pp, category), "t="
-									+ name)));
+							HttpUtils.addParameters(
+									getUrlsFactory().getUrl(pp, BbsTopicFormPage.class, category), "t="
+											+ name)));
 		}
 		return mb;
 	}
@@ -103,7 +107,8 @@ public abstract class AbstractBbsTPage extends TopBar_PageletsPage implements IB
 	}
 
 	protected static LinkElement createTopicsLink(final PageParameter pp, final PermissionUser user) {
-		return new LinkElement(user).setHref(getUrlsFactory().getTopicUserListUrl(pp, user));
+		return new LinkElement(user).setHref(getUrlsFactory().getUrl(pp, BbsTopicListPage.class,
+				"userId=" + user.getId()));
 	}
 
 	public static class CategoryDict extends DictionaryTreeHandler {

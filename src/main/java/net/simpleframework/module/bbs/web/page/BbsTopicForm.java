@@ -25,6 +25,7 @@ import net.simpleframework.module.bbs.IBbsContextAware;
 import net.simpleframework.module.bbs.IBbsTopicService;
 import net.simpleframework.module.bbs.web.BbsLogRef.BbsTopicAttachmentAction;
 import net.simpleframework.module.bbs.web.IBbsWebContext;
+import net.simpleframework.module.bbs.web.page.t2.BbsPostViewPage;
 import net.simpleframework.module.common.content.Attachment;
 import net.simpleframework.module.common.content.ContentException;
 import net.simpleframework.module.common.content.IAttachmentService;
@@ -148,8 +149,9 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 		});
 		final JavascriptForward js = new JavascriptForward();
 		js.append("$Actions.loc('")
-				.append(((IBbsWebContext) context).getUrlsFactory().getPostViewUrl(cp, topic))
-				.append("');");
+				.append(
+						((IBbsWebContext) context).getUrlsFactory().getUrl(cp, BbsPostViewPage.class,
+								topic)).append("');");
 		return js;
 	}
 

@@ -25,6 +25,8 @@ import net.simpleframework.module.bbs.IBbsTopicService;
 import net.simpleframework.module.bbs.web.BbsPageletCreator;
 import net.simpleframework.module.bbs.web.BbsUrlsFactory;
 import net.simpleframework.module.bbs.web.IBbsWebContext;
+import net.simpleframework.module.bbs.web.page.t2.BbsCategoryPage;
+import net.simpleframework.module.bbs.web.page.t2.BbsTopicListPage;
 import net.simpleframework.mvc.IForward;
 import net.simpleframework.mvc.PageParameter;
 import net.simpleframework.mvc.TextForward;
@@ -126,18 +128,18 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 	@Override
 	protected TabButtons getCategoryTabs(final PageParameter pp) {
 		final BbsUrlsFactory uFactory = getUrlsFactory();
-		final String url = uFactory.getTopicListUrl(pp, null);
+		final String url = uFactory.getUrl(pp, BbsTopicListPage.class, (BbsCategory) null);
 		final TabButtons tabs = TabButtons.of(
-				new TabButton($m("BbsCategoryTPage.5"), uFactory.getCategoryUrl(pp)), new TabButton(
-						$m("BbsCategoryTPage.6"), url),
+				new TabButton($m("BbsCategoryTPage.5"), uFactory.getUrl(pp, BbsCategoryPage.class)),
+				new TabButton($m("BbsCategoryTPage.6"), url),
 				new TabButton($m("BbsTopic.0"), HttpUtils.addParameters(url, "list=best"))
 						.setTabMatch(ETabMatch.params),
 				new TabButton($m("BbsCategoryTPage.7"), HttpUtils.addParameters(url, "list=my"))
 						.setTabMatch(ETabMatch.params));
 		final PermissionUser user = pp.getUser(pp.getParameter("userId"));
 		if (user.getId() != null) {
-			tabs.append(new TabButton(user, uFactory.getTopicUserListUrl(pp, user))
-					.setTabMatch(ETabMatch.params));
+			tabs.append(new TabButton(user, uFactory.getUrl(pp, BbsTopicListPage.class, "userId="
+					+ user.getId())).setTabMatch(ETabMatch.params));
 		}
 		return tabs;
 	}
@@ -197,8 +199,8 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 		final int topics = context.getTopicService()
 				.queryBeans(category, new TimePeriod(ETimePeriod.day)).getCount();
 		sb.append("<div class='l1'>");
-		sb.append(new LinkElement(category.getText()).setHref(getUrlsFactory().getTopicListUrl(pp,
-				category)));
+		sb.append(new LinkElement(category.getText()).setHref(getUrlsFactory().getUrl(pp,
+				BbsTopicListPage.class, category)));
 		if (topics > 0) {
 			sb.append(new SupElement(topics).setHighlight(true));
 		}

@@ -7,6 +7,7 @@ import net.simpleframework.module.bbs.BbsCategory;
 import net.simpleframework.module.bbs.BbsTopic;
 import net.simpleframework.module.bbs.IBbsContextAware;
 import net.simpleframework.module.bbs.IBbsTopicService;
+import net.simpleframework.module.bbs.web.page.t2.BbsPostViewPage;
 import net.simpleframework.module.common.plugin.ModulePluginFactory;
 import net.simpleframework.module.favorite.FavoriteRef;
 import net.simpleframework.module.favorite.IFavoriteContent;
@@ -87,7 +88,8 @@ public class BbsFavoriteRef extends FavoriteRef implements IBbsContextAware {
 			return new AbstractFavoriteContent(topic) {
 				@Override
 				public String getUrl() {
-					return ((IBbsWebContext) context).getUrlsFactory().getPostViewUrl(pp, topic);
+					return ((IBbsWebContext) context).getUrlsFactory().getUrl(pp, BbsPostViewPage.class,
+							topic);
 				}
 
 				@Override

@@ -30,6 +30,10 @@ import net.simpleframework.module.bbs.IBbsTopicService;
 import net.simpleframework.module.bbs.web.BbsLogRef;
 import net.simpleframework.module.bbs.web.BbsUtils;
 import net.simpleframework.module.bbs.web.IBbsWebContext;
+import net.simpleframework.module.bbs.web.page.t2.BbsCategoryPage;
+import net.simpleframework.module.bbs.web.page.t2.BbsPostViewPage;
+import net.simpleframework.module.bbs.web.page.t2.BbsTopicFormPage;
+import net.simpleframework.module.bbs.web.page.t2.BbsTopicListPage;
 import net.simpleframework.module.common.DescriptionLocalUtils;
 import net.simpleframework.module.common.content.EContentStatus;
 import net.simpleframework.module.common.web.content.page.AbstractRecommendationPage;
@@ -186,7 +190,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 			BbsCategory tmp;
 			int i = 0;
 			while ((tmp = dq.next()) != null) {
-				tabs.add(new TabButton(tmp, getUrlsFactory().getTopicListUrl(pp, tmp))
+				tabs.add(new TabButton(tmp, getUrlsFactory().getUrl(pp, BbsTopicListPage.class, tmp))
 						.setTabMatch(ETabMatch.params));
 				if (++i == 8) {
 					break;
@@ -209,7 +213,9 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 
 	@Override
 	public FilterButtons getFilterButtons(final PageParameter pp) {
-		final String url = getUrlsFactory().getTopicMyListUrl(pp, getCategory(pp));
+		final String list = pp.getParameter("list");
+		final String url = getUrlsFactory().getUrl(pp, BbsTopicListPage.class, getCategory(pp),
+				StringUtils.hasText(list) ? "list=" + list : null);
 		final FilterButtons btns = FilterButtons.of();
 		final BbsAdvSearchPage sPage = singleton(BbsAdvSearchPage.class);
 		FilterButton btn = sPage.createFilterButton(pp, url, "as_topic");
@@ -236,22 +242,26 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 	@Override
 	public ElementList getRightElements(final PageParameter pp) {
 		final BbsCategory category = getCategory(pp);
+		final String list = pp.getParameter("list");
 		return ElementList.of(new SearchInput("AbstractBbsTPage_search")
 				.setOnSearchClick(
 						"$Actions.loc('"
-								+ HttpUtils.addParameters(getUrlsFactory().getTopicListUrl(pp, null), "s=")
+								+ HttpUtils.addParameters(
+										getUrlsFactory().getUrl(pp, BbsTopicListPage.class,
+												(BbsCategory) null), "s=")
 								+ "' + encodeURIComponent($F('AbstractBbsTPage_search')))")
 				.setOnAdvClick(
 						"$Actions['AbstractBbsTPage_SearchWindow']('"
-								+ AdvSearchPage.encodeRefererUrl(getUrlsFactory().getTopicMyListUrl(pp,
-										category)) + "');")
+								+ AdvSearchPage.encodeRefererUrl(getUrlsFactory().getUrl(pp,
+										BbsTopicListPage.class, category,
+										StringUtils.hasText(list) ? "list=" + list : null)) + "');")
 				.setText(StringUtils.blank(pp.getLocaleParameter("s"))));
 	}
 
 	@Override
 	public NavigationButtons getNavigationBar(final PageParameter pp) {
 		final LinkElement home = new LinkElement(context.getModule()).setHref(getUrlsFactory()
-				.getCategoryUrl(pp));
+				.getUrl(pp, BbsCategoryPage.class));
 		final BbsCategory category = getCategory(pp);
 		final NavigationButtons btns = NavigationButtons.of();
 		String cText = null;
@@ -327,7 +337,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 				.of()
 				.append(
 						MenuItem.itemEdit().setOnclick(
-								"$Actions.loc('" + getUrlsFactory().getTopicFormUrl(null, null)
+								"$Actions.loc('" + getUrlsFactory().getUrl(null, BbsTopicFormPage.class)
 										+ "?topicId=' + $pager_action(item).rowId());"))
 				.append(MenuItem.sep())
 				.append(
@@ -368,13 +378,14 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 						category = context.getCategoryService().getBean(topic.getCategoryId());
 						if (category != null) {
 							sb.append("<span class='categoryTxt'>[");
-							sb.append(new LinkElement(category.getText()).setHref(getUrlsFactory()
-									.getTopicListUrl(cp, category)));
+							sb.append(new LinkElement(category.getText()).setHref(getUrlsFactory().getUrl(
+									cp, BbsTopicListPage.class, category)));
 							sb.append("]</span>");
 						}
 					}
 					final LinkElement le = new LinkElement(topic.getTopic()).setHref(
-							getUrlsFactory().getPostViewUrl(cp, topic)).setClassName("bbsTopic");
+							getUrlsFactory().getUrl(cp, BbsPostViewPage.class, topic)).setClassName(
+							"bbsTopic");
 					if (topic.getRecommendation() > 0) {
 						le.addClassName("recommendation");
 					}
@@ -396,7 +407,8 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 					if (getTablePagerColumns(cp).get(TablePagerColumn.OPE) != null) {
 						sb.setLength(0);
 						sb.append(ButtonElement.editBtn().setOnclick(
-								"$Actions.loc('" + getUrlsFactory().getTopicFormUrl(cp, topic) + "');"));
+								"$Actions.loc('"
+										+ getUrlsFactory().getUrl(cp, BbsTopicFormPage.class, topic) + "');"));
 						sb.append(SpanElement.SPACE).append(AbstractTablePagerSchema.IMG_DOWNMENU);
 						kv.put(TablePagerColumn.OPE, sb.toString());
 					}

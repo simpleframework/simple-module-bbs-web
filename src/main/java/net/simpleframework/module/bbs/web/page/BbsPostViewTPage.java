@@ -46,6 +46,10 @@ import net.simpleframework.module.bbs.web.BbsUrlsFactory;
 import net.simpleframework.module.bbs.web.BbsUtils;
 import net.simpleframework.module.bbs.web.IBbsWebContext;
 import net.simpleframework.module.bbs.web.IBbsWebContext.AttachmentDownloadHandler;
+import net.simpleframework.module.bbs.web.page.t2.BbsCategoryPage;
+import net.simpleframework.module.bbs.web.page.t2.BbsPostViewPage;
+import net.simpleframework.module.bbs.web.page.t2.BbsTopicFormPage;
+import net.simpleframework.module.bbs.web.page.t2.BbsTopicListPage;
 import net.simpleframework.module.common.content.Attachment;
 import net.simpleframework.module.common.content.ContentException;
 import net.simpleframework.module.common.content.IAttachmentService;
@@ -241,7 +245,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		final BbsPost post = getPost(cp, "postId");
 		context.getPostService().delete(post.getId());
 		return new JavascriptForward("$Actions.loc('").append(
-				getUrlsFactory().getPostViewUrl(cp, getTopic(cp))).append("');");
+				getUrlsFactory().getUrl(cp, BbsPostViewPage.class, getTopic(cp))).append("');");
 	}
 
 	public IForward doAjaxVote(final ComponentParameter cp) {
@@ -278,7 +282,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		final BbsPost post = getPost(cp, "postId");
 		context.getPostService().doBestAnswer(post);
 		return new JavascriptForward("$Actions.loc('").append(
-				getUrlsFactory().getPostViewUrl(cp, getTopic(cp))).append("');");
+				getUrlsFactory().getUrl(cp, BbsPostViewPage.class, getTopic(cp))).append("');");
 	}
 
 	public IForward doRemarkList(final ComponentParameter cp) {
@@ -308,7 +312,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 				final BbsTopic topic = getTopic(cp);
 				if (topic != null) {
 					return new JavascriptForward("$Actions.loc('").append(
-							getUrlsFactory().getTopicFormUrl(cp, topic)).append("');");
+							getUrlsFactory().getUrl(cp, BbsTopicFormPage.class, topic)).append("');");
 				}
 			}
 		}
@@ -373,7 +377,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 			service.update(post);
 		}
 		return new JavascriptForward("$Actions.loc('").append(
-				getUrlsFactory().getPostViewUrl(cp, topic)).append("');");
+				getUrlsFactory().getUrl(cp, BbsPostViewPage.class, topic)).append("');");
 	}
 
 	protected String doPostContent(final PageParameter pp, final Object bean, final Document doc) {
@@ -406,7 +410,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		// return doc.html();
 		final StringBuilder sb = new StringBuilder();
 		sb.append("<div class='topb'>");
-		String url = getUrlsFactory().getPostViewUrl(pp, topic);
+		String url = getUrlsFactory().getUrl(pp, BbsPostViewPage.class, topic);
 		if (pp.getBoolParameter("order")) {
 			sb.append(new LinkElement("#(BbsPostViewTPage.14)").setHref(url));
 		} else {
@@ -605,11 +609,11 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		final BbsTopic topic = getTopic(pp);
 		if (getPost(pp, "replyId") != null || pp.getUser(pp.getParameter("userId")).getId() != null) {
 			sb.append("<span class='span_btn_left' onclick=\"$Actions.loc('");
-			sb.append(getUrlsFactory().getPostViewUrl(pp, topic)).append("');\">");
+			sb.append(getUrlsFactory().getUrl(pp, BbsPostViewPage.class, topic)).append("');\">");
 			sb.append("#(BbsPostViewTPage.12)");
 			sb.append("</span>");
 		} else {
-			final String url = getUrlsFactory().getPostViewUrl(pp, topic);
+			final String url = getUrlsFactory().getUrl(pp, BbsPostViewPage.class, topic);
 			sb.append("<span class='span_btn_left' onclick=\"$Actions.loc('")
 					.append(HttpUtils.addParameters(url, "userId=" + post.getUserId())).append("');\">");
 			sb.append("#(BbsPostViewTPage.15)");
@@ -693,10 +697,10 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		final BbsTopic topic = getTopic(pp);
 		final BbsUrlsFactory urls = getUrlsFactory();
 		final BbsCategory category = context.getCategoryService().getBean(topic.getCategoryId());
-		return NavigationButtons.of(new LinkElement(context.getModule()).setHref(urls
-				.getCategoryUrl(pp)), new SpanElement().addElements(
-				new LinkElement(category.getText()).setHref(urls.getTopicListUrl(pp, category)),
-				createCategoryDictMenu(pp)));
+		return NavigationButtons.of(new LinkElement(context.getModule()).setHref(urls.getUrl(pp,
+				BbsCategoryPage.class)), new SpanElement().addElements(
+				new LinkElement(category.getText()).setHref(urls.getUrl(pp, BbsTopicListPage.class,
+						category)), createCategoryDictMenu(pp)));
 	}
 
 	public IForward doPageletTab(final ComponentParameter cp) {
