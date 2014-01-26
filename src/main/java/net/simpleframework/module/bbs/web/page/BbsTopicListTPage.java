@@ -105,7 +105,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 			// 推荐
 			addAjaxRequest(pp, "BbsTopicListTPage_recommendationPage", RecommendationPage.class);
 			addComponentBean(pp, "BbsTopicListTPage_recommendation", WindowBean.class)
-					.setContentRef("BbsTopicListTPage_recommendationPage").setHeight(240).setWidth(450)
+					.setContentRef("BbsTopicListTPage_recommendationPage").setHeight(270).setWidth(460)
 					.setTitle($m("AbstractContentBean.2"));
 
 			// topic属性
