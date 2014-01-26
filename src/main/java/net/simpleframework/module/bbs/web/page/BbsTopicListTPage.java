@@ -24,6 +24,7 @@ import net.simpleframework.ctx.permission.PermissionUser;
 import net.simpleframework.ctx.trans.Transaction;
 import net.simpleframework.module.bbs.BbsCategory;
 import net.simpleframework.module.bbs.BbsTopic;
+import net.simpleframework.module.bbs.EBbsType;
 import net.simpleframework.module.bbs.IBbsCategoryService;
 import net.simpleframework.module.bbs.IBbsContext;
 import net.simpleframework.module.bbs.IBbsTopicService;
@@ -48,6 +49,7 @@ import net.simpleframework.mvc.common.element.Icon;
 import net.simpleframework.mvc.common.element.InputElement;
 import net.simpleframework.mvc.common.element.LinkButton;
 import net.simpleframework.mvc.common.element.LinkElement;
+import net.simpleframework.mvc.common.element.Option;
 import net.simpleframework.mvc.common.element.PhotoImage;
 import net.simpleframework.mvc.common.element.RowField;
 import net.simpleframework.mvc.common.element.SearchInput;
@@ -91,12 +93,10 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 		addTopicMenuBean(pp);
 		// 类目选择
 		addCategoryDict(pp);
-
 		// 高级搜索
 		addSearchWindow(pp);
 
 		final TablePagerBean tablePager = addTablePagerBean(pp);
-
 		if (BbsUtils.isManager(pp, getCategory(pp))) {
 			tablePager.addColumn(TablePagerColumn.OPE().setWidth(75).setResize(false));
 
@@ -108,11 +108,11 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 					.setContentRef("BbsTopicListTPage_recommendationPage").setHeight(240).setWidth(450)
 					.setTitle($m("AbstractContentBean.2"));
 
-			// 精华
-			addAjaxRequest(pp, "BbsTopicListTPage_bestPage", BestPage.class);
-			addComponentBean(pp, "BbsTopicListTPage_best", WindowBean.class)
-					.setContentRef("BbsTopicListTPage_bestPage").setHeight(240).setWidth(450)
-					.setTitle($m("BbsTopic.0"));
+			// topic属性
+			addAjaxRequest(pp, "BbsTopicListTPage_advPage", TopicAdvPage.class);
+			addComponentBean(pp, "BbsTopicListTPage_adv", WindowBean.class)
+					.setContentRef("BbsTopicListTPage_advPage").setHeight(270).setWidth(460)
+					.setTitle($m("BbsTopicListTPage.10"));
 
 			// 修改日志
 			final IModuleRef ref = ((IBbsWebContext) context).getLogRef();
@@ -333,27 +333,25 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 			return service.queryByParams(params);
 		}
 
-		private final MenuItems CONTEXT_MENUS = MenuItems
-				.of()
-				.append(
-						MenuItem.itemEdit().setOnclick(
-								"$Actions.loc('" + getUrlsFactory().getUrl(null, BbsTopicFormPage.class)
-										+ "?topicId=' + $pager_action(item).rowId());"))
-				.append(MenuItem.sep())
-				.append(
-						MenuItem.of($m("AbstractContentBean.2")).setOnclick_act(
-								"BbsTopicListTPage_recommendation", "topicId"))
-				.append(
-						MenuItem.of($m("BbsTopic.0")).setOnclick_act("BbsTopicListTPage_best", "topicId"))
-				.append(MenuItem.sep())
-				.append(MenuItem.itemDelete().setOnclick_act("BbsTopicListTPage_delete", "topicId"))
-				.append(MenuItem.sep())
-				.append(MenuItem.itemLog().setOnclick_act("BbsTopicListTPage_logWin", "topicId"));
-
 		@Override
 		public MenuItems getContextMenu(final ComponentParameter cp, final MenuBean menuBean,
 				final MenuItem menuItem) {
-			return menuItem == null ? CONTEXT_MENUS : null;
+			return MenuItems
+					.of()
+					.append(
+							MenuItem.itemEdit().setOnclick(
+									"$Actions.loc('" + getUrlsFactory().getUrl(null, BbsTopicFormPage.class)
+											+ "?topicId=' + $pager_action(item).rowId());"))
+					.append(MenuItem.sep())
+					.append(
+							MenuItem.of($m("AbstractContentBean.2")).setOnclick_act(
+									"BbsTopicListTPage_recommendation", "topicId"))
+					.append(
+							MenuItem.of($m("BbsTopicListTPage.10")).setOnclick_act(
+									"BbsTopicListTPage_adv", "topicId")).append(MenuItem.sep())
+					.append(MenuItem.itemDelete().setOnclick_act("BbsTopicListTPage_delete", "topicId"))
+					.append(MenuItem.sep())
+					.append(MenuItem.itemLog().setOnclick_act("BbsTopicListTPage_logWin", "topicId"));
 		}
 
 		@Override
@@ -449,23 +447,24 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 		}
 	}
 
-	public static class BestPage extends FormTableRowTemplatePage {
+	public static class TopicAdvPage extends FormTableRowTemplatePage {
 
 		@Override
 		protected void onForward(final PageParameter pp) {
 			super.onForward(pp);
 
 			addFormValidationBean(pp).addValidators(
-					new Validator(EValidatorMethod.required, "#b_description"));
+					new Validator(EValidatorMethod.required, "#a_description"));
 		}
 
 		@Override
 		public JavascriptForward onSave(final ComponentParameter cp) throws Exception {
 			final BbsTopic topic = getTopic(cp);
 			if (topic != null) {
-				topic.setBest(!topic.isBest());
-				DescriptionLocalUtils.set(topic, cp.getParameter("b_description"));
-				context.getTopicService().update(new String[] { "best" }, topic);
+				topic.setBest(cp.getBoolParameter("a_best"));
+				topic.setBbsType(cp.getEnumParameter(EBbsType.class, "a_type"));
+				DescriptionLocalUtils.set(topic, cp.getParameter("a_description"));
+				context.getTopicService().update(new String[] { "best", "bbsType" }, topic);
 			}
 			final JavascriptForward js = super.onSave(cp);
 			js.append("$Actions['BbsTopicListTPage_tbl']();");
@@ -474,16 +473,29 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 
 		@Override
 		protected TableRows getTableRows(final PageParameter pp) {
-			return TableRows.of(new TableRow(new RowField($m("BestPage.0"), InputElement.textarea(
-					"b_description").setRows(5))));
+			final InputElement a_best = InputElement.checkbox("a_best");
+
+			final Option[] opts = Option.from(EBbsType.values());
+			final InputElement a_type = InputElement.select("a_type");
+
+			final BbsTopic topic = getTopic(pp);
+			if (topic != null) {
+				a_best.setChecked(topic.isBest());
+				for (final Option opt : opts) {
+					opt.setSelected(opt.getName().equals(topic.getBbsType().name()));
+				}
+			}
+
+			final TableRow r1 = new TableRow(new RowField($m("TopicAdvPage.1"), a_best), new RowField(
+					$m("TopicAdvPage.2"), a_type.addElements(opts)));
+			final TableRow r2 = new TableRow(new RowField($m("TopicAdvPage.0"), InputElement.textarea(
+					"a_description").setRows(5)));
+			return TableRows.of(r1, r2);
 		}
 
 		@Override
-		public ElementList getLeftElements(final PageParameter pp) {
-			final BbsTopic topic = getTopic(pp);
-			return ElementList
-					.of(new SpanElement(topic.isBest() ? $m("BestPage.1") : $m("BestPage.2"))
-							.setStyle("color: #a00; font-size: 9.5pt"));
+		public int getLabelWidth(final PageParameter pp) {
+			return 80;
 		}
 	}
 
