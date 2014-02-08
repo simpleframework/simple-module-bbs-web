@@ -733,7 +733,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 					@Override
 					protected BbsTopic toBean(final Object o) {
 						final BbsTopic topic2 = super.toBean(o);
-						return topic2 != null && !topic2.getId().equals(topic.getId()) ? topic2 : null;
+						return topic2 != null && !topic2.equals(topic) ? topic2 : null;
 					}
 				}).setDotIcon(EImageDot.imgDot3)));
 
