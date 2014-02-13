@@ -65,8 +65,7 @@ public class BbsAttachmentTooltipPage extends AbstractAttachmentTooltipPage impl
 	}
 
 	@Override
-	protected Object getTopic(final PageParameter pp, final AttachmentFile attachment)
-			throws IOException {
+	protected Object getTopic(final PageParameter pp, final AttachmentFile attachment) {
 		return new LinkElement(attachment.getTopic())
 				.setOnclick("$Actions['BbsPostViewTPage_download']('id=" + attachment.getId() + "');");
 	}
