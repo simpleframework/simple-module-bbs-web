@@ -79,7 +79,7 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 
 		// 上传
 		addComponentBean(pp, "BbsTopicForm_upload_page", AttachmentBean.class).setInsertTextarea(
-				"te_content").setHandleClass(BbsTopicAttachmentAction.class);
+				"te_content").setHandlerClass(BbsTopicAttachmentAction.class);
 		addComponentBean(pp, "BbsTopicForm_upload", WindowBean.class)
 				.setContentRef("BbsTopicForm_upload_page").setTitle($m("BbsTopicFormTPage.4"))
 				.setPopup(true).setHeight(480).setWidth(400);
@@ -91,7 +91,7 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 	}
 
 	protected void createCategoryDict(final PageParameter pp) {
-		addComponentBean(pp, "BbsTopicForm_dict_tree", TreeBean.class).setHandleClass(
+		addComponentBean(pp, "BbsTopicForm_dict_tree", TreeBean.class).setHandlerClass(
 				CategorySelectedTree.class);
 		addComponentBean(pp, "BbsTopicForm_dict", DictionaryBean.class).setBindingId("te_categoryId")
 				.setBindingText("te_categoryText").addTreeRef(pp, "BbsTopicForm_dict_tree")

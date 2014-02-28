@@ -60,7 +60,7 @@ public abstract class AbstractBbsTPage extends TopBar_PageletsPage implements IB
 
 	protected DictionaryBean addCategoryDict(final PageParameter pp) {
 		addComponentBean(pp, "AbstractBbsTPage_category_tree", TreeBean.class).setShowTip(false)
-				.setHandleClass(getCategoryDictClass());
+				.setHandlerClass(getCategoryDictClass());
 		return (DictionaryBean) addDictionaryBean(pp, "AbstractBbsTPage_category_dict")
 				.setClearAction("false")
 				.addTreeRef(pp, "AbstractBbsTPage_category_tree")

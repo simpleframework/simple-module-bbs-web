@@ -112,7 +112,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		// 分页
 		addComponentBean(pp, "BbsPostViewTPage_pager", PagerBean.class)
 				.setPagerBarLayout(EPagerBarLayout.bottom).setNoResultDesc(null)
-				.setContainerId("idBbsPostViewTPage_pager").setHandleClass(PostViewTbl.class);
+				.setContainerId("idBbsPostViewTPage_pager").setHandlerClass(PostViewTbl.class);
 
 		// Html编辑器
 		addHtmlEditorBean(pp).setTextarea("idBbsPostViewTPage_editor").setResizeEnabled(true)
@@ -136,13 +136,13 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 
 		// submit
 		addAjaxRequest(pp, "BbsPostViewTPage_submit").setConfirmMessage($m("Confirm.Post"))
-				.setHandleMethod("doSubmit").setRole(IPermissionConst.ROLE_ALL_ACCOUNT)
+				.setHandlerMethod("doSubmit").setRole(IPermissionConst.ROLE_ALL_ACCOUNT)
 				.setSelector("#idBbsTopic_editor");
 
 		final boolean manager = (Boolean) getVariables(pp).get("manager");
 		if (isAsk(getTopic(pp))) {
 			// vote
-			addAjaxRequest(pp, "BbsPostViewTPage_ajaxVote").setHandleMethod("doAjaxVote").setRole(
+			addAjaxRequest(pp, "BbsPostViewTPage_ajaxVote").setHandlerMethod("doAjaxVote").setRole(
 					IPermissionConst.ROLE_ALL_ACCOUNT);
 
 			addAjaxRequest(pp, "BbsPostViewTPage_votePage", VoteSubmitPage.class);
@@ -157,22 +157,22 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 					.setPopup(true).setWidth(380).setHeight(115).setXdelta(-200).setResizable(false);
 
 			// remark
-			addAjaxRequest(pp, "BbsPostViewTPage_remark_list").setHandleMethod("doRemarkList");
+			addAjaxRequest(pp, "BbsPostViewTPage_remark_list").setHandlerMethod("doRemarkList");
 
 			if (manager) {
-				addAjaxRequest(pp, "BbsPostViewTPage_bestAnswer").setHandleMethod("doBestAnswer")
+				addAjaxRequest(pp, "BbsPostViewTPage_bestAnswer").setHandlerMethod("doBestAnswer")
 						.setConfirmMessage($m("BbsPostViewTPage.20"));
 
 				addAjaxRequest(pp, "BbsPostViewTPage_remark_delete").setConfirmMessage(
-						$m("Confirm.Delete")).setHandleMethod("doRemarkDelete");
+						$m("Confirm.Delete")).setHandlerMethod("doRemarkDelete");
 			}
 		} else {
 			// replyFrom
-			addAjaxRequest(pp, "BbsPostViewTPage_replyFrom").setHandleMethod("doReplyFrom");
+			addAjaxRequest(pp, "BbsPostViewTPage_replyFrom").setHandlerMethod("doReplyFrom");
 		}
 
 		// edit
-		addAjaxRequest(pp, "BbsPostViewTPage_edit").setHandleMethod("doEdit");
+		addAjaxRequest(pp, "BbsPostViewTPage_edit").setHandlerMethod("doEdit");
 		if (manager) {
 			// delete
 			addDeleteAjaxRequest(pp, "BbsPostViewTPage_delete");
@@ -189,7 +189,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 	}
 
 	protected AjaxRequestBean addAjaxRequest_Download(final PageParameter pp) {
-		return addAjaxRequest(pp, "BbsPostViewTPage_download").setHandleMethod("doDownload");
+		return addAjaxRequest(pp, "BbsPostViewTPage_download").setHandlerMethod("doDownload");
 	}
 
 	protected void addTooltipComponent(final PageParameter pp) {
@@ -810,7 +810,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		protected void onForward(final PageParameter pp) {
 			super.onForward(pp);
 
-			addAjaxRequest(pp, "VoteSubmitPage_vote").setHandleMethod("doVote")
+			addAjaxRequest(pp, "VoteSubmitPage_vote").setHandlerMethod("doVote")
 					.setRole(IPermissionConst.ROLE_ALL_ACCOUNT).setSelector(".VoteSubmitPage");
 
 			addComponentBean(pp, "VoteSubmitPage_validation", ValidationBean.class)
@@ -852,7 +852,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		protected void onForward(final PageParameter pp) {
 			super.onForward(pp);
 
-			addAjaxRequest(pp, "UnVoteSubmitPage_unvote").setHandleMethod("doUnVote").setRole(
+			addAjaxRequest(pp, "UnVoteSubmitPage_unvote").setHandlerMethod("doUnVote").setRole(
 					IPermissionConst.ROLE_ALL_ACCOUNT);
 		}
 

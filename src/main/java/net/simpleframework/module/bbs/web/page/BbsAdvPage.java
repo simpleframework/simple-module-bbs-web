@@ -26,7 +26,7 @@ public class BbsAdvPage extends AbstractTemplatePage implements IBbsContextAware
 		super.onForward(pp);
 
 		addAjaxRequest(pp, "BbsAdvPage_reIndex").setConfirmMessage($m("BbsAdvPage.2"))
-				.setHandleMethod("doIndex");
+				.setHandlerMethod("doIndex");
 	}
 
 	@Override
