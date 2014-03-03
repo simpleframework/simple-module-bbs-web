@@ -185,7 +185,7 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 		InputElement te_t = null;
 		final InputElement te_description = InputElement.textarea("te_description").setRows(3);
 		final InputElement te_content = InputElement.textarea("te_content")
-				.setStyle("display: none;");
+				.addStyle("display: none;");
 		BbsCategory category = null;
 		final BbsTopic topic = getTopic(pp);
 		if (topic != null) {

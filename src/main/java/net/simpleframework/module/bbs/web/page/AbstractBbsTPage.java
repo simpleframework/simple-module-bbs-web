@@ -167,7 +167,7 @@ public abstract class AbstractBbsTPage extends TopBar_PageletsPage implements IB
 	protected static NumberConvert _NUMBERCONVERT = new NumberConvert() {
 		@Override
 		public Object convert(final Number n) {
-			return SpanElement.num(n).setStyle("margin-right: 2px;");
+			return SpanElement.num(n).addStyle("margin-right: 2px;");
 		}
 	};
 }

@@ -51,7 +51,7 @@ public class BbsPageletCreator extends PageletCreator<BbsTopic> implements IBbsC
 				cal.setTime(new Date());
 				cal.add(Calendar.HOUR_OF_DAY, -12);
 				if (lastPostDate.after(cal.getTime())) {
-					sb.append(new SpanElement(c).setStyle("color: red;"));
+					sb.append(new SpanElement(c).addStyle("color: red;"));
 				}
 			}
 			if (sb.length() == 0) {
