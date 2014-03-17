@@ -272,7 +272,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		final TextForward tf = new TextForward();
 		tf.append("<div class='cc'>").append(reply.getContent()).append("</div>");
 		tf.append("<div class='bb'>")
-				.append(DateUtils.getRelativeDate(reply.getCreateDate(), _NUMBERCONVERT))
+				.append(DateUtils.getRelativeDate(reply.getCreateDate(), DATE_NUMBERCONVERT))
 				.append("</div>");
 		return tf;
 	}
@@ -567,7 +567,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		final PermissionUser user = pp.getUser(topic.getUserId());
 		v.append(new ImageElement(pp.getPhotoUrl(user.getId())).setClassName("photo_icon icon16")
 				.setTitle(user.getText()));
-		v.append(new SpanElement(DateUtils.getRelativeDate(topic.getCreateDate(), _NUMBERCONVERT)));
+		v.append(new SpanElement(DateUtils.getRelativeDate(topic.getCreateDate(), DATE_NUMBERCONVERT)));
 		sb.append(_toTopicStatItem("#(BbsPostViewTPage.3)", v));
 		Date lastPostDate;
 		if ((lastPostDate = topic.getLastPostDate()) != null) {
@@ -575,7 +575,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 			final PermissionUser lastUser = pp.getUser(topic.getLastUserId());
 			v.append(new ImageElement(pp.getPhotoUrl(lastUser.getId())).setClassName(
 					"photo_icon icon16").setTitle(lastUser.getText()));
-			v.append(new SpanElement(DateUtils.getRelativeDate(lastPostDate, _NUMBERCONVERT)));
+			v.append(new SpanElement(DateUtils.getRelativeDate(lastPostDate, DATE_NUMBERCONVERT)));
 			sb.append(_toTopicStatItem("#(BbsPostViewTPage.4)", v));
 		}
 		sb.append(_toTopicStatItem("#(BbsPostViewTPage.5)", SpanElement.num(topic.getPosts())));

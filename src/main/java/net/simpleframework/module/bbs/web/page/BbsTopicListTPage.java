@@ -420,7 +420,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 					sb.append(" <span class='us_1'>").append(createTopicsLink(pp, pp.getUser(userId)))
 							.append("</span>");
 					sb.append(" <span class='us_2'>")
-							.append(DateUtils.getRelativeDate(date, _NUMBERCONVERT)).append("</span>");
+							.append(DateUtils.getRelativeDate(date, DATE_NUMBERCONVERT)).append("</span>");
 					sb.append("</span>");
 					return sb.toString();
 				}

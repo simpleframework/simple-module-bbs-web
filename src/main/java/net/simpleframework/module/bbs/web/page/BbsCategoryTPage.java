@@ -214,11 +214,11 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 		sb.append("<div class='l3'>").append($m("BbsCategoryTPage.3"));
 		final BbsPost post = context.getPostService().getBean(category.getLastPostId());
 		if (post != null) {
-			sb.append(DateUtils.getRelativeDate(post.getCreateDate(), _NUMBERCONVERT));
+			sb.append(DateUtils.getRelativeDate(post.getCreateDate(), DATE_NUMBERCONVERT));
 		} else {
 			final BbsTopic topic = context.getTopicService().getBean(category.getLastTopicId());
 			if (topic != null) {
-				sb.append(DateUtils.getRelativeDate(topic.getCreateDate(), _NUMBERCONVERT));
+				sb.append(DateUtils.getRelativeDate(topic.getCreateDate(), DATE_NUMBERCONVERT));
 			} else {
 				sb.append("?");
 			}
