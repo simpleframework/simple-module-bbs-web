@@ -5,6 +5,7 @@ import static net.simpleframework.common.I18n.$m;
 import java.util.Map;
 
 import net.simpleframework.ado.query.IDataQuery;
+import net.simpleframework.common.DateUtils.NumberConvert;
 import net.simpleframework.common.coll.KVMap;
 import net.simpleframework.common.web.HttpUtils;
 import net.simpleframework.ctx.permission.PermissionUser;
@@ -162,4 +163,11 @@ public abstract class AbstractBbsTPage extends TopBar_PageletsPage implements IB
 			return sb.toString();
 		}
 	}
+
+	protected static NumberConvert DATE_NUMBERCONVERT = new NumberConvert() {
+		@Override
+		public Object convert(final Number n) {
+			return SpanElement.num(n).addStyle("margin-right: 2px;");
+		}
+	};
 }
