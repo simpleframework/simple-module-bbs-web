@@ -168,9 +168,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 	@Transaction(context = IBbsContext.class)
 	public IForward doDelete(final ComponentParameter cp) {
 		final Object[] ids = StringUtils.split(cp.getParameter("topicId"));
-		if (ids != null) {
-			context.getTopicService().delete(ids);
-		}
+		context.getTopicService().delete(ids);
 		return new JavascriptForward("$Actions['BbsTopicListTPage_tbl']();");
 	}
 
