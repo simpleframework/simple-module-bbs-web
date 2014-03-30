@@ -272,7 +272,7 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 					sb.append(">").append(toItemHTML(pp, category2)).append("</span>");
 					final String desc = category2.getDescription();
 					if (StringUtils.hasText(desc)) {
-						sb.append(BlockElement.tip(desc));
+						sb.append(BlockElement.tipText(desc));
 					}
 				}
 				sb.append("</div>");
