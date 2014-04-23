@@ -144,7 +144,7 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 						aService.delete(deleteQueue.toArray(new Object[] { deleteQueue.size() }));
 					}
 				}
-				aService.insert(topic2.getId(), cp.getLoginId(), addQueue);
+				aService.insert(topic2.getId(), cp.getLoginId(), addQueue.values());
 			}
 		});
 		final JavascriptForward js = new JavascriptForward();
