@@ -43,7 +43,7 @@ public class BbsLogRef extends LogRef implements IBbsContextAware {
 		super.logDownload(beanId, topic, oFile);
 
 		// 更新计数
-		final IAttachmentService<Attachment> service = context.getAttachmentService();
+		final IAttachmentService<Attachment> service = bbsContext.getAttachmentService();
 		final Attachment attachment = service.getBean(beanId);
 		if (attachment != null) {
 			attachment.setDownloads(getDownloadLogService().countLog(beanId));
@@ -54,7 +54,7 @@ public class BbsLogRef extends LogRef implements IBbsContextAware {
 	public static class BbsTopicLogPage extends EntityUpdateLogPage {
 		@Override
 		protected IDbBeanService<?> getBeanService() {
-			return context.getTopicService();
+			return bbsContext.getTopicService();
 		}
 
 		@Override
@@ -67,7 +67,7 @@ public class BbsLogRef extends LogRef implements IBbsContextAware {
 
 		@Override
 		protected IDbBeanService<?> getBeanService() {
-			return context.getAttachmentService();
+			return bbsContext.getAttachmentService();
 		}
 	}
 
@@ -76,12 +76,12 @@ public class BbsLogRef extends LogRef implements IBbsContextAware {
 
 		@Override
 		protected IAttachmentService<Attachment> getAttachmentService() {
-			return context.getAttachmentService();
+			return bbsContext.getAttachmentService();
 		}
 
 		@Override
 		protected IDbBeanService<BbsTopic> getOwnerService() {
-			return context.getTopicService();
+			return bbsContext.getTopicService();
 		}
 
 		@Override

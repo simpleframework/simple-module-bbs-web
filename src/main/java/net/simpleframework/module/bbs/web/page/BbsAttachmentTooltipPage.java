@@ -32,7 +32,7 @@ public class BbsAttachmentTooltipPage extends AbstractAttachmentTooltipPage impl
 	protected void onForward(final PageParameter pp) {
 		super.onForward(pp);
 
-		if (((IBbsWebContext) context).getLogRef() != null) {
+		if (((IBbsWebContext) bbsContext).getLogRef() != null) {
 			addComponentBean(pp, "AttachmentTooltipPage_logPage", AjaxRequestBean.class)
 					.setUrlForward(url(BbsDownloadLogPage.class));
 			addComponentBean(pp, "AttachmentTooltipPage_logWin", WindowBean.class)
@@ -43,7 +43,7 @@ public class BbsAttachmentTooltipPage extends AbstractAttachmentTooltipPage impl
 
 	@Override
 	protected LinkButton getPreviewButton(final PageParameter pp) {
-		final IModuleRef ref = ((IBbsWebContext) context).getPDFRef();
+		final IModuleRef ref = ((IBbsWebContext) bbsContext).getPDFRef();
 		if (ref == null) {
 			return null;
 		}
@@ -56,7 +56,7 @@ public class BbsAttachmentTooltipPage extends AbstractAttachmentTooltipPage impl
 
 	@Override
 	protected AttachmentFile getAttachment(final PageParameter pp) {
-		final IAttachmentService<Attachment> service = context.getAttachmentService();
+		final IAttachmentService<Attachment> service = bbsContext.getAttachmentService();
 		try {
 			return service.createAttachmentFile(service.getBean(pp.getParameter("id")));
 		} catch (final IOException e) {
@@ -76,7 +76,7 @@ public class BbsAttachmentTooltipPage extends AbstractAttachmentTooltipPage impl
 		if (downloads <= 0) {
 			return 0;
 		}
-		if (((IBbsWebContext) context).getLogRef() != null) {
+		if (((IBbsWebContext) bbsContext).getLogRef() != null) {
 			return LinkButton.corner(downloads).setOnclick(
 					"$Actions['AttachmentTooltipPage_logWin']('beanId=" + attachment.getId() + "');");
 		} else {

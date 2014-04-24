@@ -71,7 +71,7 @@ public class BbsFavoriteRef extends FavoriteRef implements IBbsContextAware {
 		protected void doInsertFavorite(final PageParameter pp, final Object contentId) {
 			super.doInsertFavorite(pp, contentId);
 
-			final IBbsTopicService service = context.getTopicService();
+			final IBbsTopicService service = bbsContext.getTopicService();
 			final BbsTopic topic = service.getBean(contentId);
 			topic.setFavorites(getFavoritesNum(contentId));
 			service.update(new String[] { "favorites" }, topic);
@@ -84,11 +84,11 @@ public class BbsFavoriteRef extends FavoriteRef implements IBbsContextAware {
 
 		@Override
 		public IFavoriteContent getContent(final PageParameter pp, final Object contentId) {
-			final BbsTopic topic = context.getTopicService().getBean(contentId);
+			final BbsTopic topic = bbsContext.getTopicService().getBean(contentId);
 			return new AbstractFavoriteContent(topic) {
 				@Override
 				public String getUrl() {
-					return ((IBbsWebContext) context).getUrlsFactory().getUrl(pp, BbsPostViewPage.class,
+					return ((IBbsWebContext) bbsContext).getUrlsFactory().getUrl(pp, BbsPostViewPage.class,
 							topic);
 				}
 
@@ -101,7 +101,7 @@ public class BbsFavoriteRef extends FavoriteRef implements IBbsContextAware {
 
 		@Override
 		public String getCategoryText(final Object categoryId) {
-			final BbsCategory category = context.getCategoryService().getBean(categoryId);
+			final BbsCategory category = bbsContext.getCategoryService().getBean(categoryId);
 			return category != null ? category.getText() : null;
 		}
 

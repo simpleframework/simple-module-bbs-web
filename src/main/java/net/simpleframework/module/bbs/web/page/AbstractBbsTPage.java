@@ -90,7 +90,7 @@ public abstract class AbstractBbsTPage extends TopBar_PageletsPage implements IB
 	}
 
 	public static BbsCategory getCategory(final PageParameter pp) {
-		return getCacheBean(pp, context.getCategoryService(), "categoryId");
+		return getCacheBean(pp, bbsContext.getCategoryService(), "categoryId");
 	}
 
 	protected Class<? extends ITreeHandler> getCategoryDictClass() {
@@ -98,7 +98,7 @@ public abstract class AbstractBbsTPage extends TopBar_PageletsPage implements IB
 	}
 
 	protected static BbsUrlsFactory getUrlsFactory() {
-		return ((IBbsWebContext) context).getUrlsFactory();
+		return ((IBbsWebContext) bbsContext).getUrlsFactory();
 	}
 
 	protected static SpanElement createCategoryDictMenu(final PageParameter pp) {
@@ -117,7 +117,7 @@ public abstract class AbstractBbsTPage extends TopBar_PageletsPage implements IB
 		public TreeNodes getTreenodes(final ComponentParameter cp, final TreeNode parent) {
 			final TreeBean treeBean = (TreeBean) cp.componentBean;
 			final BbsCategory category = parent != null ? (BbsCategory) parent.getDataObject() : null;
-			final IDataQuery<?> dq = context.getCategoryService().queryChildren(category);
+			final IDataQuery<?> dq = bbsContext.getCategoryService().queryChildren(category);
 			if (dq != null && dq.getCount() > 0) {
 				final TreeNodes nodes = TreeNodes.of();
 				Object bean;

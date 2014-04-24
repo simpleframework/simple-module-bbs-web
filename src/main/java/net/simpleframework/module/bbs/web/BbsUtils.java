@@ -18,7 +18,7 @@ public abstract class BbsUtils implements IBbsContextAware {
 		Boolean b = (Boolean) pp.getRequestAttr(CATEGORY_MANAGER);
 		if (b == null) {
 			pp.setRequestAttr(CATEGORY_MANAGER,
-					b = context.getTeamService().isManager(category, pp.getLogin()));
+					b = bbsContext.getTeamService().isManager(category, pp.getLogin()));
 		}
 		return b;
 	}

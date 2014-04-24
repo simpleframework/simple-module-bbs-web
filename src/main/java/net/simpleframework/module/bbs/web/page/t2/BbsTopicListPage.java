@@ -34,7 +34,7 @@ public class BbsTopicListPage extends T2TemplatePage implements IBbsContextAware
 	@Override
 	public String getTitle(final PageParameter pp) {
 		final StringBuilder sb = new StringBuilder();
-		sb.append(context.getModule().getText());
+		sb.append(bbsContext.getModule().getText());
 		final BbsCategory category = AbstractBbsTPage.getCategory(pp);
 		if (category != null) {
 			sb.append(" - ").append(category);

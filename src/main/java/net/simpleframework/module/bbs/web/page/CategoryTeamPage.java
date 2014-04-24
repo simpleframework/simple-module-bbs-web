@@ -18,12 +18,12 @@ public class CategoryTeamPage extends AbstractTeamMgrPage<BbsTeam> implements IB
 
 	@Override
 	protected ITeamService<BbsTeam> getTeamService() {
-		return context.getTeamService();
+		return bbsContext.getTeamService();
 	}
 
 	@Override
 	protected ID getOwnerId(final PageParameter pp) {
-		final BbsCategory category = getCacheBean(pp, context.getCategoryService(), getOwnerIdKey());
+		final BbsCategory category = getCacheBean(pp, bbsContext.getCategoryService(), getOwnerIdKey());
 		return category != null ? category.getId() : null;
 	}
 }

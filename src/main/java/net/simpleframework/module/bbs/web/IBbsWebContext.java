@@ -37,7 +37,7 @@ public interface IBbsWebContext extends IBbsContext, IContentRefAware, IMVCConte
 
 		@Override
 		public void onDownloaded(final Object beanId, final String topic, final File oFile) {
-			final IModuleRef ref = ((IBbsWebContext) context).getLogRef();
+			final IModuleRef ref = ((IBbsWebContext) bbsContext).getLogRef();
 			if (ref != null) {
 				// 记录下载日志
 				((BbsLogRef) ref).logDownload(beanId, topic, oFile);

@@ -104,7 +104,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		pp.addImportJavascript(AbstractBbsTPage.class, "/js/bbs.js");
 
 		final BbsTopic topic = getTopic(pp);
-		ContentUtils.updateViews(pp, topic, context.getTopicService());
+		ContentUtils.updateViews(pp, topic, bbsContext.getTopicService());
 
 		// 记录到cookies
 		ContentUtils.addViewsCookie(pp, "bbs_views", topic.getId());
@@ -214,18 +214,18 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 	public KVMap createVariables(final PageParameter pp) {
 		final BbsTopic topic = getTopic(pp);
 		return ((KVMap) super.createVariables(pp))
-				.add("context", context)
+				.add("bbsContext", bbsContext)
 				.add("topic", topic)
 				.add("manager",
-						BbsUtils.isManager(pp, context.getCategoryService()
+						BbsUtils.isManager(pp, bbsContext.getCategoryService()
 								.getBean(topic.getCategoryId())));
 	}
 
 	public IForward doDownload(final ComponentParameter cp) {
-		final Attachment attachment = context.getAttachmentService().getBean(cp.getParameter("id"));
+		final Attachment attachment = bbsContext.getAttachmentService().getBean(cp.getParameter("id"));
 		final JavascriptForward js = new JavascriptForward();
 		if (attachment != null) {
-			final IAttachmentService<Attachment> service = context.getAttachmentService();
+			final IAttachmentService<Attachment> service = bbsContext.getAttachmentService();
 			try {
 				final AttachmentFile af = service.createAttachmentFile(attachment);
 				js.append("$Actions.loc('")
@@ -243,7 +243,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 	@Transaction(context = IBbsContext.class)
 	public IForward doDelete(final ComponentParameter cp) {
 		final BbsPost post = getPost(cp, "postId");
-		context.getPostService().delete(post.getId());
+		bbsContext.getPostService().delete(post.getId());
 		return new JavascriptForward("$Actions.loc('").append(
 				getUrlsFactory().getUrl(cp, BbsPostViewPage.class, getTopic(cp))).append("');");
 	}
@@ -254,7 +254,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		if (post.getUserId().equals(cp.getLoginId())) {
 			js.append("alert('").append($m("VoteSubmitPage.0")).append("');");
 		} else {
-			final BbsAskVote askVote = context.getAskVoteService().getAskVote(post,
+			final BbsAskVote askVote = bbsContext.getAskVoteService().getAskVote(post,
 					cp.getLogin().getId());
 			if (askVote == null) {
 				js.append("var act = $Actions['BbsPostViewTPage_voteWin'];");
@@ -280,7 +280,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 	@Transaction(context = IBbsContext.class)
 	public IForward doBestAnswer(final ComponentParameter cp) {
 		final BbsPost post = getPost(cp, "postId");
-		context.getPostService().doBestAnswer(post);
+		bbsContext.getPostService().doBestAnswer(post);
 		return new JavascriptForward("$Actions.loc('").append(
 				getUrlsFactory().getUrl(cp, BbsPostViewPage.class, getTopic(cp))).append("');");
 	}
@@ -292,7 +292,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 	@Transaction(context = IBbsContext.class)
 	public IForward doRemarkDelete(final ComponentParameter cp) {
 		final BbsPost post = getPost(cp, "remarkId");
-		context.getPostService().delete(post.getId());
+		bbsContext.getPostService().delete(post.getId());
 		return null;
 	}
 
@@ -327,7 +327,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 			throw ContentException.of($m("BbsPostViewTPage.25"));
 		}
 
-		final IBbsPostService service = context.getPostService();
+		final IBbsPostService service = bbsContext.getPostService();
 		BbsPost remark = getPost(cp, "remarkId");
 		BbsPost parent = null;
 		if (remark != null) {
@@ -421,21 +421,21 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		if (isAsk(topic)) {
 			sb.append("<div class='ask_icon'>").append("</div>");
 		}
-		final IModuleRef ref = ((IBbsWebContext) context).getFavoriteRef();
+		final IModuleRef ref = ((IBbsWebContext) bbsContext).getFavoriteRef();
 		if (ref != null) {
 			sb.append(((BbsFavoriteRef) ref).toFavoriteElement(pp, topic.getId()));
 		}
-		sb.append(ContentUtils.getContent(pp, context.getAttachmentService(), topic));
+		sb.append(ContentUtils.getContent(pp, bbsContext.getAttachmentService(), topic));
 		return sb.toString();
 	}
 
 	public String getPostContent(final PageParameter pp, final BbsPost post) {
-		// ContentUtils.getContent(pp, context.getAttachmentService(),
+		// ContentUtils.getContent(pp, bbsContext.getAttachmentService(),
 		// post.getContent())
 		final BbsTopic topic = getTopic(pp);
 		final StringBuilder sb = new StringBuilder();
 
-		final IBbsPostService pService = context.getPostService();
+		final IBbsPostService pService = bbsContext.getPostService();
 		final boolean ask = isAsk(topic);
 		boolean gap = ask;
 		BbsPost reply;
@@ -474,7 +474,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 	protected String getRemarkList(final PageParameter pp, final BbsPost post) {
 		final StringBuilder sb = new StringBuilder();
 		final boolean manager = (Boolean) getVariables(pp).get("manager");
-		final IDataQuery<BbsPost> children = ((IADOTreeBeanServiceAware<BbsPost>) context
+		final IDataQuery<BbsPost> children = ((IADOTreeBeanServiceAware<BbsPost>) bbsContext
 				.getPostService()).queryChildren(post);
 		BbsPost _remark;
 		int i = 0;
@@ -665,7 +665,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		if (userId == null) {
 			return "";
 		}
-		final BbsUserStat stat = context.getUserStatService().getUserStat(userId);
+		final BbsUserStat stat = bbsContext.getUserStatService().getUserStat(userId);
 		sb.append("<div>");
 		sb.append("<img class='photo_icon icon48' src='").append(pp.getPhotoUrl(userId))
 				.append("' />");
@@ -696,19 +696,19 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 	public NavigationButtons getNavigationBar(final PageParameter pp) {
 		final BbsTopic topic = getTopic(pp);
 		final BbsUrlsFactory urls = getUrlsFactory();
-		final BbsCategory category = context.getCategoryService().getBean(topic.getCategoryId());
-		return NavigationButtons.of(new LinkElement(context.getModule()).setHref(urls.getUrl(pp,
+		final BbsCategory category = bbsContext.getCategoryService().getBean(topic.getCategoryId());
+		return NavigationButtons.of(new LinkElement(bbsContext.getModule()).setHref(urls.getUrl(pp,
 				BbsCategoryPage.class)), new SpanElement().addElements(
 				new LinkElement(category.getText()).setHref(urls.getUrl(pp, BbsTopicListPage.class,
 						category)), createCategoryDictMenu(pp)));
 	}
 
 	public IForward doPageletTab(final ComponentParameter cp) {
-		final IBbsTopicService service = context.getTopicService();
-		final BbsPageletCreator creator = ((IBbsWebContext) context).getPageletCreator();
+		final IBbsTopicService service = bbsContext.getTopicService();
+		final BbsPageletCreator creator = ((IBbsWebContext) bbsContext).getPageletCreator();
 
 		final ETimePeriod tp = Convert.toEnum(ETimePeriod.class, cp.getParameter("time"));
-		final IBbsCategoryService cService = context.getCategoryService();
+		final IBbsCategoryService cService = bbsContext.getCategoryService();
 		final IDataQuery<?> dq = service.queryRecommendationBeans(
 				cService.getBean(cp.getParameter("categoryId")), new TimePeriod(tp));
 
@@ -718,9 +718,9 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 
 	@Override
 	protected Pagelets getPagelets(final PageParameter pp) {
-		final IBbsTopicService service = context.getTopicService();
+		final IBbsTopicService service = bbsContext.getTopicService();
 		final BbsTopic topic = getTopic(pp);
-		final BbsPageletCreator creator = ((IBbsWebContext) context).getPageletCreator();
+		final BbsPageletCreator creator = ((IBbsWebContext) bbsContext).getPageletCreator();
 
 		final Pagelets lets = Pagelets.of();
 
@@ -738,7 +738,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 				}).setDotIcon(EImageDot.imgDot3)));
 
 		// 按推荐
-		final IBbsCategoryService cService = context.getCategoryService();
+		final IBbsCategoryService cService = bbsContext.getCategoryService();
 		final ID categoryId = topic.getCategoryId();
 		final IDataQuery<?> dq = service.queryRecommendationBeans(cService.getBean(categoryId),
 				TimePeriod.week);
@@ -752,19 +752,19 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 	}
 
 	public static BbsTopic getTopic(final PageParameter pp) {
-		return getCacheBean(pp, context.getTopicService(), "topicId");
+		return getCacheBean(pp, bbsContext.getTopicService(), "topicId");
 	}
 
 	public static BbsPost getPost(final PageParameter pp, final String key) {
-		return getCacheBean(pp, context.getPostService(), key);
+		return getCacheBean(pp, bbsContext.getPostService(), key);
 	}
 
 	public static BbsCategory getCategory(final PageParameter pp) {
-		BbsCategory category = getCacheBean(pp, context.getCategoryService(), "categoryId");
+		BbsCategory category = getCacheBean(pp, bbsContext.getCategoryService(), "categoryId");
 		if (category == null) {
 			final BbsTopic topic = BbsTopicForm.getTopic(pp);
 			if (topic != null
-					&& (category = context.getCategoryService().getBean(topic.getCategoryId())) != null) {
+					&& (category = bbsContext.getCategoryService().getBean(topic.getCategoryId())) != null) {
 				pp.setRequestAttr("categoryId", category);
 			}
 		}
@@ -777,7 +777,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 			final BbsTopic topic = getTopic(cp);
 			cp.addFormParameter("topicId", topic.getId());
 
-			final IBbsPostService service = context.getPostService();
+			final IBbsPostService service = bbsContext.getPostService();
 
 			final BbsPost post = getPost(cp, "replyId");
 			if (post != null) {
@@ -821,7 +821,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		@Transaction(context = IBbsContext.class)
 		public IForward doVote(final ComponentParameter cp) {
 			final BbsPost post = getPost(cp, "postId");
-			context.getAskVoteService().insertVote(post, cp.getLoginId(),
+			bbsContext.getAskVoteService().insertVote(post, cp.getLoginId(),
 					cp.getParameter("vs_description"));
 			return updateVotes(post).append("$Actions['BbsPostViewTPage_voteWin'].close();");
 		}
@@ -859,7 +859,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		@Transaction(context = IBbsContext.class)
 		public IForward doUnVote(final ComponentParameter cp) {
 			final BbsPost post = getPost(cp, "postId");
-			context.getAskVoteService().deleteVote(post, cp.getLoginId());
+			bbsContext.getAskVoteService().deleteVote(post, cp.getLoginId());
 			return updateVotes(post).append("$Actions['BbsPostViewTPage_unvoteWin'].close();");
 		}
 

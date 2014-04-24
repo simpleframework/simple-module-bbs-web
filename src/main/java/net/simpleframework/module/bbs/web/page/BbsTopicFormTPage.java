@@ -53,7 +53,7 @@ public class BbsTopicFormTPage extends AbstractBbsTPage implements IBbsContextAw
 
 	@Override
 	public NavigationButtons getNavigationBar(final PageParameter pp) {
-		final NavigationButtons btns = NavigationButtons.of(new LinkElement(context.getModule())
+		final NavigationButtons btns = NavigationButtons.of(new LinkElement(bbsContext.getModule())
 				.setHref(getUrlsFactory().getUrl(pp, BbsCategoryPage.class)));
 		final BbsCategory category = BbsPostViewTPage.getCategory(pp);
 		if (category != null) {

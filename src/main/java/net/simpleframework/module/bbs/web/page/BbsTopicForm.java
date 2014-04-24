@@ -64,7 +64,7 @@ import net.simpleframework.mvc.template.lets.FormTableRowTemplatePage;
  */
 public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContextAware {
 	static BbsTopic getTopic(final PageParameter pp) {
-		return getCacheBean(pp, context.getTopicService(), "topicId");
+		return getCacheBean(pp, bbsContext.getTopicService(), "topicId");
 	}
 
 	@Override
@@ -101,13 +101,13 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 	@Transaction(context = IBbsContext.class)
 	@Override
 	public JavascriptForward onSave(final ComponentParameter cp) throws IOException {
-		final BbsCategory category = context.getCategoryService().getBean(
+		final BbsCategory category = bbsContext.getCategoryService().getBean(
 				cp.getParameter("te_categoryId"));
 		if (category == null) {
 			throw ContentException.of($m("BbsTopicFormTPage.2"));
 		}
 
-		final IBbsTopicService service = context.getTopicService();
+		final IBbsTopicService service = bbsContext.getTopicService();
 		BbsTopic topic = service.getBean(cp.getParameter("te_id"));
 		final boolean insert = topic == null;
 		if (insert) {
@@ -135,7 +135,7 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 			@Override
 			public void save(final Map<String, AttachmentFile> addQueue, final Set<String> deleteQueue)
 					throws IOException {
-				final IAttachmentService<Attachment> aService = context.getAttachmentService();
+				final IAttachmentService<Attachment> aService = bbsContext.getAttachmentService();
 				if (insert) {
 					service.insert(topic2);
 				} else {
@@ -150,7 +150,7 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 		final JavascriptForward js = new JavascriptForward();
 		js.append("$Actions.loc('")
 				.append(
-						((IBbsWebContext) context).getUrlsFactory().getUrl(cp, BbsPostViewPage.class,
+						((IBbsWebContext) bbsContext).getUrlsFactory().getUrl(cp, BbsPostViewPage.class,
 								topic)).append("');");
 		return js;
 	}
@@ -193,7 +193,7 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 			te_topic.setText(topic.getTopic());
 			te_content.setText(HtmlUtils.wrapContextPath(pp.request, topic.getContent()));
 			te_description.setText(topic.getDescription());
-			category = context.getCategoryService().getBean(topic.getCategoryId());
+			category = bbsContext.getCategoryService().getBean(topic.getCategoryId());
 		} else {
 			// insert
 			final EBbsType bbsType = Convert.toEnum(EBbsType.class, pp.getParameter("t"));
@@ -202,7 +202,7 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 			}
 		}
 		if (category == null) {
-			category = context.getCategoryService().getBean(pp.getParameter("categoryId"));
+			category = bbsContext.getCategoryService().getBean(pp.getParameter("categoryId"));
 		}
 
 		final InputElement te_categoryId = InputElement.hidden("te_categoryId");
@@ -282,7 +282,7 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 
 		@Override
 		public TreeNodes getTreenodes(final ComponentParameter cp, final TreeNode parent) {
-			final IBbsCategoryService service = context.getCategoryService();
+			final IBbsCategoryService service = bbsContext.getCategoryService();
 			final IDataQuery<BbsCategory> dq = service
 					.queryChildren((BbsCategory) (parent != null ? parent.getDataObject() : null));
 			BbsCategory category;

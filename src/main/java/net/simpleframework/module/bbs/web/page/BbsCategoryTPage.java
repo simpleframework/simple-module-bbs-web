@@ -92,7 +92,7 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 		final ElementList el = ElementList.of();
 		el.appendAll(singleton(BbsTopicListTPage.class).getLeftElements(pp));
 
-		if (pp.getLogin().isMember(context.getManagerRole())) {
+		if (pp.getLogin().isMember(bbsContext.getManagerRole())) {
 			// 管理菜单
 			final MenuBean menu = (MenuBean) addComponentBean(pp, "BbsCategoryTPage_menu",
 					MenuBean.class).setMenuEvent(EMenuEvent.click).setSelector("#menu_" + hashId);
@@ -145,8 +145,8 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 	}
 
 	public IForward doPageletTab(final ComponentParameter cp) {
-		final IBbsTopicService service = context.getTopicService();
-		final BbsPageletCreator creator = ((IBbsWebContext) context).getPageletCreator();
+		final IBbsTopicService service = bbsContext.getTopicService();
+		final BbsPageletCreator creator = ((IBbsWebContext) bbsContext).getPageletCreator();
 
 		final ETimePeriod tp = Convert.toEnum(ETimePeriod.class, cp.getParameter("time"));
 
@@ -164,8 +164,8 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 
 	@Override
 	protected Pagelets getPagelets(final PageParameter pp) {
-		final IBbsTopicService service = context.getTopicService();
-		final BbsPageletCreator creator = ((IBbsWebContext) context).getPageletCreator();
+		final IBbsTopicService service = bbsContext.getTopicService();
+		final BbsPageletCreator creator = ((IBbsWebContext) bbsContext).getPageletCreator();
 		final Pagelets lets = Pagelets.of();
 
 		// 推荐
@@ -196,7 +196,7 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 	protected String toItemHTML(final PageParameter pp, final BbsCategory category) {
 		final StringBuilder sb = new StringBuilder();
 		sb.append("<div class='icon_b ").append(category.getIconClass()).append("'></div>");
-		final int topics = context.getTopicService()
+		final int topics = bbsContext.getTopicService()
 				.queryBeans(category, new TimePeriod(ETimePeriod.day)).getCount();
 		sb.append("<div class='l1'>");
 		sb.append(new LinkElement(category.getText()).setHref(getUrlsFactory().getUrl(pp,
@@ -212,11 +212,11 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 		sb.append("</div>");
 
 		sb.append("<div class='l3'>").append($m("BbsCategoryTPage.3"));
-		final BbsPost post = context.getPostService().getBean(category.getLastPostId());
+		final BbsPost post = bbsContext.getPostService().getBean(category.getLastPostId());
 		if (post != null) {
 			sb.append(DateUtils.getRelativeDate(post.getCreateDate(), DATE_NUMBERCONVERT));
 		} else {
-			final BbsTopic topic = context.getTopicService().getBean(category.getLastTopicId());
+			final BbsTopic topic = bbsContext.getTopicService().getBean(category.getLastTopicId());
 			if (topic != null) {
 				sb.append(DateUtils.getRelativeDate(topic.getCreateDate(), DATE_NUMBERCONVERT));
 			} else {
@@ -226,7 +226,7 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 		sb.append("</div>");
 		final StringBuilder ustr = new StringBuilder();
 		final StringBuilder tstr = new StringBuilder();
-		final IDataQuery<BbsTeam> dq = context.getTeamService().queryByOwner(category,
+		final IDataQuery<BbsTeam> dq = bbsContext.getTeamService().queryByOwner(category,
 				IBbsTeamService.MANAGER);
 		BbsTeam team;
 		int i = 0;
@@ -250,7 +250,7 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 			final String currentVariable) throws IOException {
 		final StringBuilder sb = new StringBuilder();
 		sb.append("<div class='BbsCategoryTPage'>");
-		final IBbsCategoryService service = context.getCategoryService();
+		final IBbsCategoryService service = bbsContext.getCategoryService();
 		final IDataQuery<BbsCategory> dq = service.queryChildren(null);
 		BbsCategory category;
 		while ((category = dq.next()) != null) {

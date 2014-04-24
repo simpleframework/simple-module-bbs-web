@@ -35,7 +35,7 @@ public class BbsAdvPage extends AbstractTemplatePage implements IBbsContextAware
 	}
 
 	public IForward doIndex(final ComponentParameter cp) {
-		context.getTopicService().getLuceneService().rebuildIndex();
+		bbsContext.getTopicService().getLuceneService().rebuildIndex();
 		return new JavascriptForward("alert('").append($m("BbsAdvPage.3")).append("');");
 	}
 }

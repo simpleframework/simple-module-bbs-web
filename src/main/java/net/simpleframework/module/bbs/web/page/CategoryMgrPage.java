@@ -46,7 +46,7 @@ public class CategoryMgrPage extends OneTreeTemplatePage implements IBbsContextA
 
 		@Override
 		protected IBbsCategoryService getBeanService() {
-			return context.getCategoryService();
+			return bbsContext.getCategoryService();
 		}
 
 		@Override

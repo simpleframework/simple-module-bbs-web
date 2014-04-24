@@ -26,6 +26,6 @@ public class BbsCategoryPage extends T2TemplatePage implements IBbsContextAware 
 
 	@Override
 	public String getTitle(final PageParameter pp) {
-		return context.getModule().getText();
+		return bbsContext.getModule().getText();
 	}
 }

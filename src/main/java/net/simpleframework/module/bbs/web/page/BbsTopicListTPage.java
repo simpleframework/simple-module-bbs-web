@@ -115,7 +115,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 					.setTitle($m("BbsTopicListTPage.10"));
 
 			// 修改日志
-			final IModuleRef ref = ((IBbsWebContext) context).getLogRef();
+			final IModuleRef ref = ((IBbsWebContext) bbsContext).getLogRef();
 			if (ref != null) {
 				((BbsLogRef) ref).addLogComponent(pp);
 			}
@@ -168,7 +168,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 	@Transaction(context = IBbsContext.class)
 	public IForward doDelete(final ComponentParameter cp) {
 		final Object[] ids = StringUtils.split(cp.getParameter("topicId"));
-		context.getTopicService().delete(ids);
+		bbsContext.getTopicService().delete(ids);
 		return new JavascriptForward("$Actions['BbsTopicListTPage_tbl']();");
 	}
 
@@ -179,7 +179,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 
 	@Override
 	protected TabButtons getCategoryTabs(final PageParameter pp) {
-		final IBbsCategoryService service = context.getCategoryService();
+		final IBbsCategoryService service = bbsContext.getCategoryService();
 		final TabButtons tabs = TabButtons.of();
 		final BbsCategory category = getCategory(pp);
 		if (category != null) {
@@ -258,7 +258,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 
 	@Override
 	public NavigationButtons getNavigationBar(final PageParameter pp) {
-		final LinkElement home = new LinkElement(context.getModule()).setHref(getUrlsFactory()
+		final LinkElement home = new LinkElement(bbsContext.getModule()).setHref(getUrlsFactory()
 				.getUrl(pp, BbsCategoryPage.class));
 		final BbsCategory category = getCategory(pp);
 		final NavigationButtons btns = NavigationButtons.of();
@@ -293,7 +293,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 		@Override
 		public IDataQuery<?> createDataObjectQuery(final ComponentParameter cp) {
 			final String s = cp.getLocaleParameter("s");
-			final IBbsTopicService service = context.getTopicService();
+			final IBbsTopicService service = bbsContext.getTopicService();
 			if (StringUtils.hasText(s)) {
 				return service.getLuceneService().query(s, BbsTopic.class);
 			}
@@ -362,7 +362,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 					final KVMap kv = new KVMap();
 					final StringBuilder sb = new StringBuilder();
 					sb.append(new SpanElement().setClassName("type_" + topic.getBbsType().name()));
-					final int posts = context.getPostService()
+					final int posts = bbsContext.getPostService()
 							.query(topic, new TimePeriod(ETimePeriod.day)).getCount();
 					if (posts > 0) {
 						sb.append(new SupElement(posts).setTitle($m("BbsTopicListTPage.8", posts)));
@@ -371,7 +371,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 					BbsCategory category = getCategory(cp);
 					sb.setLength(0);
 					if (category == null) {
-						category = context.getCategoryService().getBean(topic.getCategoryId());
+						category = bbsContext.getCategoryService().getBean(topic.getCategoryId());
 						if (category != null) {
 							sb.append("<span class='categoryTxt'>[");
 							sb.append(new LinkElement(category.getText()).setHref(getUrlsFactory().getUrl(
@@ -429,7 +429,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 	public static class RecommendationPage extends AbstractRecommendationPage<BbsTopic> {
 		@Override
 		protected IBbsTopicService getBeanService() {
-			return context.getTopicService();
+			return bbsContext.getTopicService();
 		}
 
 		@Override
@@ -462,7 +462,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 				topic.setBest(cp.getBoolParameter("a_best"));
 				topic.setBbsType(cp.getEnumParameter(EBbsType.class, "a_type"));
 				DescriptionLogUtils.set(topic, cp.getParameter("a_description"));
-				context.getTopicService().update(new String[] { "best", "bbsType" }, topic);
+				bbsContext.getTopicService().update(new String[] { "best", "bbsType" }, topic);
 			}
 			final JavascriptForward js = super.onSave(cp);
 			js.append("$Actions['BbsTopicListTPage_tbl']();");
@@ -498,6 +498,6 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 	}
 
 	private static BbsTopic getTopic(final PageParameter pp) {
-		return getCacheBean(pp, context.getTopicService(), "topicId");
+		return getCacheBean(pp, bbsContext.getTopicService(), "topicId");
 	}
 }
