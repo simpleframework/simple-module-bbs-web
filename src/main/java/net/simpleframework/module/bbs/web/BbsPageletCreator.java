@@ -37,7 +37,8 @@ public class BbsPageletCreator extends PageletCreator<BbsTopic> implements IBbsC
 	public static class BbsListRowHandler extends ListRowHandler<BbsTopic> {
 		@Override
 		protected String getHref(final PageParameter pp, final BbsTopic bean) {
-			return ((IBbsWebContext) bbsContext).getUrlsFactory().getUrl(pp, BbsPostViewPage.class, bean);
+			return ((IBbsWebContext) bbsContext).getUrlsFactory().getUrl(pp, BbsPostViewPage.class,
+					bean);
 		}
 
 		@Override

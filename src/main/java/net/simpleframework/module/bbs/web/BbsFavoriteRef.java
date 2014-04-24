@@ -88,8 +88,8 @@ public class BbsFavoriteRef extends FavoriteRef implements IBbsContextAware {
 			return new AbstractFavoriteContent(topic) {
 				@Override
 				public String getUrl() {
-					return ((IBbsWebContext) bbsContext).getUrlsFactory().getUrl(pp, BbsPostViewPage.class,
-							topic);
+					return ((IBbsWebContext) bbsContext).getUrlsFactory().getUrl(pp,
+							BbsPostViewPage.class, topic);
 				}
 
 				@Override

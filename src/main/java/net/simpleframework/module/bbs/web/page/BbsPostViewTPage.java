@@ -217,12 +217,13 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 				.add("bbsContext", bbsContext)
 				.add("topic", topic)
 				.add("manager",
-						BbsUtils.isManager(pp, bbsContext.getCategoryService()
-								.getBean(topic.getCategoryId())));
+						BbsUtils.isManager(pp,
+								bbsContext.getCategoryService().getBean(topic.getCategoryId())));
 	}
 
 	public IForward doDownload(final ComponentParameter cp) {
-		final Attachment attachment = bbsContext.getAttachmentService().getBean(cp.getParameter("id"));
+		final Attachment attachment = bbsContext.getAttachmentService()
+				.getBean(cp.getParameter("id"));
 		final JavascriptForward js = new JavascriptForward();
 		if (attachment != null) {
 			final IAttachmentService<Attachment> service = bbsContext.getAttachmentService();
@@ -697,10 +698,11 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		final BbsTopic topic = getTopic(pp);
 		final BbsUrlsFactory urls = getUrlsFactory();
 		final BbsCategory category = bbsContext.getCategoryService().getBean(topic.getCategoryId());
-		return NavigationButtons.of(new LinkElement(bbsContext.getModule()).setHref(urls.getUrl(pp,
-				BbsCategoryPage.class)), new SpanElement().addElements(
-				new LinkElement(category.getText()).setHref(urls.getUrl(pp, BbsTopicListPage.class,
-						category)), createCategoryDictMenu(pp)));
+		return NavigationButtons
+				.of(new LinkElement(bbsContext.getModule()).setHref(urls.getUrl(pp,
+						BbsCategoryPage.class)), new SpanElement().addElements(
+						new LinkElement(category.getText()).setHref(urls.getUrl(pp,
+								BbsTopicListPage.class, category)), createCategoryDictMenu(pp)));
 	}
 
 	public IForward doPageletTab(final ComponentParameter cp) {
