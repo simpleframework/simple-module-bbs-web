@@ -26,7 +26,7 @@ import net.simpleframework.ctx.common.bean.AttachmentFile;
 import net.simpleframework.ctx.permission.IPermissionConst;
 import net.simpleframework.ctx.permission.PermissionUser;
 import net.simpleframework.ctx.script.MVEL2Template;
-import net.simpleframework.ctx.service.ado.IADOTreeBeanServiceAware;
+import net.simpleframework.ctx.service.ado.ITreeBeanServiceAware;
 import net.simpleframework.ctx.trans.Transaction;
 import net.simpleframework.lib.org.jsoup.nodes.Document;
 import net.simpleframework.module.bbs.BbsAskVote;
@@ -475,7 +475,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 	protected String getRemarkList(final PageParameter pp, final BbsPost post) {
 		final StringBuilder sb = new StringBuilder();
 		final boolean manager = (Boolean) getVariables(pp).get("manager");
-		final IDataQuery<BbsPost> children = ((IADOTreeBeanServiceAware<BbsPost>) bbsContext
+		final IDataQuery<BbsPost> children = ((ITreeBeanServiceAware<BbsPost>) bbsContext
 				.getPostService()).queryChildren(post);
 		BbsPost _remark;
 		int i = 0;
