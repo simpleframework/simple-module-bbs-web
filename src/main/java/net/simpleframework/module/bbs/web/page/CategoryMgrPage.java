@@ -1,7 +1,6 @@
 package net.simpleframework.module.bbs.web.page;
 
 import static net.simpleframework.common.I18n.$m;
-import net.simpleframework.ado.query.IDataQuery;
 import net.simpleframework.common.coll.KVMap;
 import net.simpleframework.module.bbs.BbsCategory;
 import net.simpleframework.module.bbs.IBbsCategoryService;
@@ -47,12 +46,6 @@ public class CategoryMgrPage extends OneTreeTemplatePage implements IBbsContextA
 		@Override
 		protected IBbsCategoryService getBeanService() {
 			return bbsContext.getCategoryService();
-		}
-
-		@Override
-		protected IDataQuery<?> categoryBeans(final ComponentParameter cp, final Object categoryId) {
-			final IBbsCategoryService service = getBeanService();
-			return service.queryChildren(service.getBean(categoryId));
 		}
 
 		@Override
