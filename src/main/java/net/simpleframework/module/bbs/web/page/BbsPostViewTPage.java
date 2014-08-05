@@ -271,7 +271,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 	public IForward doReplyFrom(final ComponentParameter cp) {
 		final BbsPost reply = getPost(cp, "replyId");
 		final TextForward tf = new TextForward();
-		tf.append("<div class='cc'>").append(reply.getComment()).append("</div>");
+		tf.append("<div class='cc'>").append(reply.getCcomment()).append("</div>");
 		tf.append("<div class='bb'>")
 				.append(DateUtils.getRelativeDate(reply.getCreateDate(), DATE_NUMBERCONVERT))
 				.append("</div>");
@@ -301,13 +301,13 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		final BbsPost remark = getPost(cp, "remarkId");
 		if (remark != null) {
 			return new JavascriptForward("_BBS.edit('").append("remarkId:").append(remark.getId())
-					.append("', '").append(JavascriptUtils.escape(remark.getComment())).append("', '")
+					.append("', '").append(JavascriptUtils.escape(remark.getCcomment())).append("', '")
 					.append($m("BbsPostViewTPage.11", cp.getUser(remark.getUserId()))).append("');");
 		} else {
 			final BbsPost post = getPost(cp, "postId");
 			if (post != null) {
 				return new JavascriptForward("_BBS.edit('").append("postId:").append(post.getId())
-						.append("', '").append(JavascriptUtils.escape(post.getComment())).append("', '")
+						.append("', '").append(JavascriptUtils.escape(post.getCcomment())).append("', '")
 						.append($m("BbsPostViewTPage.11", cp.getUser(post.getUserId()))).append("');");
 			} else {
 				final BbsTopic topic = getTopic(cp);
@@ -348,7 +348,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 				remark.setUserId(cp.getLoginId());
 			}
 			HtmlUtils.doDocument(doc, HtmlUtils.REPLACE_TAG_VISITOR("p", "div"));
-			remark.setComment(doPostContent(cp, remark, doc));
+			remark.setCcomment(doPostContent(cp, remark, doc));
 			if (insert) {
 				service.insert(remark);
 			} else {
@@ -371,7 +371,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 			post.setCreateDate(new Date());
 			post.setUserId(cp.getLoginId());
 		}
-		post.setComment(doPostContent(cp, post, doc));
+		post.setCcomment(doPostContent(cp, post, doc));
 		if (insert) {
 			service.insert(post);
 		} else {
@@ -462,7 +462,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		if (gap) {
 			sb.append("<div class='ReplyFrom_gap'></div>");
 		}
-		sb.append(post.getComment());
+		sb.append(post.getCcomment());
 		if (ask) {
 			sb.append("<div id='remark_").append(post.getId())
 					.append("' class='BbsContent_Remark_List'>");
@@ -485,7 +485,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 				sb.append("<div class='ritem'>");
 				final PermissionUser user = pp.getUser(_remark.getUserId());
 				sb.append(PhotoImage.icon16(pp.getPhotoUrl(user)).setTitle(user.toString()));
-				sb.append(_remark.getComment());
+				sb.append(_remark.getCcomment());
 				sb.append(" <div class='rbar'>");
 				sb.append(Convert.toDateString(_remark.getCreateDate()));
 				if (manager || isPostEditable(pp, _remark)) {
