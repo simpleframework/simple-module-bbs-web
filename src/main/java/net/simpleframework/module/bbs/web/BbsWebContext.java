@@ -51,7 +51,7 @@ public class BbsWebContext extends BbsContext implements IBbsWebContext {
 		return ModuleFunctions.of(FUNC_CATEGORY);
 	}
 
-	public WebModuleFunction FUNC_CATEGORY = (WebModuleFunction) new WebModuleFunction()
+	public WebModuleFunction FUNC_CATEGORY = (WebModuleFunction) new WebModuleFunction(this)
 			.setUrl(getUrlsFactory().getUrl(null, BbsCategoryPage.class))
 			.setName(MODULE_NAME + "-BbsCategoryTPage").setText($m("BbsContext.0"));
 }
