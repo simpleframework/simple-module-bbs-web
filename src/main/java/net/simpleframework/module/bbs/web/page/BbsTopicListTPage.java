@@ -159,10 +159,8 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 	@Override
 	public String getRole(final PageParameter pp) {
 		final String list = pp.getParameter("list");
-		if ("my".equals(list)) {
-			return IPermissionConst.ROLE_ALL_ACCOUNT;
-		}
-		return super.getRole(pp);
+		return "my".equals(list) ? IPermissionConst.ROLE_ALL_ACCOUNT
+				: IPermissionConst.ROLE_ANONYMOUS;
 	}
 
 	@Transaction(context = IBbsContext.class)
