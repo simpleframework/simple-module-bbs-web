@@ -3,7 +3,7 @@ package net.simpleframework.module.bbs.web.page.t2;
 import java.io.IOException;
 import java.util.Map;
 
-import net.simpleframework.ctx.permission.IPermissionConst;
+import net.simpleframework.ctx.permission.PermissionConst;
 import net.simpleframework.module.bbs.IBbsContextAware;
 import net.simpleframework.module.bbs.web.page.BbsTopicFormTPage;
 import net.simpleframework.mvc.PageMapping;
@@ -21,7 +21,7 @@ public class BbsTopicFormPage extends T2TemplatePage implements IBbsContextAware
 
 	@Override
 	public String getRole(final PageParameter pp) {
-		return IPermissionConst.ROLE_ALL_ACCOUNT;
+		return PermissionConst.ROLE_ALL_ACCOUNT;
 	}
 
 	@Override

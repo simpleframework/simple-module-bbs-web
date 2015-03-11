@@ -23,7 +23,7 @@ import net.simpleframework.common.web.JavascriptUtils;
 import net.simpleframework.common.web.html.HtmlUtils;
 import net.simpleframework.ctx.IModuleRef;
 import net.simpleframework.ctx.common.bean.AttachmentFile;
-import net.simpleframework.ctx.permission.IPermissionConst;
+import net.simpleframework.ctx.permission.PermissionConst;
 import net.simpleframework.ctx.permission.PermissionUser;
 import net.simpleframework.ctx.script.MVEL2Template;
 import net.simpleframework.ctx.service.ado.ITreeBeanServiceAware;
@@ -136,14 +136,14 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 
 		// submit
 		addAjaxRequest(pp, "BbsPostViewTPage_submit").setConfirmMessage($m("Confirm.Post"))
-				.setHandlerMethod("doSubmit").setRole(IPermissionConst.ROLE_ALL_ACCOUNT)
+				.setHandlerMethod("doSubmit").setRole(PermissionConst.ROLE_ALL_ACCOUNT)
 				.setSelector("#idBbsTopic_editor");
 
 		final boolean manager = (Boolean) getVariables(pp).get("manager");
 		if (isAsk(getTopic(pp))) {
 			// vote
 			addAjaxRequest(pp, "BbsPostViewTPage_ajaxVote").setHandlerMethod("doAjaxVote").setRole(
-					IPermissionConst.ROLE_ALL_ACCOUNT);
+					PermissionConst.ROLE_ALL_ACCOUNT);
 
 			addAjaxRequest(pp, "BbsPostViewTPage_votePage", VoteSubmitPage.class);
 			addWindowBean(pp, "BbsPostViewTPage_voteWin").setContentRef("BbsPostViewTPage_votePage")
@@ -813,7 +813,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 			super.onForward(pp);
 
 			addAjaxRequest(pp, "VoteSubmitPage_vote").setHandlerMethod("doVote")
-					.setRole(IPermissionConst.ROLE_ALL_ACCOUNT).setSelector(".VoteSubmitPage");
+					.setRole(PermissionConst.ROLE_ALL_ACCOUNT).setSelector(".VoteSubmitPage");
 
 			addComponentBean(pp, "VoteSubmitPage_validation", ValidationBean.class)
 					.setWarnType(EWarnType.insertAfter).setTriggerSelector("#idVoteSubmitPage_vote")
@@ -855,7 +855,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 			super.onForward(pp);
 
 			addAjaxRequest(pp, "UnVoteSubmitPage_unvote").setHandlerMethod("doUnVote").setRole(
-					IPermissionConst.ROLE_ALL_ACCOUNT);
+					PermissionConst.ROLE_ALL_ACCOUNT);
 		}
 
 		@Transaction(context = IBbsContext.class)

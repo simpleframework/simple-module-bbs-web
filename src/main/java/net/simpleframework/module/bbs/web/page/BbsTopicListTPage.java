@@ -19,7 +19,7 @@ import net.simpleframework.common.TimePeriod;
 import net.simpleframework.common.coll.KVMap;
 import net.simpleframework.common.web.HttpUtils;
 import net.simpleframework.ctx.IModuleRef;
-import net.simpleframework.ctx.permission.IPermissionConst;
+import net.simpleframework.ctx.permission.PermissionConst;
 import net.simpleframework.ctx.permission.PermissionUser;
 import net.simpleframework.ctx.trans.Transaction;
 import net.simpleframework.module.bbs.BbsCategory;
@@ -159,8 +159,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 	@Override
 	public String getRole(final PageParameter pp) {
 		final String list = pp.getParameter("list");
-		return "my".equals(list) ? IPermissionConst.ROLE_ALL_ACCOUNT
-				: IPermissionConst.ROLE_ANONYMOUS;
+		return "my".equals(list) ? PermissionConst.ROLE_ALL_ACCOUNT : PermissionConst.ROLE_ANONYMOUS;
 	}
 
 	@Transaction(context = IBbsContext.class)
