@@ -43,15 +43,13 @@ public class BbsWebContext extends BbsContext implements IBbsWebContext {
 
 	@Override
 	protected Module createModule() {
-		return super.createModule().setDefaultFunction(FUNC_CATEGORY);
+		return super.createModule().setDefaultFunction(MODULE_NAME + "-BbsCategoryTPage");
 	}
 
 	@Override
 	protected ModuleFunctions getFunctions() {
-		return ModuleFunctions.of(FUNC_CATEGORY);
+		return ModuleFunctions.of((WebModuleFunction) new WebModuleFunction(this)
+				.setUrl(getUrlsFactory().getUrl(null, BbsCategoryPage.class))
+				.setName(MODULE_NAME + "-BbsCategoryTPage").setText($m("BbsContext.0")));
 	}
-
-	public WebModuleFunction FUNC_CATEGORY = (WebModuleFunction) new WebModuleFunction(this)
-			.setUrl(getUrlsFactory().getUrl(null, BbsCategoryPage.class))
-			.setName(MODULE_NAME + "-BbsCategoryTPage").setText($m("BbsContext.0"));
 }
