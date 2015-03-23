@@ -43,7 +43,6 @@ import net.simpleframework.mvc.JavascriptForward;
 import net.simpleframework.mvc.PageParameter;
 import net.simpleframework.mvc.common.element.ButtonElement;
 import net.simpleframework.mvc.common.element.ETabMatch;
-import net.simpleframework.mvc.common.element.ETextAlign;
 import net.simpleframework.mvc.common.element.ElementList;
 import net.simpleframework.mvc.common.element.Icon;
 import net.simpleframework.mvc.common.element.InputElement;
@@ -135,12 +134,11 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 		tablePager
 				.addColumn(TablePagerColumn.ICON())
 				.addColumn(
-						new TablePagerColumn("topic", $m("BbsTopicListTPage.0"))
-								.setTextAlign(ETextAlign.left).setResize(false).setNowrap(false)
-								.setSort(false))
+						new TablePagerColumn("topic", $m("BbsTopicListTPage.0")).setResize(false)
+								.setNowrap(false).setSort(false))
 				.addColumn(
 						new TablePagerColumn("userId", $m("BbsTopicListTPage.1")).setWidth(100)
-								.setResize(false).setSort(false).setTextAlign(ETextAlign.left))
+								.setResize(false).setSort(false))
 				.addColumn(
 						new TablePagerColumn("posts", $m("BbsTopicListTPage.2")).setWidth(45).setResize(
 								false))
@@ -152,7 +150,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 								.setResize(false))
 				.addColumn(
 						new TablePagerColumn("lastPost", $m("BbsTopicListTPage.5")).setWidth(110)
-								.setResize(false).setSort(false).setTextAlign(ETextAlign.left));
+								.setResize(false).setSort(false));
 		return tablePager;
 	}
 
