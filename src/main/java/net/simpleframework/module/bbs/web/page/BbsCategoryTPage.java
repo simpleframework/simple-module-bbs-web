@@ -42,6 +42,7 @@ import net.simpleframework.mvc.common.element.SupElement;
 import net.simpleframework.mvc.common.element.TabButton;
 import net.simpleframework.mvc.common.element.TabButtons;
 import net.simpleframework.mvc.component.ComponentParameter;
+import net.simpleframework.mvc.component.base.ajaxrequest.AjaxRequestBean;
 import net.simpleframework.mvc.component.ui.menu.EMenuEvent;
 import net.simpleframework.mvc.component.ui.menu.MenuBean;
 import net.simpleframework.mvc.component.ui.menu.MenuItem;
@@ -52,7 +53,6 @@ import net.simpleframework.mvc.component.ui.tooltip.TipBean;
 import net.simpleframework.mvc.component.ui.tooltip.TipBean.HideOn;
 import net.simpleframework.mvc.component.ui.tooltip.TipBean.Hook;
 import net.simpleframework.mvc.component.ui.tooltip.TooltipBean;
-import net.simpleframework.mvc.component.ui.window.WindowBean;
 import net.simpleframework.mvc.impl.DefaultPageResourceProvider;
 import net.simpleframework.mvc.template.struct.CategoryItem;
 import net.simpleframework.mvc.template.struct.EImageDot;
@@ -103,15 +103,15 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 					"$Actions['BbsCategoryTPage_advWindow']();"));
 
 			// 高级设置
-			addAjaxRequest(pp, "BbsCategoryTPage_advPage", BbsAdvPage.class);
-			addWindowBean(pp, "BbsCategoryTPage_advWindow").setContentRef("BbsCategoryTPage_advPage")
+			AjaxRequestBean ajaxRequest = addAjaxRequest(pp, "BbsCategoryTPage_advPage",
+					BbsAdvPage.class);
+			addWindowBean(pp, "BbsCategoryTPage_advWindow", ajaxRequest)
 					.setTitle($m("BbsCategoryTPage.11")).setHeight(280).setWidth(420);
 
 			// 管理窗口
-			addAjaxRequest(pp, "BbsCategoryTPage_CategoryPage", CategoryMgrPage.class);
-			addComponentBean(pp, "BbsCategoryTPage_CategoryWin", WindowBean.class)
-					.setContentRef("BbsCategoryTPage_CategoryPage").setHeight(600).setWidth(480)
-					.setTitle($m("BbsCategoryTPage.1"));
+			ajaxRequest = addAjaxRequest(pp, "BbsCategoryTPage_CategoryPage", CategoryMgrPage.class);
+			addWindowBean(pp, "BbsCategoryTPage_CategoryWin", ajaxRequest).setHeight(600)
+					.setWidth(480).setTitle($m("BbsCategoryTPage.1"));
 
 			el.append(SpanElement.SPACE,
 					new LinkButton($m("BbsCategoryTPage.0")).setId("menu_" + hashId).setMenuIcon(true)

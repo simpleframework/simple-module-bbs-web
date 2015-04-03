@@ -53,7 +53,6 @@ import net.simpleframework.mvc.component.ui.dictionary.DictionaryTreeHandler;
 import net.simpleframework.mvc.component.ui.tree.TreeBean;
 import net.simpleframework.mvc.component.ui.tree.TreeNode;
 import net.simpleframework.mvc.component.ui.tree.TreeNodes;
-import net.simpleframework.mvc.component.ui.window.WindowBean;
 import net.simpleframework.mvc.template.lets.FormTableRowTemplatePage;
 
 /**
@@ -80,9 +79,8 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 		// 上传
 		addComponentBean(pp, "BbsTopicForm_upload_page", AttachmentBean.class).setInsertTextarea(
 				"te_content").setHandlerClass(BbsTopicAttachmentAction.class);
-		addComponentBean(pp, "BbsTopicForm_upload", WindowBean.class)
-				.setContentRef("BbsTopicForm_upload_page").setTitle($m("BbsTopicFormTPage.4"))
-				.setPopup(true).setHeight(480).setWidth(400);
+		addWindowBean(pp, "BbsTopicForm_upload").setContentRef("BbsTopicForm_upload_page")
+				.setTitle($m("BbsTopicFormTPage.4")).setPopup(true).setHeight(480).setWidth(400);
 	}
 
 	protected HtmlEditorBean addHtmlEditorBean(final PageParameter pp) {

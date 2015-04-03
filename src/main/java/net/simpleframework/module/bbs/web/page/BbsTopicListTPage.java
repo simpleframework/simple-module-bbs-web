@@ -59,6 +59,7 @@ import net.simpleframework.mvc.common.element.TabButtons;
 import net.simpleframework.mvc.common.element.TableRow;
 import net.simpleframework.mvc.common.element.TableRows;
 import net.simpleframework.mvc.component.ComponentParameter;
+import net.simpleframework.mvc.component.base.ajaxrequest.AjaxRequestBean;
 import net.simpleframework.mvc.component.base.validation.EValidatorMethod;
 import net.simpleframework.mvc.component.base.validation.Validator;
 import net.simpleframework.mvc.component.ui.menu.MenuBean;
@@ -102,10 +103,10 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 			// 删除
 			addDeleteAjaxRequest(pp, "BbsTopicListTPage_delete");
 			// 推荐
-			addAjaxRequest(pp, "BbsTopicListTPage_recommendationPage", RecommendationPage.class);
-			addComponentBean(pp, "BbsTopicListTPage_recommendation", WindowBean.class)
-					.setContentRef("BbsTopicListTPage_recommendationPage").setHeight(270).setWidth(460)
-					.setTitle($m("AbstractContentBean.2"));
+			final AjaxRequestBean ajaxRequest = addAjaxRequest(pp,
+					"BbsTopicListTPage_recommendationPage", RecommendationPage.class);
+			addWindowBean(pp, "BbsTopicListTPage_recommendation", ajaxRequest).setHeight(270)
+					.setWidth(460).setTitle($m("AbstractContentBean.2"));
 
 			// topic属性
 			addAjaxRequest(pp, "BbsTopicListTPage_advPage", TopicAdvPage.class);

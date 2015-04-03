@@ -7,12 +7,12 @@ import net.simpleframework.module.bbs.IBbsCategoryService;
 import net.simpleframework.module.bbs.IBbsContextAware;
 import net.simpleframework.mvc.PageParameter;
 import net.simpleframework.mvc.component.ComponentParameter;
+import net.simpleframework.mvc.component.base.ajaxrequest.AjaxRequestBean;
 import net.simpleframework.mvc.component.ext.category.ctx.CategoryBeanAwareHandler;
 import net.simpleframework.mvc.component.ui.menu.MenuItem;
 import net.simpleframework.mvc.component.ui.tree.TreeBean;
 import net.simpleframework.mvc.component.ui.tree.TreeNode;
 import net.simpleframework.mvc.component.ui.tree.TreeNodes;
-import net.simpleframework.mvc.component.ui.window.WindowBean;
 import net.simpleframework.mvc.template.lets.OneTreeTemplatePage;
 
 /**
@@ -30,9 +30,9 @@ public class CategoryMgrPage extends OneTreeTemplatePage implements IBbsContextA
 		addCategoryBean(pp, "CategoryMgrPage_tree", BbsCategoryHandler.class);
 
 		// 权限
-		addAjaxRequest(pp, "CategoryMgrPage_teamPage", CategoryTeamPage.class);
-		addComponentBean(pp, "CategoryMgrPage_teamWin", WindowBean.class)
-				.setContentRef("CategoryMgrPage_teamPage").setHeight(480).setWidth(800)
+		final AjaxRequestBean ajaxRequest = addAjaxRequest(pp, "CategoryMgrPage_teamPage",
+				CategoryTeamPage.class);
+		addWindowBean(pp, "CategoryMgrPage_teamWin", ajaxRequest).setHeight(480).setWidth(800)
 				.setTitle($m("CategoryMgrPage.2"));
 	}
 
