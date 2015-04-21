@@ -209,7 +209,7 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 		}
 		//
 		TableRow r1;
-		if (category != null && (topic == null || !pp.getLogin().isManager())) {
+		if (category != null && (topic == null || !pp.isLmanager())) {
 			r1 = new TableRow(
 					new RowField($m("BbsTopicListTPage.0"), te_id, te_categoryId, te_topic)
 							.setStarMark(true));
