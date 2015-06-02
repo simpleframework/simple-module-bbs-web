@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
 
-import net.simpleframework.ado.EFilterRelation;
 import net.simpleframework.ado.FilterItem;
 import net.simpleframework.ado.FilterItems;
 import net.simpleframework.ado.query.DataQueryUtils;
@@ -321,9 +320,8 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 				}
 			}
 
-			params.append(
-					new FilterItem("topic", EFilterRelation.like, cp.getLocaleParameter("as_topic")))
-					.append(new FilterItem("createDate", new TimePeriod(cp.getParameter("as_time"))));
+			params.addLike("topic", cp.getLocaleParameter("as_topic")).addEqual("createDate",
+					new TimePeriod(cp.getParameter("as_time")));
 			return service.queryByParams(params);
 		}
 
