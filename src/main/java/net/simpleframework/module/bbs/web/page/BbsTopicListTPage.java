@@ -85,7 +85,7 @@ import net.simpleframework.mvc.template.struct.NavigationButtons;
 public class BbsTopicListTPage extends AbstractBbsTPage {
 
 	@Override
-	protected void onForward(final PageParameter pp) {
+	protected void onForward(final PageParameter pp) throws Exception {
 		super.onForward(pp);
 
 		// 菜单
@@ -442,7 +442,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 	public static class TopicAdvPage extends FormTableRowTemplatePage {
 
 		@Override
-		protected void onForward(final PageParameter pp) {
+		protected void onForward(final PageParameter pp) throws Exception {
 			super.onForward(pp);
 
 			addFormValidationBean(pp).addValidators(

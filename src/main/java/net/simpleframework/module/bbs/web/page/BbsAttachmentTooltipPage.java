@@ -29,7 +29,7 @@ public class BbsAttachmentTooltipPage extends AbstractAttachmentTooltipPage impl
 		IBbsContextAware {
 
 	@Override
-	protected void onForward(final PageParameter pp) {
+	protected void onForward(final PageParameter pp) throws Exception {
 		super.onForward(pp);
 
 		if (((IBbsWebContext) bbsContext).getLogRef() != null) {

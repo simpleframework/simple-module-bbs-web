@@ -24,7 +24,7 @@ import net.simpleframework.mvc.template.lets.OneTreeTemplatePage;
 public class CategoryMgrPage extends OneTreeTemplatePage implements IBbsContextAware {
 
 	@Override
-	protected void onForward(final PageParameter pp) {
+	protected void onForward(final PageParameter pp) throws Exception {
 		super.onForward(pp);
 
 		addCategoryBean(pp, "CategoryMgrPage_tree", BbsCategoryHandler.class);

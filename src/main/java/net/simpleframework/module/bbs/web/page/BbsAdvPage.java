@@ -22,7 +22,7 @@ import net.simpleframework.mvc.template.AbstractTemplatePage;
 public class BbsAdvPage extends AbstractTemplatePage implements IBbsContextAware {
 
 	@Override
-	protected void onForward(final PageParameter pp) {
+	protected void onForward(final PageParameter pp) throws Exception {
 		super.onForward(pp);
 
 		addAjaxRequest(pp, "BbsAdvPage_reIndex").setConfirmMessage($m("BbsAdvPage.2"))

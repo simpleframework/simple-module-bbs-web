@@ -68,7 +68,7 @@ import net.simpleframework.mvc.template.struct.Pagelets;
 public class BbsCategoryTPage extends AbstractBbsTPage {
 
 	@Override
-	protected void onForward(final PageParameter pp) {
+	protected void onForward(final PageParameter pp) throws Exception {
 		super.onForward(pp);
 
 		// 菜单

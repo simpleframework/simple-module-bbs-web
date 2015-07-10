@@ -27,7 +27,7 @@ import net.simpleframework.mvc.template.struct.Pagelets;
 public class BbsTopicFormTPage extends AbstractBbsTPage implements IBbsContextAware {
 
 	@Override
-	protected void onForward(final PageParameter pp) {
+	protected void onForward(final PageParameter pp) throws Exception {
 		super.onForward(pp);
 
 		// 类目选择

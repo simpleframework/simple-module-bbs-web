@@ -98,7 +98,7 @@ import net.simpleframework.mvc.template.struct.Pagelets;
 public class BbsPostViewTPage extends AbstractBbsTPage {
 
 	@Override
-	protected void onForward(final PageParameter pp) {
+	protected void onForward(final PageParameter pp) throws Exception {
 		super.onForward(pp);
 
 		pp.addImportJavascript(AbstractBbsTPage.class, "/js/bbs.js");
@@ -809,7 +809,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 
 	public static class VoteSubmitPage extends _VoteSubmitPage {
 		@Override
-		protected void onForward(final PageParameter pp) {
+		protected void onForward(final PageParameter pp) throws Exception {
 			super.onForward(pp);
 
 			addAjaxRequest(pp, "VoteSubmitPage_vote").setHandlerMethod("doVote")
@@ -851,7 +851,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 
 	public static class UnVoteSubmitPage extends _VoteSubmitPage {
 		@Override
-		protected void onForward(final PageParameter pp) {
+		protected void onForward(final PageParameter pp) throws Exception {
 			super.onForward(pp);
 
 			addAjaxRequest(pp, "UnVoteSubmitPage_unvote").setHandlerMethod("doUnVote").setRole(
