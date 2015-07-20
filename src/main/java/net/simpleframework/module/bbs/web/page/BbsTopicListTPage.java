@@ -320,8 +320,11 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 				}
 			}
 
-			params.addLike("topic", cp.getLocaleParameter("as_topic")).addEqual("createDate",
-					new TimePeriod(cp.getParameter("as_time")));
+			final String topic = cp.getLocaleParameter("as_topic");
+			if (StringUtils.hasText(topic)) {
+				params.addLike("topic", cp.getLocaleParameter("as_topic"));
+			}
+			params.addEqual("createDate", new TimePeriod(cp.getParameter("as_time")));
 			return service.queryByParams(params);
 		}
 
