@@ -45,6 +45,7 @@ import net.simpleframework.mvc.common.element.ETabMatch;
 import net.simpleframework.mvc.common.element.ElementList;
 import net.simpleframework.mvc.common.element.Icon;
 import net.simpleframework.mvc.common.element.InputElement;
+import net.simpleframework.mvc.common.element.JS;
 import net.simpleframework.mvc.common.element.LinkButton;
 import net.simpleframework.mvc.common.element.LinkElement;
 import net.simpleframework.mvc.common.element.Option;
@@ -400,8 +401,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 					if (getTablePagerColumns(cp).get(TablePagerColumn.OPE) != null) {
 						sb.setLength(0);
 						sb.append(ButtonElement.editBtn().setOnclick(
-								"$Actions.loc('"
-										+ getUrlsFactory().getUrl(cp, BbsTopicFormPage.class, topic) + "');"));
+								JS.loc(getUrlsFactory().getUrl(cp, BbsTopicFormPage.class, topic))));
 						sb.append(SpanElement.SPACE).append(AbstractTablePagerSchema.IMG_DOWNMENU);
 						kv.put(TablePagerColumn.OPE, sb.toString());
 					}

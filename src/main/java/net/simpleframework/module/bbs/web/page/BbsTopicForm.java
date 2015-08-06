@@ -35,6 +35,7 @@ import net.simpleframework.mvc.common.element.ButtonElement;
 import net.simpleframework.mvc.common.element.Checkbox;
 import net.simpleframework.mvc.common.element.ElementList;
 import net.simpleframework.mvc.common.element.InputElement;
+import net.simpleframework.mvc.common.element.JS;
 import net.simpleframework.mvc.common.element.LinkButton;
 import net.simpleframework.mvc.common.element.RowField;
 import net.simpleframework.mvc.common.element.SpanElement;
@@ -146,10 +147,8 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 			}
 		});
 		final JavascriptForward js = new JavascriptForward();
-		js.append("$Actions.loc('")
-				.append(
-						((IBbsWebContext) bbsContext).getUrlsFactory().getUrl(cp, BbsPostViewPage.class,
-								topic)).append("');");
+		js.append(JS.loc(((IBbsWebContext) bbsContext).getUrlsFactory().getUrl(cp,
+				BbsPostViewPage.class, topic)));
 		return js;
 	}
 

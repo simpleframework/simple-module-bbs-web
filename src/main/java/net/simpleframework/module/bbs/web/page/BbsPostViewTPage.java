@@ -62,6 +62,7 @@ import net.simpleframework.mvc.common.DownloadUtils;
 import net.simpleframework.mvc.common.element.EElementEvent;
 import net.simpleframework.mvc.common.element.ImageElement;
 import net.simpleframework.mvc.common.element.InputElement;
+import net.simpleframework.mvc.common.element.JS;
 import net.simpleframework.mvc.common.element.LinkButton;
 import net.simpleframework.mvc.common.element.LinkElement;
 import net.simpleframework.mvc.common.element.PhotoImage;
@@ -229,9 +230,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 			final IAttachmentService<Attachment> service = bbsContext.getAttachmentService();
 			try {
 				final AttachmentFile af = service.createAttachmentFile(attachment);
-				js.append("$Actions.loc('")
-						.append(DownloadUtils.getDownloadHref(af, AttachmentDownloadHandler.class))
-						.append("');");
+				js.append(JS.loc(DownloadUtils.getDownloadHref(af, AttachmentDownloadHandler.class)));
 			} catch (final IOException e) {
 				throw ContentException.of(e);
 			}
@@ -245,8 +244,8 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 	public IForward doDelete(final ComponentParameter cp) {
 		final BbsPost post = getPost(cp, "postId");
 		bbsContext.getPostService().delete(post.getId());
-		return new JavascriptForward("$Actions.loc('").append(
-				getUrlsFactory().getUrl(cp, BbsPostViewPage.class, getTopic(cp))).append("');");
+		return new JavascriptForward(JS.loc(getUrlsFactory().getUrl(cp, BbsPostViewPage.class,
+				getTopic(cp))));
 	}
 
 	public IForward doAjaxVote(final ComponentParameter cp) {
@@ -282,8 +281,8 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 	public IForward doBestAnswer(final ComponentParameter cp) {
 		final BbsPost post = getPost(cp, "postId");
 		bbsContext.getPostService().doBestAnswer(post);
-		return new JavascriptForward("$Actions.loc('").append(
-				getUrlsFactory().getUrl(cp, BbsPostViewPage.class, getTopic(cp))).append("');");
+		return new JavascriptForward(JS.loc(getUrlsFactory().getUrl(cp, BbsPostViewPage.class,
+				getTopic(cp))));
 	}
 
 	public IForward doRemarkList(final ComponentParameter cp) {
@@ -312,8 +311,8 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 			} else {
 				final BbsTopic topic = getTopic(cp);
 				if (topic != null) {
-					return new JavascriptForward("$Actions.loc('").append(
-							getUrlsFactory().getUrl(cp, BbsTopicFormPage.class, topic)).append("');");
+					return new JavascriptForward(JS.loc(getUrlsFactory().getUrl(cp,
+							BbsTopicFormPage.class, topic)));
 				}
 			}
 		}
@@ -377,8 +376,8 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		} else {
 			service.update(post);
 		}
-		return new JavascriptForward("$Actions.loc('").append(
-				getUrlsFactory().getUrl(cp, BbsPostViewPage.class, topic)).append("');");
+		return new JavascriptForward(
+				JS.loc(getUrlsFactory().getUrl(cp, BbsPostViewPage.class, topic)));
 	}
 
 	protected String doPostContent(final PageParameter pp, final Object bean, final Document doc) {
@@ -609,20 +608,22 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		final StringBuilder sb = new StringBuilder();
 		final BbsTopic topic = getTopic(pp);
 		if (getPost(pp, "replyId") != null || pp.getUser(pp.getParameter("userId")).getId() != null) {
-			sb.append("<span class='span_btn_left' onclick=\"$Actions.loc('");
-			sb.append(getUrlsFactory().getUrl(pp, BbsPostViewPage.class, topic)).append("');\">");
+			sb.append("<span class='span_btn_left' onclick=\"");
+			sb.append(JS.loc(getUrlsFactory().getUrl(pp, BbsPostViewPage.class, topic))).append("\">");
 			sb.append("#(BbsPostViewTPage.12)");
 			sb.append("</span>");
 		} else {
 			final String url = getUrlsFactory().getUrl(pp, BbsPostViewPage.class, topic);
-			sb.append("<span class='span_btn_left' onclick=\"$Actions.loc('")
-					.append(HttpUtils.addParameters(url, "userId=" + post.getUserId())).append("');\">");
+			sb.append("<span class='span_btn_left' onclick=\"")
+					.append(JS.loc(HttpUtils.addParameters(url, "userId=" + post.getUserId())))
+					.append("\">");
 			sb.append("#(BbsPostViewTPage.15)");
 			sb.append("</span>");
 			int replies;
 			if ((replies = post.getReplies()) > 0) {
-				sb.append("<span class='span_btn_left' onclick=\"$Actions.loc('")
-						.append(HttpUtils.addParameters(url, "replyId=" + post.getId())).append("');\">");
+				sb.append("<span class='span_btn_left' onclick=\"")
+						.append(JS.loc(HttpUtils.addParameters(url, "replyId=" + post.getId())))
+						.append("\">");
 				sb.append(SpanElement.num(replies)).append("#(BbsPostViewTPage.0)");
 				sb.append("</span>");
 			}
