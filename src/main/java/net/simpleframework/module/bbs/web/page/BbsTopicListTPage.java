@@ -402,7 +402,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 						sb.setLength(0);
 						sb.append(ButtonElement.editBtn().setOnclick(
 								JS.loc(getUrlsFactory().getUrl(cp, BbsTopicFormPage.class, topic))));
-						sb.append(SpanElement.SPACE).append(AbstractTablePagerSchema.IMG_DOWNMENU);
+						sb.append(AbstractTablePagerSchema.IMG_DOWNMENU);
 						kv.put(TablePagerColumn.OPE, sb.toString());
 					}
 					return kv;
