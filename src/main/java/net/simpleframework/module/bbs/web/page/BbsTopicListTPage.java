@@ -98,7 +98,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 
 		final TablePagerBean tablePager = addTablePagerBean(pp);
 		if (BbsUtils.isManager(pp, getCategory(pp))) {
-			tablePager.addColumn(TablePagerColumn.OPE().setWidth(75).setResize(false));
+			tablePager.addColumn(TablePagerColumn.OPE(75).setResize(false));
 
 			// 删除
 			addDeleteAjaxRequest(pp, "BbsTopicListTPage_delete");
