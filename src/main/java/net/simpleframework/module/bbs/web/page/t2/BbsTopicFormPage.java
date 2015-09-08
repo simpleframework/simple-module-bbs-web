@@ -20,7 +20,7 @@ import net.simpleframework.mvc.template.t2.T2TemplatePage;
 public class BbsTopicFormPage extends T2TemplatePage implements IBbsContextAware {
 
 	@Override
-	public String getRole(final PageParameter pp) {
+	public String getPageRole(final PageParameter pp) {
 		return PermissionConst.ROLE_ALL_ACCOUNT;
 	}
 

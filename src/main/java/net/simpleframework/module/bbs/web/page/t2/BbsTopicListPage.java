@@ -27,8 +27,8 @@ public class BbsTopicListPage extends T2TemplatePage implements IBbsContextAware
 	}
 
 	@Override
-	public String getRole(final PageParameter pp) {
-		return singleton(BbsTopicListTPage.class).getRole(pp);
+	public String getPageRole(final PageParameter pp) {
+		return singleton(BbsTopicListTPage.class).getPageRole(pp);
 	}
 
 	@Override

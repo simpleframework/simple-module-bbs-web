@@ -156,7 +156,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 	}
 
 	@Override
-	public String getRole(final PageParameter pp) {
+	public String getPageRole(final PageParameter pp) {
 		final String list = pp.getParameter("list");
 		return "my".equals(list) ? PermissionConst.ROLE_ALL_ACCOUNT : PermissionConst.ROLE_ANONYMOUS;
 	}
