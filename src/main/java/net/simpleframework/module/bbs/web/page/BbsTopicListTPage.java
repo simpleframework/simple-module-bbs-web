@@ -129,8 +129,8 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 
 	protected TablePagerBean addTablePagerBean(final PageParameter pp) {
 		final TablePagerBean tablePager = (TablePagerBean) addComponentBean(pp,
-				"BbsTopicListTPage_tbl", TablePagerBean.class).setShowFilterBar(false)
-				.setShowCheckbox(false).setPageItems(50).setPagerBarLayout(EPagerBarLayout.bottom)
+				"BbsTopicListTPage_tbl", TablePagerBean.class).setFilter(false).setShowCheckbox(false)
+				.setPageItems(50).setPagerBarLayout(EPagerBarLayout.bottom)
 				.setContainerId("tbl_" + hashId).setHandlerClass(TopicList.class);
 		tablePager
 				.addColumn(TablePagerColumn.ICON())
