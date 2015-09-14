@@ -46,7 +46,7 @@ public class BbsLogRef extends LogRef implements IBbsContextAware {
 		final IAttachmentService<Attachment> service = bbsContext.getAttachmentService();
 		final Attachment attachment = service.getBean(beanId);
 		if (attachment != null) {
-			attachment.setDownloads(getDownloadLogService().countLog(beanId));
+			attachment.setDownloads(getDownloadLogService().clog(beanId));
 			service.update(new String[] { "downloads" }, attachment);
 		}
 	}
