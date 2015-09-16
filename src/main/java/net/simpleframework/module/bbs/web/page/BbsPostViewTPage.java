@@ -488,13 +488,13 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 				sb.append(" <div class='rbar'>");
 				sb.append(Convert.toDateString(_remark.getCreateDate()));
 				if (manager || isPostEditable(pp, _remark)) {
-					sb.append(SpanElement.SEP).append(
+					sb.append(SpanElement.SEP()).append(
 							new LinkElement("#(Edit)")
 									.setOnclick("$Actions['BbsPostViewTPage_edit']('remarkId="
 											+ _remark.getId() + "');"));
 				}
 				if (manager) {
-					sb.append(SpanElement.SEP).append(
+					sb.append(SpanElement.SEP()).append(
 							new LinkElement($m("Delete")).setOnclick("_BBS.doRemark_delete(this, '"
 									+ _remark.getId() + "');"));
 				}
