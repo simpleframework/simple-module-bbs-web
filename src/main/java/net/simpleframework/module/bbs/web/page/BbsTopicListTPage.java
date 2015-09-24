@@ -34,8 +34,8 @@ import net.simpleframework.module.bbs.web.page.t2.BbsCategoryPage;
 import net.simpleframework.module.bbs.web.page.t2.BbsPostViewPage;
 import net.simpleframework.module.bbs.web.page.t2.BbsTopicFormPage;
 import net.simpleframework.module.bbs.web.page.t2.BbsTopicListPage;
-import net.simpleframework.module.common.LogDesc;
 import net.simpleframework.module.common.content.EContentStatus;
+import net.simpleframework.module.common.log.LdescVal;
 import net.simpleframework.module.common.web.content.page.AbstractRecommendationPage;
 import net.simpleframework.mvc.IForward;
 import net.simpleframework.mvc.JavascriptForward;
@@ -458,7 +458,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 			if (topic != null) {
 				topic.setBest(cp.getBoolParameter("a_best"));
 				topic.setBbsType(cp.getEnumParameter(EBbsType.class, "a_type"));
-				LogDesc.set(topic, cp.getParameter("a_description"));
+				LdescVal.set(topic, cp.getParameter("a_description"));
 				bbsContext.getTopicService().update(new String[] { "best", "bbsType" }, topic);
 			}
 			final JavascriptForward js = super.onSave(cp);
