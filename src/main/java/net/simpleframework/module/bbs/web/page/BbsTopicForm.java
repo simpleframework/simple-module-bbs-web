@@ -94,7 +94,7 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 				CategorySelectedTree.class);
 		addComponentBean(pp, "BbsTopicForm_dict", DictionaryBean.class).setBindingId("te_categoryId")
 				.setBindingText("te_categoryText").addTreeRef(pp, "BbsTopicForm_dict_tree")
-				.setTitle($m("BbsTopicFormTPage.5"));
+				.setTitle($m("BbsTopicFormTPage.5")).setHeight(300);
 	}
 
 	@Transaction(context = IBbsContext.class)
