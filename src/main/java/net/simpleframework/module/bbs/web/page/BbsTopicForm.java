@@ -99,7 +99,7 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 
 	@Transaction(context = IBbsContext.class)
 	@Override
-	public JavascriptForward onSave(final ComponentParameter cp) throws IOException {
+	public JavascriptForward onSave(final ComponentParameter cp) throws Exception {
 		final BbsCategory category = bbsContext.getCategoryService().getBean(
 				cp.getParameter("te_categoryId"));
 		if (category == null) {
