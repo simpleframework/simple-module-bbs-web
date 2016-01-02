@@ -22,17 +22,17 @@ import net.simpleframework.mvc.template.struct.Pagelet;
  *         http://www.simpleframework.net
  */
 public class BbsPageletCreator extends PageletCreator<BbsTopic> implements IBbsContextAware {
-
 	public Pagelet getHistoryPagelet(final PageParameter pp) {
 		return getHistoryPagelet(pp, "bbs_views");
 	}
 
 	@Override
-	protected ListRowHandler<BbsTopic> getDefaultListRowHandler() {
-		return DEFAULT_HANDLER;
+	protected ListRowHandler<BbsTopic> getListRowHandler() {
+		if (lrowHandler == null) {
+			lrowHandler = new BbsListRowHandler();
+		}
+		return lrowHandler;
 	}
-
-	private final BbsListRowHandler DEFAULT_HANDLER = new BbsListRowHandler();
 
 	public static class BbsListRowHandler extends ListRowHandler<BbsTopic> {
 		@Override
