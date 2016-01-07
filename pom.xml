@@ -14,33 +14,28 @@
     <dependency>
       <groupId>net.simpleframework</groupId>
       <artifactId>simple-module-bbs-service</artifactId>
-      <version>${simple.module.bbs.service}</version>
     </dependency>
 
     <dependency>
       <groupId>net.simpleframework</groupId>
       <artifactId>simple-module-common-web</artifactId>
-      <version>${simple.module.common.web}</version>
     </dependency>
 
     <dependency>
       <groupId>net.simpleframework</groupId>
       <artifactId>simple-module-log-web</artifactId>
-      <version>${simple.module.log.web}</version>
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>net.simpleframework</groupId>
       <artifactId>simple-module-favorite-web</artifactId>
-      <version>${simple.module.favorite.web}</version>
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>net.simpleframework</groupId>
       <artifactId>simple-module-pdf-web</artifactId>
-      <version>${simple.module.pdf.web}</version>
       <optional>true</optional>
     </dependency>
 
