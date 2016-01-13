@@ -50,7 +50,8 @@ public class CategoryMgrPage extends OneTreeTemplatePage implements IBbsContextA
 
 		@Override
 		protected String[] getContextMenuKeys() {
-			return new String[] { "Add", "Edit", "Delete", "-", "Team", "-", "Refresh", "-", "Move" };
+			return new String[] { "Add", "Edit", "Delete", "-", "Team", "-", "Refresh", "-",
+					"Move.up", "Move.up2", "Move.down", "Move.down2" };
 		}
 
 		@Override
