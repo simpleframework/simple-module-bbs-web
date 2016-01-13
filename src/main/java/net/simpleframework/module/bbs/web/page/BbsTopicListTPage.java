@@ -316,7 +316,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 				params.add(new FilterItem("userId", id));
 			} else {
 				final PermissionUser user = cp.getUser(cp.getParameter("userId"));
-				if (user.getId() != null) {
+				if (user.exists()) {
 					params.append(new FilterItem("userId", user.getId()));
 				}
 			}

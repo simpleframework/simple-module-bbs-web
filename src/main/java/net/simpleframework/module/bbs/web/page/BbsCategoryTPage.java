@@ -137,7 +137,7 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 				new TabButton($m("BbsCategoryTPage.7"), HttpUtils.addParameters(url, "list=my"))
 						.setTabMatch(ETabMatch.params));
 		final PermissionUser user = pp.getUser(pp.getParameter("userId"));
-		if (user.getId() != null) {
+		if (user.exists()) {
 			tabs.append(new TabButton(user, uFactory.getUrl(pp, BbsTopicListPage.class, "userId="
 					+ user.getId())).setTabMatch(ETabMatch.params));
 		}
