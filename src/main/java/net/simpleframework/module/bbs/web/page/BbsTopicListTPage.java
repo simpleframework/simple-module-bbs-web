@@ -489,8 +489,8 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 		}
 
 		@Override
-		public int getLabelWidth(final PageParameter pp) {
-			return 80;
+		public String getLabelWidth(final PageParameter pp) {
+			return "80px";
 		}
 	}
 

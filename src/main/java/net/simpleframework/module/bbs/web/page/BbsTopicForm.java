@@ -266,8 +266,8 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 	}
 
 	@Override
-	public int getLabelWidth(final PageParameter pp) {
-		return 45;
+	public String getLabelWidth(final PageParameter pp) {
+		return "45px";
 	}
 
 	@Override
