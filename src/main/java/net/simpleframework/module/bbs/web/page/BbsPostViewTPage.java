@@ -230,7 +230,8 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 			final IAttachmentService<Attachment> service = bbsContext.getAttachmentService();
 			try {
 				final AttachmentFile af = service.createAttachmentFile(attachment);
-				js.append(JS.loc(DownloadUtils.getDownloadHref(af, AttachmentDownloadHandler.class)));
+				js.append(JS.loc(DownloadUtils.getDownloadHref(af, AttachmentDownloadHandler.class),
+						true));
 			} catch (final IOException e) {
 				throw ContentException.of(e);
 			}
