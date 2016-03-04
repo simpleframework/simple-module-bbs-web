@@ -4,11 +4,9 @@ import static net.simpleframework.common.I18n.$m;
 
 import java.io.IOException;
 
-import net.simpleframework.ctx.IModuleRef;
 import net.simpleframework.ctx.common.bean.AttachmentFile;
 import net.simpleframework.module.bbs.IBbsContextAware;
 import net.simpleframework.module.bbs.web.BbsLogRef.BbsDownloadLogPage;
-import net.simpleframework.module.bbs.web.BbsPDFRef;
 import net.simpleframework.module.bbs.web.IBbsWebContext;
 import net.simpleframework.module.common.content.Attachment;
 import net.simpleframework.module.common.content.IAttachmentService;
@@ -39,19 +37,6 @@ public class BbsAttachmentTooltipPage extends AbstractAttachmentTooltipPage impl
 					.setContentRef("AttachmentTooltipPage_logPage").setHeight(480).setWidth(800)
 					.setTitle($m("NewsFormAttachPage.5"));
 		}
-	}
-
-	@Override
-	protected LinkButton getPreviewButton(final PageParameter pp) {
-		final IModuleRef ref = ((IBbsWebContext) bbsContext).getPDFRef();
-		if (ref == null) {
-			return null;
-		}
-		final AttachmentFile attachment = _getAttachment(pp);
-		if (attachment == null) {
-			return null;
-		}
-		return createPreviewButton(pp).setHref(((BbsPDFRef) ref).getPreviewUrl(pp, attachment));
 	}
 
 	@Override

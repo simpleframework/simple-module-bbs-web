@@ -4,6 +4,7 @@ import static net.simpleframework.common.I18n.$m;
 import net.simpleframework.ctx.IModuleRef;
 import net.simpleframework.ctx.Module;
 import net.simpleframework.ctx.ModuleFunctions;
+import net.simpleframework.ctx.ModuleRefUtils;
 import net.simpleframework.module.bbs.impl.BbsContext;
 import net.simpleframework.module.bbs.web.page.t2.BbsCategoryPage;
 import net.simpleframework.mvc.ctx.WebModuleFunction;
@@ -18,17 +19,12 @@ public class BbsWebContext extends BbsContext implements IBbsWebContext {
 
 	@Override
 	public IModuleRef getFavoriteRef() {
-		return getRef("net.simpleframework.module.bbs.web.BbsFavoriteRef");
+		return ModuleRefUtils.getRef("net.simpleframework.module.bbs.web.BbsFavoriteRef");
 	}
 
 	@Override
 	public IModuleRef getLogRef() {
-		return getRef("net.simpleframework.module.bbs.web.BbsLogRef");
-	}
-
-	@Override
-	public IModuleRef getPDFRef() {
-		return getRef("net.simpleframework.module.bbs.web.BbsPDFRef");
+		return ModuleRefUtils.getRef("net.simpleframework.module.bbs.web.BbsLogRef");
 	}
 
 	@Override

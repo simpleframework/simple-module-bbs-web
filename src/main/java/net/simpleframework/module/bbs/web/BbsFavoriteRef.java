@@ -2,7 +2,7 @@ package net.simpleframework.module.bbs.web;
 
 import static net.simpleframework.common.I18n.$m;
 import net.simpleframework.common.ID;
-import net.simpleframework.ctx.IModuleContext;
+import net.simpleframework.ctx.IContextBase;
 import net.simpleframework.module.bbs.BbsCategory;
 import net.simpleframework.module.bbs.BbsTopic;
 import net.simpleframework.module.bbs.IBbsContextAware;
@@ -24,7 +24,7 @@ import net.simpleframework.mvc.common.element.AbstractElement;
 public class BbsFavoriteRef extends FavoriteRef implements IBbsContextAware {
 
 	@Override
-	public void onInit(final IModuleContext context) throws Exception {
+	public void onInit(final IContextBase context) throws Exception {
 		super.onInit(context);
 
 		getModuleContext().getPluginRegistry().registPlugin(BbsWebFavoritePlugin.class);
