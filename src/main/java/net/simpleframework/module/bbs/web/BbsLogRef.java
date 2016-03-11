@@ -1,6 +1,5 @@
 package net.simpleframework.module.bbs.web;
 
-import java.io.File;
 import java.io.IOException;
 
 import net.simpleframework.common.Convert;
@@ -39,8 +38,9 @@ public class BbsLogRef extends LogRef implements IBbsContextAware {
 	}
 
 	@Override
-	public void logDownload(final Object beanId, final String topic, final File oFile) {
-		super.logDownload(beanId, topic, oFile);
+	public void logDownload(final Object beanId, final long length, final String filetype,
+			final String topic) {
+		super.logDownload(beanId, length, filetype, topic);
 
 		// 更新计数
 		final IAttachmentService<Attachment> service = bbsContext.getAttachmentService();

@@ -1,7 +1,5 @@
 package net.simpleframework.module.bbs.web;
 
-import java.io.File;
-
 import net.simpleframework.ctx.IModuleRef;
 import net.simpleframework.module.bbs.IBbsContext;
 import net.simpleframework.module.bbs.IBbsContextAware;
@@ -35,11 +33,12 @@ public interface IBbsWebContext extends IBbsContext, IContentRefAware {
 	public static class AttachmentDownloadHandler implements IDownloadHandler, IBbsContextAware {
 
 		@Override
-		public void onDownloaded(final Object beanId, final String topic, final File oFile) {
+		public void onDownloaded(final Object beanId, final long length, final String filetype,
+				final String topic) {
 			final IModuleRef ref = ((IBbsWebContext) bbsContext).getLogRef();
 			if (ref != null) {
 				// 记录下载日志
-				((BbsLogRef) ref).logDownload(beanId, topic, oFile);
+				((BbsLogRef) ref).logDownload(beanId, length, filetype, topic);
 			}
 		}
 	}
