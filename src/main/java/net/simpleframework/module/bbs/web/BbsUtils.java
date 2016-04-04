@@ -1,8 +1,10 @@
 package net.simpleframework.module.bbs.web;
 
 import net.simpleframework.module.bbs.BbsCategory;
+import net.simpleframework.module.bbs.BbsTopic;
 import net.simpleframework.module.bbs.IBbsContextAware;
 import net.simpleframework.mvc.PageParameter;
+import net.simpleframework.mvc.template.AbstractTemplatePage;
 
 /**
  * Licensed under the Apache License, Version 2.0
@@ -21,5 +23,9 @@ public abstract class BbsUtils implements IBbsContextAware {
 					b = bbsContext.getTeamService().isManager(category, pp.getLogin()));
 		}
 		return b;
+	}
+
+	public static BbsTopic getTopic(final PageParameter pp) {
+		return AbstractTemplatePage.getCacheBean(pp, bbsContext.getTopicService(), "topicId");
 	}
 }

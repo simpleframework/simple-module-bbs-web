@@ -36,7 +36,6 @@ import net.simpleframework.module.bbs.web.page.t2.BbsTopicFormPage;
 import net.simpleframework.module.bbs.web.page.t2.BbsTopicListPage;
 import net.simpleframework.module.common.content.EContentStatus;
 import net.simpleframework.module.common.log.LdescVal;
-import net.simpleframework.module.common.web.content.page.AbstractRecommendationPage;
 import net.simpleframework.mvc.IForward;
 import net.simpleframework.mvc.JavascriptForward;
 import net.simpleframework.mvc.PageParameter;
@@ -104,7 +103,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 			addDeleteAjaxRequest(pp, "BbsTopicListTPage_delete");
 			// 推荐
 			final AjaxRequestBean ajaxRequest = addAjaxRequest(pp,
-					"BbsTopicListTPage_recommendationPage", RecommendationPage.class);
+					"BbsTopicListTPage_recommendationPage", BbsTopicRecommendationPage.class);
 			addWindowBean(pp, "BbsTopicListTPage_recommendation", ajaxRequest).setHeight(270)
 					.setWidth(460).setTitle($m("AbstractContentBean.2"));
 
@@ -423,25 +422,6 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 		}
 	}
 
-	public static class RecommendationPage extends AbstractRecommendationPage<BbsTopic> {
-		@Override
-		protected IBbsTopicService getBeanService() {
-			return bbsContext.getTopicService();
-		}
-
-		@Override
-		protected BbsTopic getBean(final PageParameter pp) {
-			return getTopic(pp);
-		}
-
-		@Override
-		public JavascriptForward onSave(final ComponentParameter cp) throws Exception {
-			final JavascriptForward js = super.onSave(cp);
-			js.append("$Actions['BbsTopicListTPage_tbl']();");
-			return js;
-		}
-	}
-
 	public static class TopicAdvPage extends FormTableRowTemplatePage {
 
 		@Override
@@ -454,7 +434,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 
 		@Override
 		public JavascriptForward onSave(final ComponentParameter cp) throws Exception {
-			final BbsTopic topic = getTopic(cp);
+			final BbsTopic topic = BbsUtils.getTopic(cp);
 			if (topic != null) {
 				topic.setBest(cp.getBoolParameter("a_best"));
 				topic.setBbsType(cp.getEnumParameter(EBbsType.class, "a_type"));
@@ -473,7 +453,7 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 			final Option[] opts = Option.from(EBbsType.values());
 			final InputElement a_type = InputElement.select("a_type");
 
-			final BbsTopic topic = getTopic(pp);
+			final BbsTopic topic = BbsUtils.getTopic(pp);
 			if (topic != null) {
 				a_best.setChecked(topic.isBest());
 				for (final Option opt : opts) {
@@ -492,9 +472,5 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 		public String getLabelWidth(final PageParameter pp) {
 			return "80px";
 		}
-	}
-
-	private static BbsTopic getTopic(final PageParameter pp) {
-		return getCacheBean(pp, bbsContext.getTopicService(), "topicId");
 	}
 }
