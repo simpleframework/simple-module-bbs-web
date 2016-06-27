@@ -34,7 +34,7 @@ import net.simpleframework.module.bbs.web.page.t2.BbsCategoryPage;
 import net.simpleframework.module.bbs.web.page.t2.BbsPostViewPage;
 import net.simpleframework.module.bbs.web.page.t2.BbsTopicFormPage;
 import net.simpleframework.module.bbs.web.page.t2.BbsTopicListPage;
-import net.simpleframework.module.common.content.EContentStatus;
+import net.simpleframework.module.common.content.AbstractContentBean.EContentStatus;
 import net.simpleframework.module.common.log.LdescVal;
 import net.simpleframework.mvc.IForward;
 import net.simpleframework.mvc.JavascriptForward;
