@@ -31,8 +31,8 @@ import net.simpleframework.mvc.component.ui.window.WindowBean;
 public class BbsLogRef extends LogRef implements IBbsContextAware {
 
 	public void addLogComponent(final PageParameter pp) {
-		pp.addComponentBean("BbsTopicListTPage_logPage", AjaxRequestBean.class).setUrlForward(
-				AbstractMVCPage.url(BbsTopicLogPage.class));
+		pp.addComponentBean("BbsTopicListTPage_logPage", AjaxRequestBean.class)
+				.setUrlForward(AbstractMVCPage.url(BbsTopicLogPage.class));
 		pp.addComponentBean("BbsTopicListTPage_logWin", WindowBean.class)
 				.setContentRef("BbsTopicListTPage_logPage").setHeight(600).setWidth(960);
 	}
@@ -71,8 +71,8 @@ public class BbsLogRef extends LogRef implements IBbsContextAware {
 		}
 	}
 
-	public static class BbsTopicAttachmentAction extends
-			AbstractAttachmentLogHandler<Attachment, BbsTopic> {
+	public static class BbsTopicAttachmentAction
+			extends AbstractAttachmentLogHandler<Attachment, BbsTopic> {
 
 		@Override
 		protected IAttachmentService<Attachment> getAttachmentService() {
@@ -90,7 +90,7 @@ public class BbsLogRef extends LogRef implements IBbsContextAware {
 		}
 
 		@Override
-		public AbstractElement<?> getDownloadLink(final ComponentParameter cp,
+		public AbstractElement<?> getDownloadLinkElement(final ComponentParameter cp,
 				final AttachmentFile attachmentFile, final String id) throws IOException {
 			if (Convert.toBool(cp.getParameter("opt_viewer"))) {
 				final ImageElement iElement = createImageViewer(cp, attachmentFile, id);

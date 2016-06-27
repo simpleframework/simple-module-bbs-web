@@ -92,7 +92,7 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 		final ElementList el = ElementList.of();
 		el.appendAll(singleton(BbsTopicListTPage.class).getLeftElements(pp));
 
-		if (pp.isLmember(bbsContext.getModule().getManagerRole())) {
+		if (pp.isLmember(getPageManagerRole(pp))) {
 			// 管理菜单
 			final MenuBean menu = (MenuBean) addComponentBean(pp, "BbsCategoryTPage_menu",
 					MenuBean.class).setMenuEvent(EMenuEvent.click).setSelector("#menu_" + hashId);
