@@ -2,15 +2,14 @@ package net.simpleframework.module.bbs.web;
 
 import static net.simpleframework.common.I18n.$m;
 import net.simpleframework.common.ID;
-import net.simpleframework.ctx.IContextBase;
 import net.simpleframework.module.bbs.BbsCategory;
 import net.simpleframework.module.bbs.BbsTopic;
 import net.simpleframework.module.bbs.IBbsContextAware;
 import net.simpleframework.module.bbs.IBbsTopicService;
 import net.simpleframework.module.bbs.web.page.t2.BbsPostViewPage;
-import net.simpleframework.module.common.plugin.ModulePluginFactory;
-import net.simpleframework.module.favorite.FavoriteRef;
 import net.simpleframework.module.favorite.IFavoriteContent;
+import net.simpleframework.module.favorite.plugin.IFavoritePlugin;
+import net.simpleframework.module.favorite.web.FavoriteWebRef;
 import net.simpleframework.module.favorite.web.plugin.AbstractWebFavoritePlugin;
 import net.simpleframework.mvc.PageParameter;
 import net.simpleframework.mvc.common.element.AbstractElement;
@@ -21,21 +20,11 @@ import net.simpleframework.mvc.common.element.AbstractElement;
  * @author 陈侃(cknet@126.com, 13910090885) https://github.com/simpleframework
  *         http://www.simpleframework.net
  */
-public class BbsFavoriteRef extends FavoriteRef implements IBbsContextAware {
+public class BbsFavoriteRef extends FavoriteWebRef implements IBbsContextAware {
 
 	@Override
-	public void onInit(final IContextBase context) throws Exception {
-		super.onInit(context);
-
-		getModuleContext().getPluginRegistry().registPlugin(BbsWebFavoritePlugin.class);
-	}
-
-	public AbstractElement<?> toFavoriteElement(final PageParameter pp, final Object contentId) {
-		return plugin().toFavoriteOpElement(pp, contentId);
-	}
-
-	public BbsWebFavoritePlugin plugin() {
-		return ModulePluginFactory.get(BbsWebFavoritePlugin.class);
+	protected Class<? extends IFavoritePlugin> getPluginClass() {
+		return BbsWebFavoritePlugin.class;
 	}
 
 	public static class BbsWebFavoritePlugin extends AbstractWebFavoritePlugin {
