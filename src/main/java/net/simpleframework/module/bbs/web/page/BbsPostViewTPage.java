@@ -120,8 +120,7 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 				.setToolbarCanCollapse(false);
 		// 验证
 		addComponentBean(pp, "BbsPostViewTPage_validation", ValidationBean.class)
-				.setWarnType(EWarnType.insertAfter)
-				.setTriggerSelector("#idBbsTopic_editor .simple_btn")
+				.setWarnType(EWarnType.insertAfter).setTriggerSelector("#idBbsTopic_editor .simple_btn")
 				.addValidators(new Validator(EValidatorMethod.required, "#idBbsPostViewTPage_editor"));
 
 		// tooltip
@@ -143,8 +142,8 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		final boolean manager = (Boolean) getVariables(pp).get("manager");
 		if (isAsk(getTopic(pp))) {
 			// vote
-			addAjaxRequest(pp, "BbsPostViewTPage_ajaxVote").setHandlerMethod("doAjaxVote").setRole(
-					PermissionConst.ROLE_ALL_ACCOUNT);
+			addAjaxRequest(pp, "BbsPostViewTPage_ajaxVote").setHandlerMethod("doAjaxVote")
+					.setRole(PermissionConst.ROLE_ALL_ACCOUNT);
 
 			addAjaxRequest(pp, "BbsPostViewTPage_votePage", VoteSubmitPage.class);
 			addWindowBean(pp, "BbsPostViewTPage_voteWin").setContentRef("BbsPostViewTPage_votePage")
@@ -164,8 +163,8 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 				addAjaxRequest(pp, "BbsPostViewTPage_bestAnswer").setHandlerMethod("doBestAnswer")
 						.setConfirmMessage($m("BbsPostViewTPage.20"));
 
-				addAjaxRequest(pp, "BbsPostViewTPage_remark_delete").setConfirmMessage(
-						$m("Confirm.Delete")).setHandlerMethod("doRemarkDelete");
+				addAjaxRequest(pp, "BbsPostViewTPage_remark_delete")
+						.setConfirmMessage($m("Confirm.Delete")).setHandlerMethod("doRemarkDelete");
 			}
 		} else {
 			// replyFrom
@@ -214,12 +213,9 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 	@Override
 	public KVMap createVariables(final PageParameter pp) {
 		final BbsTopic topic = getTopic(pp);
-		return ((KVMap) super.createVariables(pp))
-				.add("bbsContext", bbsContext)
-				.add("topic", topic)
-				.add("manager",
-						BbsUtils.isManager(pp,
-								bbsContext.getCategoryService().getBean(topic.getCategoryId())));
+		return ((KVMap) super.createVariables(pp)).add("bbsContext", bbsContext).add("topic", topic)
+				.add("manager", BbsUtils.isManager(pp,
+						bbsContext.getCategoryService().getBean(topic.getCategoryId())));
 	}
 
 	public IForward doDownload(final ComponentParameter cp) {
@@ -230,8 +226,8 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 			final IAttachmentService<Attachment> service = bbsContext.getAttachmentService();
 			try {
 				final AttachmentFile af = service.createAttachmentFile(attachment);
-				js.append(JS.loc(DownloadUtils.getDownloadHref(af, AttachmentDownloadHandler.class),
-						true));
+				js.append(
+						JS.loc(DownloadUtils.getDownloadHref(af, AttachmentDownloadHandler.class), true));
 			} catch (final IOException e) {
 				throw ContentException.of(e);
 			}
@@ -245,8 +241,8 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 	public IForward doDelete(final ComponentParameter cp) {
 		final BbsPost post = getPost(cp, "postId");
 		bbsContext.getPostService().delete(post.getId());
-		return new JavascriptForward(JS.loc(getUrlsFactory().getUrl(cp, BbsPostViewPage.class,
-				getTopic(cp))));
+		return new JavascriptForward(
+				JS.loc(getUrlsFactory().getUrl(cp, BbsPostViewPage.class, getTopic(cp))));
 	}
 
 	public IForward doAjaxVote(final ComponentParameter cp) {
@@ -282,8 +278,8 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 	public IForward doBestAnswer(final ComponentParameter cp) {
 		final BbsPost post = getPost(cp, "postId");
 		bbsContext.getPostService().doBestAnswer(post);
-		return new JavascriptForward(JS.loc(getUrlsFactory().getUrl(cp, BbsPostViewPage.class,
-				getTopic(cp))));
+		return new JavascriptForward(
+				JS.loc(getUrlsFactory().getUrl(cp, BbsPostViewPage.class, getTopic(cp))));
 	}
 
 	public IForward doRemarkList(final ComponentParameter cp) {
@@ -312,8 +308,8 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 			} else {
 				final BbsTopic topic = getTopic(cp);
 				if (topic != null) {
-					return new JavascriptForward(JS.loc(getUrlsFactory().getUrl(cp,
-							BbsTopicFormPage.class, topic)));
+					return new JavascriptForward(
+							JS.loc(getUrlsFactory().getUrl(cp, BbsTopicFormPage.class, topic)));
 				}
 			}
 		}
@@ -322,8 +318,8 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 
 	@Transaction(context = IBbsContext.class)
 	public IForward doSubmit(final ComponentParameter cp) {
-		final Document doc = HtmlUtils.createHtmlDocument(cp
-				.getParameter("idBbsPostViewTPage_editor"));
+		final Document doc = HtmlUtils
+				.createHtmlDocument(cp.getParameter("idBbsPostViewTPage_editor"));
 		if (doc.text().length() < 10) {
 			throw ContentException.of($m("BbsPostViewTPage.25"));
 		}
@@ -354,8 +350,8 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 			} else {
 				service.update(remark);
 			}
-			return new JavascriptForward("_BBS.doRemark_callback('").append(parent.getId()).append(
-					"');");
+			return new JavascriptForward("_BBS.doRemark_callback('").append(parent.getId())
+					.append("');");
 		}
 
 		final BbsTopic topic = getTopic(cp);
@@ -489,15 +485,12 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 				sb.append(" <div class='rbar'>");
 				sb.append(Convert.toDateString(_remark.getCreateDate()));
 				if (manager || isPostEditable(pp, _remark)) {
-					sb.append(SpanElement.SEP()).append(
-							new LinkElement("#(Edit)")
-									.setOnclick("$Actions['BbsPostViewTPage_edit']('remarkId="
-											+ _remark.getId() + "');"));
+					sb.append(SpanElement.SEP()).append(new LinkElement("#(Edit)").setOnclick(
+							"$Actions['BbsPostViewTPage_edit']('remarkId=" + _remark.getId() + "');"));
 				}
 				if (manager) {
-					sb.append(SpanElement.SEP()).append(
-							new LinkElement($m("Delete")).setOnclick("_BBS.doRemark_delete(this, '"
-									+ _remark.getId() + "');"));
+					sb.append(SpanElement.SEP()).append(new LinkElement($m("Delete"))
+							.setOnclick("_BBS.doRemark_delete(this, '" + _remark.getId() + "');"));
 				}
 				sb.append(" </div>");
 				sb.append("</div>");
@@ -532,8 +525,8 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 
 	protected String toTopicHTML(final PageParameter pp) {
 		final KVMap variables = new KVMap().addAll(getVariables(pp));
-		return MVEL2Template
-				.replace(variables, AbstractBbsTPage.class, "BbsPostViewTPage_topic.html");
+		return MVEL2Template.replace(variables, AbstractBbsTPage.class,
+				"BbsPostViewTPage_topic.html");
 	}
 
 	protected String toEditorHTML(final PageParameter pp) {
@@ -568,14 +561,15 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		final PermissionUser user = pp.getUser(topic.getUserId());
 		v.append(new ImageElement(pp.getPhotoUrl(user.getId())).setClassName("photo_icon icon16")
 				.setTitle(user.getText()));
-		v.append(new SpanElement(DateUtils.getRelativeDate(topic.getCreateDate(), DATE_NUMBERCONVERT)));
+		v.append(
+				new SpanElement(DateUtils.getRelativeDate(topic.getCreateDate(), DATE_NUMBERCONVERT)));
 		sb.append(_toTopicStatItem("#(BbsPostViewTPage.3)", v));
 		Date lastPostDate;
 		if ((lastPostDate = topic.getLastPostDate()) != null) {
 			v.setLength(0);
 			final PermissionUser lastUser = pp.getUser(topic.getLastUserId());
-			v.append(new ImageElement(pp.getPhotoUrl(lastUser.getId())).setClassName(
-					"photo_icon icon16").setTitle(lastUser.getText()));
+			v.append(new ImageElement(pp.getPhotoUrl(lastUser.getId()))
+					.setClassName("photo_icon icon16").setTitle(lastUser.getText()));
 			v.append(new SpanElement(DateUtils.getRelativeDate(lastPostDate, DATE_NUMBERCONVERT)));
 			sb.append(_toTopicStatItem("#(BbsPostViewTPage.4)", v));
 		}
@@ -595,12 +589,12 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 
 	public String toTopicBarHTML(final PageParameter pp, final BbsTopic topic) {
 		final StringBuilder sb = new StringBuilder();
-		sb.append(new SpanElement("#(BbsPostViewTPage.0)").setClassName(
-				"span_btn_right btn_reply_from").setOnclick("_BBS.reply();"));
+		sb.append(new SpanElement("#(BbsPostViewTPage.0)")
+				.setClassName("span_btn_right btn_reply_from").setOnclick("_BBS.reply();"));
 		final boolean manager = (Boolean) getVariables(pp).get("manager");
 		if (manager || isTopicEditable(pp, topic)) {
-			sb.append(new SpanElement("#(Edit)").setClassName("span_btn_right").setOnclick(
-					"$Actions['BbsPostViewTPage_edit']('topicId=" + topic.getId() + "');"));
+			sb.append(new SpanElement("#(Edit)").setClassName("span_btn_right")
+					.setOnclick("$Actions['BbsPostViewTPage_edit']('topicId=" + topic.getId() + "');"));
 		}
 		return sb.toString();
 	}
@@ -633,8 +627,8 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		final boolean manager = (Boolean) getVariables(pp).get("manager");
 		final Object id = post.getId();
 		if (manager) {
-			sb.append(new SpanElement().setClassName("span_btn_right btn_delete").setOnclick(
-					"$Actions['BbsPostViewTPage_delete']('postId=" + id + "');"));
+			sb.append(new SpanElement().setClassName("span_btn_right btn_delete")
+					.setOnclick("$Actions['BbsPostViewTPage_delete']('postId=" + id + "');"));
 		}
 
 		if (isAsk(topic)) {
@@ -644,20 +638,18 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 			}
 			// 评论
 			sb.append(new SpanElement("#(BbsPostViewTPage.21)").setClassName("span_btn_right")
-					.setOnclick(
-							"_BBS.reply('parentId:" + id + "', '"
-									+ $m("BbsPostViewTPage.22", pp.getUser(post.getUserId())) + "');"));
+					.setOnclick("_BBS.reply('parentId:" + id + "', '"
+							+ $m("BbsPostViewTPage.22", pp.getUser(post.getUserId())) + "');"));
 		} else {
 			// 回复
 			sb.append(new SpanElement("#(BbsPostViewTPage.0)").setClassName("span_btn_right")
-					.setOnclick(
-							"_BBS.reply('replyId:" + id + "', '"
-									+ $m("BbsPostViewTPage.23", pp.getUser(post.getUserId())) + "');"));
+					.setOnclick("_BBS.reply('replyId:" + id + "', '"
+							+ $m("BbsPostViewTPage.23", pp.getUser(post.getUserId())) + "');"));
 		}
 
 		if (manager || isPostEditable(pp, post)) {
-			sb.append(new SpanElement("#(Edit)").setClassName("span_btn_right").setOnclick(
-					"$Actions['BbsPostViewTPage_edit']('postId=" + id + "');"));
+			sb.append(new SpanElement("#(Edit)").setClassName("span_btn_right")
+					.setOnclick("$Actions['BbsPostViewTPage_edit']('postId=" + id + "');"));
 		}
 		return sb.toString();
 	}
@@ -700,11 +692,12 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		final BbsTopic topic = getTopic(pp);
 		final BbsUrlsFactory urls = getUrlsFactory();
 		final BbsCategory category = bbsContext.getCategoryService().getBean(topic.getCategoryId());
-		return NavigationButtons
-				.of(new LinkElement(bbsContext.getModule()).setHref(urls.getUrl(pp,
-						BbsCategoryPage.class)), new SpanElement().addElements(
-						new LinkElement(category.getText()).setHref(urls.getUrl(pp,
-								BbsTopicListPage.class, category)), createCategoryDictMenu(pp)));
+		return NavigationButtons.of(
+				new LinkElement(bbsContext.getModule()).setHref(urls.getUrl(pp, BbsCategoryPage.class)),
+				new SpanElement().addElements(
+						new LinkElement(category.getText())
+								.setHref(urls.getUrl(pp, BbsTopicListPage.class, category)),
+						createCategoryDictMenu(pp)));
 	}
 
 	public IForward doPageletTab(final ComponentParameter cp) {
@@ -716,8 +709,8 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		final IDataQuery<?> dq = service.queryRecommendationBeans(
 				cService.getBean(cp.getParameter("categoryId")), new TimePeriod(tp));
 
-		return new TextForward(cp.wrapHTMLContextPath(creator.create(cp, dq)
-				.setDotIcon(EImageDot.numDot).toString()));
+		return new TextForward(
+				cp.wrapHTMLContextPath(creator.create(cp, dq).setDotIcon(EImageDot.numDot).toString()));
 	}
 
 	@Override
@@ -730,25 +723,26 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 
 		// 按相关度
 		final ILuceneManager lService = service.getLuceneService();
-		lets.add(new Pagelet(new CategoryItem($m("BbsPostViewTPage.7")), creator.create(
-				pp,
-				lService.query(StringUtils.join(lService.getQueryTokens(topic.getTopic()), " "),
-						BbsTopic.class), new BbsListRowHandler() {
-					@Override
-					protected BbsTopic toBean(final Object o) {
-						final BbsTopic topic2 = super.toBean(o);
-						return topic2 != null && !topic2.equals(topic) ? topic2 : null;
-					}
-				}).setDotIcon(EImageDot.imgDot3)));
+		lets.add(new Pagelet(new CategoryItem($m("BbsPostViewTPage.7")),
+				creator.create(pp,
+						lService.query(StringUtils.join(lService.getQueryTokens(topic.getTopic()), " "),
+								BbsTopic.class),
+						new BbsListRowHandler() {
+							@Override
+							protected BbsTopic toBean(final Object o) {
+								final BbsTopic topic2 = super.toBean(o);
+								return topic2 != null && !topic2.equals(topic) ? topic2 : null;
+							}
+						}).setDotIcon(EImageDot.imgDot3)));
 
 		// 按推荐
 		final IBbsCategoryService cService = bbsContext.getCategoryService();
 		final ID categoryId = topic.getCategoryId();
 		final IDataQuery<?> dq = service.queryRecommendationBeans(cService.getBean(categoryId),
 				TimePeriod.week);
-		lets.add(new Pagelet(new CategoryItem($m("BbsPostViewTPage.18")), creator.create(pp, dq)
-				.setDotIcon(EImageDot.numDot)).setTabs(creator.createTimePeriodTabs("categoryId="
-				+ categoryId)));
+		lets.add(new Pagelet(new CategoryItem($m("BbsPostViewTPage.18")),
+				creator.create(pp, dq).setDotIcon(EImageDot.numDot))
+						.setTabs(creator.createTimePeriodTabs("categoryId=" + categoryId)));
 
 		// 历史记录
 		lets.add(creator.getHistoryPagelet(pp));
@@ -767,8 +761,8 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		BbsCategory category = getCacheBean(pp, bbsContext.getCategoryService(), "categoryId");
 		if (category == null) {
 			final BbsTopic topic = BbsTopicForm.getTopic(pp);
-			if (topic != null
-					&& (category = bbsContext.getCategoryService().getBean(topic.getCategoryId())) != null) {
+			if (topic != null && (category = bbsContext.getCategoryService()
+					.getBean(topic.getCategoryId())) != null) {
 				pp.setRequestAttr("categoryId", category);
 			}
 		}
@@ -836,10 +830,9 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 			final BbsPost post = getPost(pp, "postId");
 			final StringBuilder sb = new StringBuilder();
 			sb.append("<div class='VoteSubmitPage'>");
-			sb.append(" <div class='tt'>")
-					.append(
-							InputElement.textarea("vs_description").setRows(4)
-									.setText($m("VoteSubmitPage.1"))).append("</div>");
+			sb.append(" <div class='tt'>").append(
+					InputElement.textarea("vs_description").setRows(4).setText($m("VoteSubmitPage.1")))
+					.append("</div>");
 			sb.append(" <div class='bb'>");
 			sb.append(LinkButton.saveBtn().setId("idVoteSubmitPage_vote")
 					.setOnclick("$Actions['VoteSubmitPage_vote']('postId=" + post.getId() + "')"));
@@ -856,8 +849,8 @@ public class BbsPostViewTPage extends AbstractBbsTPage {
 		protected void onForward(final PageParameter pp) throws Exception {
 			super.onForward(pp);
 
-			addAjaxRequest(pp, "UnVoteSubmitPage_unvote").setHandlerMethod("doUnVote").setRole(
-					PermissionConst.ROLE_ALL_ACCOUNT);
+			addAjaxRequest(pp, "UnVoteSubmitPage_unvote").setHandlerMethod("doUnVote")
+					.setRole(PermissionConst.ROLE_ALL_ACCOUNT);
 		}
 
 		@Transaction(context = IBbsContext.class)

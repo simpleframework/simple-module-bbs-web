@@ -96,11 +96,11 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 			// 管理菜单
 			final MenuBean menu = (MenuBean) addComponentBean(pp, "BbsCategoryTPage_menu",
 					MenuBean.class).setMenuEvent(EMenuEvent.click).setSelector("#menu_" + hashId);
-			menu.addItem(MenuItem.of($m("BbsCategoryTPage.1")).setOnclick(
-					"$Actions['BbsCategoryTPage_CategoryWin']();"));
+			menu.addItem(MenuItem.of($m("BbsCategoryTPage.1"))
+					.setOnclick("$Actions['BbsCategoryTPage_CategoryWin']();"));
 			menu.addItem(MenuItem.sep());
-			menu.addItem(MenuItem.of($m("BbsCategoryTPage.11")).setOnclick(
-					"$Actions['BbsCategoryTPage_advWindow']();"));
+			menu.addItem(MenuItem.of($m("BbsCategoryTPage.11"))
+					.setOnclick("$Actions['BbsCategoryTPage_advWindow']();"));
 
 			// 高级设置
 			AjaxRequestBean ajaxRequest = addAjaxRequest(pp, "BbsCategoryTPage_advPage",
@@ -110,12 +110,11 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 
 			// 管理窗口
 			ajaxRequest = addAjaxRequest(pp, "BbsCategoryTPage_CategoryPage", CategoryMgrPage.class);
-			addWindowBean(pp, "BbsCategoryTPage_CategoryWin", ajaxRequest).setHeight(600)
-					.setWidth(480).setTitle($m("BbsCategoryTPage.1"));
+			addWindowBean(pp, "BbsCategoryTPage_CategoryWin", ajaxRequest).setHeight(600).setWidth(480)
+					.setTitle($m("BbsCategoryTPage.1"));
 
-			el.append(SpanElement.SPACE,
-					new LinkButton($m("BbsCategoryTPage.0")).setId("menu_" + hashId).setMenuIcon(true)
-							.setIconClass(Icon.wrench));
+			el.append(SpanElement.SPACE, new LinkButton($m("BbsCategoryTPage.0"))
+					.setId("menu_" + hashId).setMenuIcon(true).setIconClass(Icon.wrench));
 		}
 		return el;
 	}
@@ -138,8 +137,9 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 						.setTabMatch(ETabMatch.params));
 		final PermissionUser user = pp.getUser(pp.getParameter("userId"));
 		if (user.exists()) {
-			tabs.append(new TabButton(user, uFactory.getUrl(pp, BbsTopicListPage.class, "userId="
-					+ user.getId())).setTabMatch(ETabMatch.params));
+			tabs.append(new TabButton(user,
+					uFactory.getUrl(pp, BbsTopicListPage.class, "userId=" + user.getId()))
+							.setTabMatch(ETabMatch.params));
 		}
 		return tabs;
 	}
@@ -158,8 +158,8 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 			dq = service.queryBeans(null, new TimePeriod(tp), ColumnData.DESC(let));
 		}
 
-		return new TextForward(cp.wrapHTMLContextPath(creator.create(cp, dq)
-				.setDotIcon(EImageDot.numDot).toString()));
+		return new TextForward(
+				cp.wrapHTMLContextPath(creator.create(cp, dq).setDotIcon(EImageDot.numDot).toString()));
 	}
 
 	@Override
@@ -170,19 +170,21 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 
 		// 推荐
 		IDataQuery<?> dq = service.queryRecommendationBeans(null, TimePeriod.week);
-		lets.add(new Pagelet(new CategoryItem($m("BbsCategoryTPage.10")), creator.create(pp, dq)
-				.setDotIcon(EImageDot.numDot)).setTabs(creator
-				.createTimePeriodTabs("let=recommendation")));
+		lets.add(new Pagelet(new CategoryItem($m("BbsCategoryTPage.10")),
+				creator.create(pp, dq).setDotIcon(EImageDot.numDot))
+						.setTabs(creator.createTimePeriodTabs("let=recommendation")));
 
 		// 按跟贴
 		dq = service.queryBeans(null, TimePeriod.week, ColumnData.DESC("posts"));
-		lets.add(new Pagelet(new CategoryItem($m("BbsCategoryTPage.8")), creator.create(pp, dq)
-				.setDotIcon(EImageDot.numDot)).setTabs(creator.createTimePeriodTabs("let=posts")));
+		lets.add(new Pagelet(new CategoryItem($m("BbsCategoryTPage.8")),
+				creator.create(pp, dq).setDotIcon(EImageDot.numDot))
+						.setTabs(creator.createTimePeriodTabs("let=posts")));
 
 		// 按浏览次数
 		dq = service.queryBeans(null, TimePeriod.week, ColumnData.DESC("views"));
-		lets.add(new Pagelet(new CategoryItem($m("BbsCategoryTPage.9")), creator.create(pp, dq)
-				.setDotIcon(EImageDot.numDot)).setTabs(creator.createTimePeriodTabs("let=views")));
+		lets.add(new Pagelet(new CategoryItem($m("BbsCategoryTPage.9")),
+				creator.create(pp, dq).setDotIcon(EImageDot.numDot))
+						.setTabs(creator.createTimePeriodTabs("let=views")));
 
 		// 历史记录
 		lets.add(creator.getHistoryPagelet(pp));
@@ -199,8 +201,8 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 		final int topics = bbsContext.getTopicService()
 				.queryBeans(category, new TimePeriod(ETimePeriod.day)).getCount();
 		sb.append("<div class='l1'>");
-		sb.append(new LinkElement(category.getText()).setHref(getUrlsFactory().getUrl(pp,
-				BbsTopicListPage.class, category)));
+		sb.append(new LinkElement(category.getText())
+				.setHref(getUrlsFactory().getUrl(pp, BbsTopicListPage.class, category)));
 		if (topics > 0) {
 			sb.append(new SupElement(topics).setHighlight(true));
 		}
@@ -281,7 +283,8 @@ public class BbsCategoryTPage extends AbstractBbsTPage {
 		sb.append("</div>");
 		sb.append(HtmlConst.TAG_SCRIPT_START);
 		sb.append("(function() {");
-		sb.append(" $$('.BbsCategoryTPage .c_title img').each(function(img) { $UI.doImageToggle(img); });");
+		sb.append(
+				" $$('.BbsCategoryTPage .c_title img').each(function(img) { $UI.doImageToggle(img); });");
 		sb.append("})();");
 		sb.append(HtmlConst.TAG_SCRIPT_END);
 		return sb.toString();

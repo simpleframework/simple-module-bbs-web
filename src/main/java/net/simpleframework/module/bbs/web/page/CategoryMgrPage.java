@@ -1,6 +1,7 @@
 package net.simpleframework.module.bbs.web.page;
 
 import static net.simpleframework.common.I18n.$m;
+
 import net.simpleframework.common.coll.KVMap;
 import net.simpleframework.module.bbs.BbsCategory;
 import net.simpleframework.module.bbs.IBbsCategoryService;
@@ -50,19 +51,15 @@ public class CategoryMgrPage extends OneTreeTemplatePage implements IBbsContextA
 
 		@Override
 		protected String[] getContextMenuKeys() {
-			return new String[] { "Add", "Edit", "Delete", "-", "Team", "-", "Refresh", "-",
-					"Move.up", "Move.up2", "Move.down", "Move.down2" };
+			return new String[] { "Add", "Edit", "Delete", "-", "Team", "-", "Refresh", "-", "Move.up",
+					"Move.up2", "Move.down", "Move.down2" };
 		}
 
 		@Override
 		protected KVMap createContextMenuItems() {
-			return super
-					.createContextMenuItems()
-					.add("Team",
-							MenuItem
-									.of($m("CategoryMgrPage.2"))
-									.setOnclick(
-											"$Actions['CategoryMgrPage_teamWin']('ownerId=' + $category_action(item).getId());"));
+			return super.createContextMenuItems().add("Team",
+					MenuItem.of($m("CategoryMgrPage.2")).setOnclick(
+							"$Actions['CategoryMgrPage_teamWin']('ownerId=' + $category_action(item).getId());"));
 		}
 
 		@Override

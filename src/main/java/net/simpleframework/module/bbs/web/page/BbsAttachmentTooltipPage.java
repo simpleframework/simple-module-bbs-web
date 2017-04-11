@@ -23,8 +23,8 @@ import net.simpleframework.mvc.component.ui.window.WindowBean;
  * @author 陈侃(cknet@126.com, 13910090885) https://github.com/simpleframework
  *         http://www.simpleframework.net
  */
-public class BbsAttachmentTooltipPage extends AbstractAttachmentTooltipPage implements
-		IBbsContextAware {
+public class BbsAttachmentTooltipPage extends AbstractAttachmentTooltipPage
+		implements IBbsContextAware {
 
 	@Override
 	protected void onForward(final PageParameter pp) throws Exception {

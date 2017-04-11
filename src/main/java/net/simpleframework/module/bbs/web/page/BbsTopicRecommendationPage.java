@@ -31,8 +31,8 @@ import net.simpleframework.mvc.template.lets.FormTableRowTemplatePage;
  * @author 陈侃(cknet@126.com, 13910090885) https://github.com/simpleframework
  *         http://www.simpleframework.net
  */
-public class BbsTopicRecommendationPage extends FormTableRowTemplatePage implements
-		IBbsContextAware {
+public class BbsTopicRecommendationPage extends FormTableRowTemplatePage
+		implements IBbsContextAware {
 	@Override
 	protected void onForward(final PageParameter pp) throws Exception {
 		super.onForward(pp);
@@ -55,7 +55,8 @@ public class BbsTopicRecommendationPage extends FormTableRowTemplatePage impleme
 			bean.setRecommendation(r);
 			if (r > 0) {
 				bean.setRecommendationDate(new Date());
-				bean.setRecommendationDuration((int) (cp.getDoubleParameter("r_recommendationDuration") * 60 * 60));
+				bean.setRecommendationDuration(
+						(int) (cp.getDoubleParameter("r_recommendationDuration") * 60 * 60));
 			} else {
 				// 取消推荐
 				bean.setRecommendationDate(null);
@@ -76,32 +77,33 @@ public class BbsTopicRecommendationPage extends FormTableRowTemplatePage impleme
 	protected TableRows getTableRows(final PageParameter pp) {
 		final BbsTopic bean = BbsUtils.getTopic(pp);
 
-		final ArrayList<Option> al = new ArrayList<Option>();
+		final ArrayList<Option> al = new ArrayList<>();
 		for (int i = 0; i <= 5; i++) {
 			al.add(new Option(String.valueOf(i)).setSelected(bean.getRecommendation() == i));
 		}
 		final InputElement topicId = InputElement.hidden("topicId").setText(bean.getId());
-		final InputElement r_recommendation = InputElement.select("r_recommendation").addElements(
-				al.toArray(new Option[al.size()]));
+		final InputElement r_recommendation = InputElement.select("r_recommendation")
+				.addElements(al.toArray(new Option[al.size()]));
 		final InputElement r_recommendationDuration = new InputElement("r_recommendationDuration")
 				.setText(NumberUtils.format((double) bean.getRecommendationDuration() / (60 * 60)))
 				.addStyle("width: 40px;");
 		final InputElement r_description = InputElement.textarea("r_description").setRows(3);
-		final InputElement r_recommendationDate = new InputElement().setText(
-				bean.getRecommendationDate()).setReadonly(true);
+		final InputElement r_recommendationDate = new InputElement()
+				.setText(bean.getRecommendationDate()).setReadonly(true);
 
-		final TableRow r1 = new TableRow(new RowField($m("AbstractRecommendationPage.0"),
-				r_recommendation, topicId), new RowField($m("AbstractRecommendationPage.1"),
-				r_recommendationDuration, new SpanElement($m("AbstractRecommendationPage.2"))));
+		final TableRow r1 = new TableRow(
+				new RowField($m("AbstractRecommendationPage.0"), r_recommendation, topicId),
+				new RowField($m("AbstractRecommendationPage.1"), r_recommendationDuration,
+						new SpanElement($m("AbstractRecommendationPage.2"))));
 		final TableRow r2 = new TableRow(new RowField($m("Description"), r_description));
-		final TableRow r3 = new TableRow(new RowField($m("AbstractRecommendationPage.4"),
-				r_recommendationDate));
+		final TableRow r3 = new TableRow(
+				new RowField($m("AbstractRecommendationPage.4"), r_recommendationDate));
 		return TableRows.of(r1, r2, r3);
 	}
 
 	@Override
 	public ElementList getLeftElements(final PageParameter pp) {
-		return ElementList.of(new BlockElement().addStyle("color: #888;").addElements(
-				new BlockElement().setText($m("AbstractRecommendationPage.3"))));
+		return ElementList.of(new BlockElement().addStyle("color: #888;")
+				.addElements(new BlockElement().setText($m("AbstractRecommendationPage.3"))));
 	}
 }

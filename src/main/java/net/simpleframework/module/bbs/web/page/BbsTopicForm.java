@@ -78,8 +78,8 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 		addHtmlEditorBean(pp).setTextarea("te_content").setToolbarCanCollapse(false);
 
 		// 上传
-		addComponentBean(pp, "BbsTopicForm_upload_page", AttachmentBean.class).setInsertTextarea(
-				"te_content").setHandlerClass(BbsTopicAttachmentAction.class);
+		addComponentBean(pp, "BbsTopicForm_upload_page", AttachmentBean.class)
+				.setInsertTextarea("te_content").setHandlerClass(BbsTopicAttachmentAction.class);
 		addWindowBean(pp, "BbsTopicForm_upload").setContentRef("BbsTopicForm_upload_page")
 				.setTitle($m("BbsTopicFormTPage.4")).setPopup(true).setHeight(480).setWidth(400);
 	}
@@ -90,8 +90,8 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 	}
 
 	protected void createCategoryDict(final PageParameter pp) {
-		addComponentBean(pp, "BbsTopicForm_dict_tree", TreeBean.class).setHandlerClass(
-				CategorySelectedTree.class);
+		addComponentBean(pp, "BbsTopicForm_dict_tree", TreeBean.class)
+				.setHandlerClass(CategorySelectedTree.class);
 		addComponentBean(pp, "BbsTopicForm_dict", DictionaryBean.class).setBindingId("te_categoryId")
 				.setBindingText("te_categoryText").addTreeRef(pp, "BbsTopicForm_dict_tree")
 				.setTitle($m("BbsTopicFormTPage.5")).setHeight(300);
@@ -100,8 +100,8 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 	@Transaction(context = IBbsContext.class)
 	@Override
 	public JavascriptForward onSave(final ComponentParameter cp) throws Exception {
-		final BbsCategory category = bbsContext.getCategoryService().getBean(
-				cp.getParameter("te_categoryId"));
+		final BbsCategory category = bbsContext.getCategoryService()
+				.getBean(cp.getParameter("te_categoryId"));
 		if (category == null) {
 			throw ContentException.of($m("BbsTopicFormTPage.2"));
 		}
@@ -153,7 +153,7 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 	}
 
 	public String doTopicContent(final PageParameter pp, final Object bean, final Document doc) {
-		final ArrayList<IElementVisitor> al = new ArrayList<IElementVisitor>();
+		final ArrayList<IElementVisitor> al = new ArrayList<>();
 		al.add(HtmlUtils.REMOVE_TAG_VISITOR("script"));
 		al.add(HtmlUtils.STRIP_CONTEXTPATH_VISITOR(pp.request));
 		setVisitor_targetBlank(bean, al);
@@ -209,9 +209,8 @@ public class BbsTopicForm extends FormTableRowTemplatePage implements IBbsContex
 		//
 		TableRow r1;
 		if (category != null && (topic == null || !pp.isLmanager())) {
-			r1 = new TableRow(
-					new RowField($m("BbsTopicListTPage.0"), te_id, te_categoryId, te_topic)
-							.setStarMark(true));
+			r1 = new TableRow(new RowField($m("BbsTopicListTPage.0"), te_id, te_categoryId, te_topic)
+					.setStarMark(true));
 		} else {
 			// 类目字典
 			createCategoryDict(pp);

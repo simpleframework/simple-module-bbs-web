@@ -33,11 +33,9 @@ public class BbsUrlsFactory extends UrlsCache {
 
 	public String getUrl(final PageParameter pp, final Class<? extends AbstractMVCPage> mClass,
 			final BbsCategory category, final String params) {
-		return getUrl(
-				pp,
-				mClass,
-				StringUtils.join(new String[] {
-						category != null ? "categoryId=" + category.getId() : null, params }, "&"));
+		return getUrl(pp, mClass, StringUtils.join(
+				new String[] { category != null ? "categoryId=" + category.getId() : null, params },
+				"&"));
 	}
 
 	public String getUrl(final PageParameter pp, final Class<? extends AbstractMVCPage> mClass,
@@ -47,10 +45,7 @@ public class BbsUrlsFactory extends UrlsCache {
 
 	public String getUrl(final PageParameter pp, final Class<? extends AbstractMVCPage> mClass,
 			final BbsTopic topic, final String params) {
-		return getUrl(
-				pp,
-				mClass,
-				StringUtils.join(new String[] { topic != null ? "topicId=" + topic.getId() : null,
-						params }, "&"));
+		return getUrl(pp, mClass, StringUtils
+				.join(new String[] { topic != null ? "topicId=" + topic.getId() : null, params }, "&"));
 	}
 }

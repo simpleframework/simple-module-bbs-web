@@ -129,28 +129,21 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 	protected TablePagerBean addTablePagerBean(final PageParameter pp) {
 		final TablePagerBean tablePager = (TablePagerBean) addComponentBean(pp,
 				"BbsTopicListTPage_tbl", TablePagerBean.class).setFilter(false).setShowCheckbox(false)
-				.setPageItems(50).setPagerBarLayout(EPagerBarLayout.bottom)
-				.setContainerId("tbl_" + hashId).setHandlerClass(TopicList.class);
-		tablePager
-				.addColumn(TablePagerColumn.ICON())
-				.addColumn(
-						new TablePagerColumn("topic", $m("BbsTopicListTPage.0")).setResize(false)
-								.setNowrap(false).setSort(false))
-				.addColumn(
-						new TablePagerColumn("userId", $m("BbsTopicListTPage.1")).setWidth(100)
-								.setResize(false).setSort(false))
-				.addColumn(
-						new TablePagerColumn("posts", $m("BbsTopicListTPage.2")).setWidth(45).setResize(
-								false))
-				.addColumn(
-						new TablePagerColumn("views", $m("BbsTopicListTPage.3")).setWidth(45).setResize(
-								false))
-				.addColumn(
-						new TablePagerColumn("favorites", $m("BbsTopicListTPage.4")).setWidth(45)
-								.setResize(false))
-				.addColumn(
-						new TablePagerColumn("lastPost", $m("BbsTopicListTPage.5")).setWidth(110)
-								.setResize(false).setSort(false));
+						.setPageItems(50).setPagerBarLayout(EPagerBarLayout.bottom)
+						.setContainerId("tbl_" + hashId).setHandlerClass(TopicList.class);
+		tablePager.addColumn(TablePagerColumn.ICON())
+				.addColumn(new TablePagerColumn("topic", $m("BbsTopicListTPage.0")).setResize(false)
+						.setNowrap(false).setSort(false))
+				.addColumn(new TablePagerColumn("userId", $m("BbsTopicListTPage.1")).setWidth(100)
+						.setResize(false).setSort(false))
+				.addColumn(new TablePagerColumn("posts", $m("BbsTopicListTPage.2")).setWidth(45)
+						.setResize(false))
+				.addColumn(new TablePagerColumn("views", $m("BbsTopicListTPage.3")).setWidth(45)
+						.setResize(false))
+				.addColumn(new TablePagerColumn("favorites", $m("BbsTopicListTPage.4")).setWidth(45)
+						.setResize(false))
+				.addColumn(new TablePagerColumn("lastPost", $m("BbsTopicListTPage.5")).setWidth(110)
+						.setResize(false).setSort(false));
 		return tablePager;
 	}
 
@@ -178,8 +171,8 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 		final TabButtons tabs = TabButtons.of();
 		final BbsCategory category = getCategory(pp);
 		if (category != null) {
-			final IDataQuery<BbsCategory> dq = service.queryChildren(service.getBean(category
-					.getParentId()));
+			final IDataQuery<BbsCategory> dq = service
+					.queryChildren(service.getBean(category.getParentId()));
 			BbsCategory tmp;
 			int i = 0;
 			while ((tmp = dq.next()) != null) {
@@ -199,8 +192,8 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 	protected void addSearchTab(final PageParameter pp, final TabButtons btns) {
 		final String t = pp.getParameter("s");
 		if (StringUtils.hasText(t)) {
-			btns.append(new TabButton($m("BbsTopicListTPage.9"), "#")).setSelectedIndex(
-					btns.size() - 1);
+			btns.append(new TabButton($m("BbsTopicListTPage.9"), "#"))
+					.setSelectedIndex(btns.size() - 1);
 		}
 	}
 
@@ -236,25 +229,26 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 	public ElementList getRightElements(final PageParameter pp) {
 		final BbsCategory category = getCategory(pp);
 		final String list = pp.getParameter("list");
-		return ElementList.of(new SearchInput("AbstractBbsTPage_search")
-				.setOnSearchClick(
-						"$Actions.loc('"
-								+ HttpUtils.addParameters(
-										getUrlsFactory().getUrl(pp, BbsTopicListPage.class,
-												(BbsCategory) null), "s=")
-								+ "' + encodeURIComponent($F('AbstractBbsTPage_search')))")
-				.setOnAdvClick(
-						"$Actions['AbstractBbsTPage_SearchWindow']('"
-								+ AdvSearchPage.encodeRefererUrl(getUrlsFactory().getUrl(pp,
-										BbsTopicListPage.class, category,
-										StringUtils.hasText(list) ? "list=" + list : null)) + "');")
-				.setText(StringUtils.blank(pp.getLocaleParameter("s"))));
+		return ElementList
+				.of(new SearchInput("AbstractBbsTPage_search")
+						.setOnSearchClick(
+								"$Actions.loc('"
+										+ HttpUtils.addParameters(getUrlsFactory().getUrl(pp,
+												BbsTopicListPage.class, (BbsCategory) null), "s=")
+										+ "' + encodeURIComponent($F('AbstractBbsTPage_search')))")
+						.setOnAdvClick(
+								"$Actions['AbstractBbsTPage_SearchWindow']('"
+										+ AdvSearchPage.encodeRefererUrl(
+												getUrlsFactory().getUrl(pp, BbsTopicListPage.class, category,
+														StringUtils.hasText(list) ? "list=" + list : null))
+										+ "');")
+						.setText(StringUtils.blank(pp.getLocaleParameter("s"))));
 	}
 
 	@Override
 	public NavigationButtons getNavigationBar(final PageParameter pp) {
-		final LinkElement home = new LinkElement(bbsContext.getModule()).setHref(getUrlsFactory()
-				.getUrl(pp, BbsCategoryPage.class));
+		final LinkElement home = new LinkElement(bbsContext.getModule())
+				.setHref(getUrlsFactory().getUrl(pp, BbsCategoryPage.class));
 		final BbsCategory category = getCategory(pp);
 		final NavigationButtons btns = NavigationButtons.of();
 		String cText = null;
@@ -331,19 +325,15 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 		@Override
 		public MenuItems getContextMenu(final ComponentParameter cp, final MenuBean menuBean,
 				final MenuItem menuItem) {
-			return MenuItems
-					.of()
-					.append(
-							MenuItem.itemEdit().setOnclick(
-									"$Actions.loc('" + getUrlsFactory().getUrl(null, BbsTopicFormPage.class)
-											+ "?topicId=' + $pager_action(item).rowId());"))
+			return MenuItems.of().append(MenuItem.itemEdit()
+					.setOnclick("$Actions.loc('" + getUrlsFactory().getUrl(null, BbsTopicFormPage.class)
+							+ "?topicId=' + $pager_action(item).rowId());"))
 					.append(MenuItem.sep())
-					.append(
-							MenuItem.of($m("AbstractContentBean.2")).setOnclick_act(
-									"BbsTopicListTPage_recommendation", "topicId"))
-					.append(
-							MenuItem.of($m("BbsTopicListTPage.10")).setOnclick_act(
-									"BbsTopicListTPage_adv", "topicId")).append(MenuItem.sep())
+					.append(MenuItem.of($m("AbstractContentBean.2"))
+							.setOnclick_act("BbsTopicListTPage_recommendation", "topicId"))
+					.append(MenuItem.of($m("BbsTopicListTPage.10"))
+							.setOnclick_act("BbsTopicListTPage_adv", "topicId"))
+					.append(MenuItem.sep())
 					.append(MenuItem.itemDelete().setOnclick_act("BbsTopicListTPage_delete", "topicId"))
 					.append(MenuItem.sep())
 					.append(MenuItem.itemLog().setOnclick_act("BbsTopicListTPage_logWin", "topicId"));
@@ -371,14 +361,14 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 						category = bbsContext.getCategoryService().getBean(topic.getCategoryId());
 						if (category != null) {
 							sb.append("<span class='categoryTxt'>[");
-							sb.append(new LinkElement(category.getText()).setHref(getUrlsFactory().getUrl(
-									cp, BbsTopicListPage.class, category)));
+							sb.append(new LinkElement(category.getText())
+									.setHref(getUrlsFactory().getUrl(cp, BbsTopicListPage.class, category)));
 							sb.append("]</span>");
 						}
 					}
-					final LinkElement le = new LinkElement(topic.getTopic()).setHref(
-							getUrlsFactory().getUrl(cp, BbsPostViewPage.class, topic)).setClassName(
-							"bbsTopic");
+					final LinkElement le = new LinkElement(topic.getTopic())
+							.setHref(getUrlsFactory().getUrl(cp, BbsPostViewPage.class, topic))
+							.setClassName("bbsTopic");
 					if (topic.getRecommendation() > 0) {
 						le.addClassName("recommendation");
 					}
@@ -428,8 +418,8 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 		protected void onForward(final PageParameter pp) throws Exception {
 			super.onForward(pp);
 
-			addFormValidationBean(pp).addValidators(
-					new Validator(EValidatorMethod.required, "#a_description"));
+			addFormValidationBean(pp)
+					.addValidators(new Validator(EValidatorMethod.required, "#a_description"));
 		}
 
 		@Override
@@ -461,10 +451,10 @@ public class BbsTopicListTPage extends AbstractBbsTPage {
 				}
 			}
 
-			final TableRow r1 = new TableRow(new RowField($m("TopicAdvPage.1"), a_best), new RowField(
-					$m("TopicAdvPage.2"), a_type.addElements(opts)));
-			final TableRow r2 = new TableRow(new RowField($m("TopicAdvPage.0"), InputElement.textarea(
-					"a_description").setRows(5)));
+			final TableRow r1 = new TableRow(new RowField($m("TopicAdvPage.1"), a_best),
+					new RowField($m("TopicAdvPage.2"), a_type.addElements(opts)));
+			final TableRow r2 = new TableRow(new RowField($m("TopicAdvPage.0"),
+					InputElement.textarea("a_description").setRows(5)));
 			return TableRows.of(r1, r2);
 		}
 

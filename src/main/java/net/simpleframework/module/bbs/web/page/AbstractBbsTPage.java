@@ -51,8 +51,8 @@ public abstract class AbstractBbsTPage extends TopBar_PageletsPage implements IB
 	}
 
 	protected WindowBean addSearchWindow(final PageParameter pp) {
-		pp.addComponentBean("AbstractBbsTPage_SearchPage", AjaxRequestBean.class).setUrlForward(
-				url(BbsAdvSearchPage.class));
+		pp.addComponentBean("AbstractBbsTPage_SearchPage", AjaxRequestBean.class)
+				.setUrlForward(url(BbsAdvSearchPage.class));
 		return pp.addComponentBean("AbstractBbsTPage_SearchWindow", WindowBean.class)
 				.setContentRef("AbstractBbsTPage_SearchPage").setTitle($m("AbstractBbsTPage.0"))
 				.setXdelta(-440).setYdelta(2).setWidth(500).setHeight(300).setPopup(true);
@@ -62,29 +62,23 @@ public abstract class AbstractBbsTPage extends TopBar_PageletsPage implements IB
 		addComponentBean(pp, "AbstractBbsTPage_category_tree", TreeBean.class).setShowTip(false)
 				.setHandlerClass(getCategoryDictClass());
 		return (DictionaryBean) addDictionaryBean(pp, "AbstractBbsTPage_category_dict")
-				.setClearAction("false")
-				.addTreeRef(pp, "AbstractBbsTPage_category_tree")
-				.setJsSelectCallback(
-						"$Actions.loc('"
-								+ getUrlsFactory().getUrl(pp, BbsTopicListPage.class, (BbsCategory) null)
-								+ "?categoryId=' + selects[0].id);").setHeight(400).setWidth(320)
-				.setTitle($m("BbsTopicListTPage.7"));
+				.setClearAction("false").addTreeRef(pp, "AbstractBbsTPage_category_tree")
+				.setJsSelectCallback("$Actions.loc('"
+						+ getUrlsFactory().getUrl(pp, BbsTopicListPage.class, (BbsCategory) null)
+						+ "?categoryId=' + selects[0].id);")
+				.setHeight(400).setWidth(320).setTitle($m("BbsTopicListTPage.7"));
 	}
 
 	protected MenuBean addTopicMenuBean(final PageParameter pp) {
 		final MenuBean mb = (MenuBean) addComponentBean(pp, "BbsTopicListTPage_topicMenu",
-				MenuBean.class).setMenuEvent(EMenuEvent.click).setSelector(
-				"#idBbsTopicListTPage_topicMenu");
+				MenuBean.class).setMenuEvent(EMenuEvent.click)
+						.setSelector("#idBbsTopicListTPage_topicMenu");
 		final BbsCategory category = getCategory(pp);
 		for (final EBbsType bbsType : EBbsType.values()) {
 			final String name = bbsType.name();
-			mb.addItem(MenuItem
-					.of(bbsType.toString())
-					.setIconClass("menu_type_" + name)
-					.setUrl(
-							HttpUtils.addParameters(
-									getUrlsFactory().getUrl(pp, BbsTopicFormPage.class, category), "t="
-											+ name)));
+			mb.addItem(MenuItem.of(bbsType.toString()).setIconClass("menu_type_" + name)
+					.setUrl(HttpUtils.addParameters(
+							getUrlsFactory().getUrl(pp, BbsTopicFormPage.class, category), "t=" + name)));
 		}
 		return mb;
 	}
@@ -106,9 +100,10 @@ public abstract class AbstractBbsTPage extends TopBar_PageletsPage implements IB
 				.setClassName("bbs_down_chev");
 	}
 
-	protected static LinkElement createTopicsLink(final PageParameter pp, final PermissionUser user) {
-		return new LinkElement(user).setHref(getUrlsFactory().getUrl(pp, BbsTopicListPage.class,
-				"userId=" + user.getId()));
+	protected static LinkElement createTopicsLink(final PageParameter pp,
+			final PermissionUser user) {
+		return new LinkElement(user)
+				.setHref(getUrlsFactory().getUrl(pp, BbsTopicListPage.class, "userId=" + user.getId()));
 	}
 
 	public static class CategoryDict extends DictionaryTreeHandler {

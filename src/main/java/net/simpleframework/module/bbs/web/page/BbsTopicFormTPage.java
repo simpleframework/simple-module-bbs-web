@@ -58,8 +58,9 @@ public class BbsTopicFormTPage extends AbstractBbsTPage implements IBbsContextAw
 		final BbsCategory category = BbsPostViewTPage.getCategory(pp);
 		if (category != null) {
 			btns.append(new SpanElement().addElements(
-					new LinkElement(category.getText()).setHref(getUrlsFactory().getUrl(pp,
-							BbsTopicListPage.class, category)), createCategoryDictMenu(pp)));
+					new LinkElement(category.getText())
+							.setHref(getUrlsFactory().getUrl(pp, BbsTopicListPage.class, category)),
+					createCategoryDictMenu(pp)));
 		}
 		return btns.append(new SpanElement($m("BbsTopicFormTPage.7")));
 	}
